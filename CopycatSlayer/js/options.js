@@ -274,33 +274,33 @@ var showSlyr = function () {
         $('#acMenu h2').after("<font size=\"-1\">侵害の内容ごとに、タイトルや元作品のURLを設定してください。</br>「報告履歴一覧に表示しない」にチェックを入れると、オプションページの表示を軽量化できます。</br></br></font>");
       }
       for (var i = 0; i < items.repNum; i++) {
-        window["thisUrlArr" + i] = items["urlArr" + i];
-        window["thisUrlDateArr" + i] = items["urlDateArr" + i];
-        window["thisFinArr" + i] = items["urlFinArr" + i];
-        window["thisFinDateArr" + i] = items["urlFinDateArr" + i];
-        window["thisAccArr" + i] = items["accNameArr" + i];
-        window["thisSusArr" + i] = items["accSusArr" + i];
-        window["thisSusDateArr" + i] = items["accSusDateArr" + i];
+        var thisUrlArr = items["urlArr" + i];
+        var thisUrlDateArr = items["urlDateArr" + i];
+        var thisFinArr = items["urlFinArr" + i];
+        var thisFinDateArr = items["urlFinDateArr" + i];
+        var thisAccArr = items["accNameArr" + i];
+        var thisSusArr = items["accSusArr" + i];
+        var thisSusDateArr = items["accSusDateArr" + i];
 
-        // バグ修正
-        if (window["thisFinArr" + i].length !== window["thisFinDateArr" + i].length) {
-          var dif = window["thisFinDateArr" + i].length - window["thisFinArr" + i].length;
-          window["thisFinDateArr" + i].splice(0, dif);
+        if (thisFinArr.length !== thisFinDateArr.length) {
+          var dif = thisFinDateArr.length - thisFinArr.length;
+          thisFinDateArr.splice(0, dif);
           var obj = {};
-          obj["urlFinDateArr" + i] = window["thisFinDateArr" + i];
+          obj["urlFinDateArr" + i] = thisFinDateArr;
           chrome.storage.local.set(obj, function () {});
         }
 
-        // 重複のない一覧を生成
-        window["accUniArr" + i] = window["thisAccArr" + i].filter(function (a, b, self) {
+        var accUniArr = thisAccArr.filter(function (a, b, self) {
           return self.indexOf(a) === b;
         });
-        window["finUniArr" + i] = window["thisFinArr" + i].filter(function (a, b, self) {
+
+        var finUniArr = thisFinArr.filter(function (a, b, self) {
           return self.indexOf(a) === b;
         });
-        var accUniNum = window["accUniArr" + i].length;
-        var urlNum = window["thisUrlArr" + i].length;
-        var urlFinNum = window["thisFinArr" + i].length;
+
+        var accUniNum = accUniArr.length;
+        var urlNum = thisUrlArr.length;
+        var urlFinNum = thisFinArr.length;
         var accNum = items["accNameArr" + i].length;
         var susNum = items["accSusArr" + i].length;
         var thisTitle = (i + 1) + ": " + items["report" + i];
@@ -308,60 +308,114 @@ var showSlyr = function () {
 
         $('#acMenu').append('<dt><button id="report' + i + '"></button></dt>');
         $('#report' + i).text(thisTitle);
-        $('#acMenu').append('<dd id = "form' + i + '"><strong>この報告内容の名前</strong><br /><font size ="-1">※他の報告内容と区別できるように、わかりやすい名前をつけてください。</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">検索用ポップアップの一覧に表示しない　<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">報告履歴一覧に表示しない<br/>著作権者の名前：<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>オリジナル作品の内容：<textarea id="tweet_image_original' + i + '"></textarea><br />オリジナル作品が確認できるURL：<br /><font size ="-1">※侵害ツイートのURLではなく、ご自身でアップロードしたツイートやサイトなど<br />　著作権侵害にあたらない使用例のURLを記入してください.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />著作権侵害の内容：<textarea id="tweet_image_infringement' + i + '"></textarea><br />侵害ツイートの検索に使う語句：<br /><font size ="-1">※スペースで区切ると複数入力できます。単語の前に半角で「-（マイナス）」をつけると、<br />　その単語を含むツイートが検索結果から除外されます.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />作品の種類：<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">イラスト・写真・絵画　　<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">動画　　<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">文章<br/>報告者の属性：<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">著作権者本人　　<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">著作権者の正式な代理人　<br/><center><input id="save' + i + '" type="submit" value="この入力内容を保存" />　<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">この項目を削除</button></center><br /><br /></dd>');
-
-        eval("$(\'#del_report" + i + "\').hide();");
+        $('#acMenu').append('<dd id="form' + i + '"><strong>この報告内容の名前</strong><br /><font size ="-1">※他の報告内容と区別できるように、わかりやすい名前をつけてください。</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">検索用ポップアップの一覧に表示しない　<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">報告履歴一覧に表示しない<br/>著作権者の名前：<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>オリジナル作品の内容：<textarea id="tweet_image_original' + i + '"></textarea><br />オリジナル作品が確認できるURL：<br /><font size ="-1">※侵害ツイートのURLではなく、ご自身でアップロードしたツイートやサイトなど<br />　著作権侵害にあたらない使用例のURLを記入してください。</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />著作権侵害の内容：<textarea id="tweet_image_infringement' + i + '"></textarea><br />侵害ツイートの検索に使う語句：<br /><font size ="-1">※スペースで区切ると複数入力できます。単語の前に半角で「-（マイナス）」をつけると、<br />　その単語を含むツイートが検索結果から除外されます。</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />作品の種類：<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">イラスト・写真・絵画　　<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">動画　　<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">文章<br/>報告者の属性：<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">著作権者本人　　<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">著作権者の正式な代理人　<br/><center><input id="save' + i + '" type="submit" value="この入力内容を保存" />　<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">この項目を削除</button></center><br /><br /></dd>');
+        $('#del_report' + i).hide();
         if (hide_his !== true) {
-          eval("$(\'#hisMenu\').append(\'<dt><button id=\"history" + i + "\" style=\"margin-bottom:10px;\">名称未設定</button><br/><span id = \"reported" + i + "\"><font size = \"-1\">　未報告： " + urlNum + "件　 報告ずみ： " + urlFinNum + "件　 凍結されたアカウント数： " + susNum + "</font><br /></span><br/></dt>\');");
+          $('#hisMenu').append('<dt><button id="history' + i + '" style="margin-bottom:10px;">名称未設定</button><br/><span id="reported' + i + '"><font size="-1">　未報告：' + urlNum + '件　 報告ずみ：' + urlFinNum + '件　 凍結されたアカウント数：' + susNum + '</font><br /></span><br/></dt>');
 
           //未報告URL・報告済みURLのボタンを追加
-          eval("$(\'#hisMenu\').append(\'<dd id=\"hisBox" + i + "\"><dl class =\"hisBoxMenu\" style=\"margin: 0 auto; \"><dt><button id=\"urlHis" + i + "\">未報告URL一覧</button><dd id = \"urlBox" + i + "\"><div id = \"urlTable" + i + "\"></div></dd></dt></dl><dl class =\"finBoxMenu\" style=\"margin:0 auto ;\"><dt><button id=\"finHis" + i + "\">　報告ずみURL一覧</button><dd id = \"finBox" + i + "\"><div id = \"finTable" + i + "\"></div></dd></dt></dl><dl class =\"accBoxMenu\" style=\"margin:0 auto ;\"><dt>　 <button id=\"accHis" + i + "\">アカウント別URL一覧</button><dd id = \"accBox" + i + "\"><div id = \"accTable" + i + "\"></div></dd></dt></dl><dl class =\"susBoxMenu\" style=\"margin:0 auto 0;\"><dt><button id=\"susHis" + i + "\">　凍結ずみアカウント一覧</button><dd id = \"susBox" + i + "\"><div id = \"susTable" + i + "\"></div></dd></dt></dl></dd>\');");
+          $('#hisMenu').append('<dd id="hisBox' + i + '"><dl class ="hisBoxMenu" style="margin: 0 auto; "><dt><button id="urlHis' + i + '">未報告URL一覧</button><dd id = "urlBox' + i + '"><div id = "urlTable' + i + '"></div></dd></dt></dl><dl class ="finBoxMenu" style="margin:0 auto ;"><dt><button id="finHis' + i + '">　報告ずみURL一覧</button><dd id = "finBox' + i + '"><div id = "finTable' + i + '"></div></dd></dt></dl><dl class ="accBoxMenu" style="margin:0 auto ;"><dt>　 <button id="accHis' + i + '">アカウント別URL一覧</button><dd id = "accBox' + i + '"><div id = "accTable' + i + '"></div></dd></dt></dl><dl class ="susBoxMenu" style="margin:0 auto 0;"><dt><button id="susHis' + i + '">　凍結ずみアカウント一覧</button><dd id = "susBox' + i + '"><div id = "susTable' + i + '"></div></dd></dt></dl></dd>');
 
-          eval("$(\'#history" + i + "\').text(thisTitle);");
+          $('#history' + i).text(thisTitle);
 
-          eval("$(\'#urlHis" + i + "\').text('未報告URL一覧 (" + urlNum + "件)');");
-          eval("$(\'#urlHis" + i + "\').css({\"color\":\"#FFF\",\"background-color\":\"#888\"});");
-          eval("$(\'#finHis" + i + "\').text('報告ずみURL一覧 (" + urlFinNum + "件)');");
-          eval("$(\'#finHis" + i + "\').css({\"color\":\"#F4F4F4\",\"background-color\":\"#666\"});");
-          eval("$(\'#accHis" + i + "\').text('アカウント別一覧 (" + accUniNum + "件)');");
-          eval("$(\'#accHis" + i + "\').css({\"color\":\"#F6F6F6\",\"background-color\":\"#444\"});");
-          eval("$(\'#susHis" + i + "\').text('凍結ずみアカウント一覧 (" + susNum + "件)');");
-          eval("$(\'#susHis" + i + "\').css({\"color\":\"#F8F8F8\",\"background-color\":\"#222\"});");
-          eval("var susHis_txt = $(\'#susHis" + i + "\').text();");
+          $('#urlHis' + i).text('未報告URL一覧 (' + urlNum + '件)');
+          $('#urlHis' + i).css({
+            "color": "#FFF",
+            "background-color": "#888"
+          });
+          $('#finHis' + i).text('報告ずみURL一覧 (' + urlFinNum + '件)');
+          $('#finHis' + i).css({
+            "color": "#F4F4F4",
+            "background-color": "#666"
+          });
+          $('#accHis' + i).text('アカウント別一覧 (' + accUniNum + '件)');
+          $('#accHis' + i).css({
+            "color": "#F6F6F6",
+            "background-color": "#444"
+          });
+          $('#susHis' + i).text('凍結ずみアカウント一覧 (' + susNum + '件)');
+          $('#susHis' + i).css({
+            "color": "#F8F8F8",
+            "background-color": "#222"
+          });
+          var susHis_txt = $('#susHis' + i).text();
+
           var a = susHis_txt.split("(");
           var b = a[1].split(")");
-          eval("var nowSusNum" + i + " = b[0].slice(0,-1);");
+          window["nowSusNum" + i] = b[0].slice(0, -1);
 
           //0件のときはURL一覧ボタンを隠す
-          eval("if (urlNum == 0) $(\'#urlHis" + i + "\').hide();");
-          eval("if (urlFinNum == 0) {$(\'#finHis" + i + "\').hide(); $(\'#accHis" + i + "\').hide();} ");
-          eval("if (susNum == 0) $(\'#susHis" + i + "\').hide();");
+          if (urlNum == 0) $('#urlHis' + i).hide();
+          if (urlFinNum == 0) {
+            $('#finHis' + i).hide();
+            $('#accHis' + i).hide();
+          }
+          if (susNum == 0) $('#susHis' + i).hide();
 
           //未報告URLの一覧を追加
           for (var j = 0; j < urlNum; j++) {
-            eval("var urlThis = thisUrlArr" + i + "[" + j + "];");
-            eval("var dateThis = thisUrlDateArr" + i + "[" + j + "];");
-            eval("$(\'#urlTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlNum" + i + "_" + j + "\"></span><a href =\"" + urlThis + "\" target = \"_blank\"><span id =\"urlLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"urlDateLine" + i + "_" + j + "\"></span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"urlDel" + i + "_" + j + "\">削除</button></font></td></tr></table>\');");
-            eval("$(\'#urlNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
-            eval("$(\'#urlLine" + i + "_" + j + "\').append(\"" + urlThis + "\");");
-            eval("$(\'#urlDateLine" + i + "_" + j + "\').append(\"" + dateThis + "　" + "\");");
-            eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"削除\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'戻す\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'削除\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
+            var urlThis = thisUrlArr[j];
+            var dateThis = thisUrDatelArr[j];
+            $('#urlTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><font size = "2.5"><span id ="urlNum' + i + "_" + j + '"></span><a href ="' + urlThis + '" target = "_blank"><span id ="urlLine' + i + "_" + j + '"></span></a></font><br /><font size = "1.8"><span class = "alignright" id ="urlDateLine' + i + "_" + j + '"></span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="urlDel' + i + "_" + j + '">削除</button></font></td></tr></table>');
+            $('#urlNum' + i + "_" + j).append((j + 1) + ": ");
+            $('#urlLine' + i + "_" + j).append(urlThis);
+            $('#urlDateLine' + i + "_" + j).append(dateThis + "　");
+            $('#urlDel' + i + "_" + j).click(function () {
+              var urlHere = $('#urlLine' + i + "_" + j).text();
+              var dateHere = $('#urlDateLine' + i + "_" + j).text();
+              if ($(this).text() == "削除") {
+                $(this).css({
+                  "color": "#F5F5F5",
+                  "background-color": "#222"
+                });
+                $(this).text('戻す');
+                $('#urlNum' + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j).css({
+                  "color": "#999"
+                });
+                for (k = 0; k < thisUrlArr.length; k++) {
+                  if (thisUrlArr[k] == urlHere) {
+                    thisUrlArr.splice(k, 1);
+                    thisUrDatelArr.splice(k, 1);
+                  }
+                }
+              } else {
+                $(this).text('削除');
+                $(this).css({
+                  "color": "",
+                  "background-color": ""
+                });
+                $('#urlNum' + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j).css("color", "");
+                thisUrlArr.push(urlHere);
+                thisUrDatelArr.push(dateHere);
+              }
+            });
           }
+
           //アカウント名一覧を追加
           for (var j = 0; j < accUniNum; j++) {
-            eval("var accThis = accUniArr" + i + "[" + j + "];");
-            eval("var nowAccArr" + i + "= [];");
-            eval("for(l=0; l<thisAccArr" + i + ".length; l++){ var nowAcc = thisAccArr" + i + "[l]; if(accThis == nowAcc){ nowAccArr" + i + ".push(accThis);}}");
-            eval("$(\'#accTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><span id =\"accNum" + i + "_" + j + "\"></span><a href =\"https://twitter.com/" + accThis + "\" target = \"_blank\"><span id =\"accLine" + i + "_" + j + "\"></span></a><font size = \"3\"><span class = \"alignright\" id =\"accNumLine" + i + "_" + j + "\">回　 </span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"susAcc" + i + "_" + j + "\">未凍結</button></font></td></tr></table>\');");
-            eval("$(\'#accNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
-            eval("$(\'#accLine" + i + "_" + j + "\').append(\"" + accThis + "\");");
-            eval("$(\'#accNumLine" + i + "_" + j + "\').prepend(nowAccArr" + i + ".length);");
-            eval("var accRepNum" + i + "= [];");
-            eval("accRepNum" + i + ".push(nowAccArr" + i + ".length)");
+            var accThis = window["accUniArr" + i][j];
+            var nowAccArr = [];
+            for (l = 0; l < thisAccArr.length; l++) {
+              var nowAcc = thisAccArr[l];
+              if (accThis == nowAcc) {
+                nowAccArr.push(accThis);
+              }
+            }
+            $('#accTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><span id ="accNum' + i + '_' + j + '"></span><a href ="https://twitter.com/' + accThis + '" target = "_blank"><span id ="accLine' + i + '_' + j + '"></span></a><font size = "3"><span class = "alignright" id ="accNumLine' + i + '_' + j + '">回　 </span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="susAcc' + i + '_' + j + '">未凍結</button></font></td></tr></table>');
+            $('#accNum' + i + '_' + j).append((j + 1) + ": ");
+            $('#accLine' + i + '_' + j).append(accThis);
+            $('#accNumLine' + i + '_' + j).prepend(nowAccArr.length);
 
-            //凍結記録ボタンの表示を変更
-            eval("if (thisSusArr" + i + ".indexOf(accThis) !== -1){$(\'#susAcc" + i + "_" + j + "\').text(\"凍結済\"); $(\'#susAcc" + i + "_" + j + "\').css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); }");
+            var accRepNum = [];
+            accRepNum.push(nowAccArr.length);
 
+            if (window["thisSusArr" + i].indexOf(accThis) !== -1) {
+              $('#susAcc' + i + '_' + j).text("凍結済");
+              $('#susAcc' + i + '_' + j).css({
+                "color": "#F5F5F5",
+                "background-color": "#222"
+              });
+            }
             //クリックした位置のアカウントを凍結扱いに
             eval("$(\'#susAcc" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];　var accHere = accUniArr" + i + "[x]; console.log(\"アカウント: \" + accHere); if($(this).text() == \"未凍結\") { $(this).text(\"凍結済\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"凍結済\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"凍結済\"){$(this).text(\"未凍結\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"未凍結\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
           }
@@ -435,22 +489,26 @@ var showSlyr = function () {
           accUniSum = 0;
         accSusSum = 0;
         for (var i = 0; i < items.repNum; i++) {
-          eval("var accSetArr" + i + "= items.accNameArr" + i + ".filter(function (a, b, self) { return self.indexOf(a) === b; });");
-          eval("var urlArr = items.urlArr" + i + ";");
-          eval("var urlFinArr = items.urlFinArr" + i + ";");
-          eval("var accSetArr = accSetArr" + i + ";");
-          eval("var accSusArr = items.accSusArr" + i + ";");
+          var accSetArr = items['accNameArr' + i].filter(function (a, b, self) {
+            return self.indexOf(a) === b;
+          });
+          var urlArr = items['urlArr' + i];
+          var urlFinArr = items['urlFinArr' + i];
+          var accSusArr = items['accSusArr' + i];
+
           urlSum = urlSum + urlArr.length;
           urlFinSum = urlFinSum + urlFinArr.length;
           accUniSum = accUniSum + accSetArr.length;
           accSusSum = accSusSum + accSusArr.length;
         }
-        eval("$(\'#title\').append(\'<div id=\"sum\" style=\"padding:20px;\"><center><strong><font size=\"5em\">現在の総計</font><br/><br/>報告ずみURL：  " + urlFinSum + "　アカウント総数： " + accUniSum + "　凍結ずみアカウント： " + accSusSum + "</strong></center>\');");
+
+        $('#title').append('<div id="sum" style="padding:20px;"><center><strong><font size="5em">現在の総計</font><br/><br/>報告ずみURL：  ' + urlFinSum + '　アカウント総数： ' + accUniSum + '　凍結ずみアカウント： ' + accSusSum + '</strong></center></div>');
+
         if (urlSum == 0) {
           $('#sum').append("<center><font size=\"-1\"><br/><strong>未報告のURLはありません。</strong></font></center>");
         }
         if (urlSum !== 0) {
-          eval("$(\'#sum\').append(\'<center><font size=\"-1\"><br/><strong>未報告のURLが " + urlSum + "件あります。</strong></font></center>\');");
+          $('#sum').append('<center><font size=\"-1\"><br/><strong>未報告のURLが ' + urlSum + '件あります。</strong></font></center>');
         }
         if (urlFinSum !== 0) {
           var t_txt1 = "「無断転載スレイヤー」で計",
