@@ -1,4 +1,4 @@
-﻿$(function () {
+$(function () {
   chrome.storage.local.get(function (items) {
     var mode = items.mode;
     var modeNum = mode + 1;
