@@ -1,57 +1,57 @@
-var showSlyr = function () {
+ï»¿var showSlyr = function () {
   var divNum1 = $('#tabBox1').length;
   var divNum2 = $('#tabBox2').length;
   if (divNum1 === 1) {
-    $('#tabBox1').append('<div id=\"title\"><center><h1 style=\"margin-top:15px; margin-bottom:10px;\">ƒpƒNƒcƒCƒXƒŒƒCƒ„[</h1></div><div id =\"main\" style =\'margin: 0 auto;  padding: 15px 40px; width: 750px;\'><dl id=\"hisMenu\" style =\'margin: 30px auto; width: 100%;\'></dl><div id=\"setting_div\"></div></dl></div>');
+    $('#tabBox1').append('<div id=\"title\"><center><h1 style=\"margin-top:15px; margin-bottom:10px;\">ãƒ‘ã‚¯ãƒ„ã‚¤ã‚¹ãƒ¬ã‚¤ãƒ¤ãƒ¼</h1></div><div id =\"main\" style =\'margin: 0 auto;  padding: 15px 40px; width: 750px;\'><dl id=\"hisMenu\" style =\'margin: 30px auto; width: 100%;\'></dl><div id=\"setting_div\"></div></dl></div>');
   }
   if (divNum2 === 1) {
-    $('#tabBox2').append('<div id=\"m-title\"><center><h1 style=\"margin-top:15px; margin-bottom:10px;\">ƒ€ƒ‰ƒnƒ` for Google</h1></div><div id =\"m-main\" style =\'margin: 0 auto;  padding: 15px 40px; width: 750px; \'><dl id=\"m-hisMenu\" style =\'margin: 30px auto; width: 100%;\'></dl><div id=\"m-setting_div\"></div></dl></div></div></br></center></div>');
+    $('#tabBox2').append('<div id=\"m-title\"><center><h1 style=\"margin-top:15px; margin-bottom:10px;\">ãƒ ãƒ©ãƒãƒ for Google</h1></div><div id =\"m-main\" style =\'margin: 0 auto;  padding: 15px 40px; width: 750px; \'><dl id=\"m-hisMenu\" style =\'margin: 30px auto; width: 100%;\'></dl><div id=\"m-setting_div\"></div></dl></div></div></br></center></div>');
   }
 
   chrome.storage.local.get(function (items) {
     if (items.m_bar === "off") {
-      $('#m-title').append('<center></br><button id="slyr-show" style="padding:20px 50px; background-color:#cc0000; border:none; color:#FFF;">URL’Ç‰Á—pƒo[‚Ì•\¦‚ğON‚É‚·‚é</button></center></div>');
+      $('#m-title').append('<center></br><button id="slyr-show" style="padding:20px 50px; background-color:#cc0000; border:none; color:#FFF;">URLè¿½åŠ ç”¨ãƒãƒ¼ã®è¡¨ç¤ºã‚’ONã«ã™ã‚‹</button></center></div>');
       $("#slyr-show").click(function () {
         var bar_mode = new Object();
         bar_mode['m_bar'] = "on";
         chrome.storage.local.set(bar_mode, function (items) {
-          alert("URL’Ç‰Á—pƒo[‚Ì•\¦‚ğON‚É‚µ‚Ü‚µ‚½B\nƒo[‚ğ•\¦‚³‚¹‚½‚¢ƒy[ƒW‚ğXV‚·‚é‚Æ”½‰f‚³‚ê‚Ü‚·B");
+          alert("URLè¿½åŠ ç”¨ãƒãƒ¼ã®è¡¨ç¤ºã‚’ONã«ã—ã¾ã—ãŸã€‚\nãƒãƒ¼ã‚’è¡¨ç¤ºã•ã›ãŸã„ãƒšãƒ¼ã‚¸ã‚’æ›´æ–°ã™ã‚‹ã¨åæ˜ ã•ã‚Œã¾ã™ã€‚");
           $('#slyr-show').hide();
         });
       });
     }
   });
 
-  //ƒpƒNƒcƒCƒXƒŒƒCƒ„[
-  var str_ex1 = "—áF•Çƒhƒ“‘Îˆ–@",
-    str_ex2 = "—áF„‚ª»ì‚µAˆÈ‰º‚ÌƒcƒC[ƒg‚ÅÅ‰‚É”­•\‚µ‚½ƒCƒ‰ƒXƒg‚Å‚·B",
-    str_ex2 = "—áF„‚ª»ì‚µAˆÈ‰º‚ÌƒcƒC[ƒg‚ÅÅ‰‚É”­•\‚µ‚½ƒCƒ‰ƒXƒg‚Å‚·B",
-    str_ex3 = "—áFhttps://twitter.com/nakashima723/status/493780492345307136",
-    str_ex4 = "—áF’˜ìŒ ‚Å•ÛŒì‚³‚ê‚½‰æ‘œ‚ğA–³’f‚Å“]Ú‚µ—˜—p‚µ‚Ä‚¢‚Ü‚·B",
-    str_ex4_after = "’˜ìŒ ‚Å•ÛŒì‚³‚ê‚½‰æ‘œ‚ğA–³’f‚Å“]Ú‚µ—˜—p‚µ‚Ä‚¢‚Ü‚·B",
-    str_ex5 = "—áF•s–{ˆÓ‚È•Çƒhƒ“ ‘Îˆ–@ -RT -nakashima723.info",
-    str_al_save_new = "–¢‹L“ü‚Ü‚½‚Í“à—e‚É•s”õ‚Ì‚ ‚é€–Ú‚ª‚ ‚è‚Ü‚·B\nu”CˆÓv‚Ì€–ÚˆÈŠO‚Í‚·‚×‚Ä“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B",
-    str_saved = "“ü—Í“à—e‚ğ•Û‘¶‚µ‚Ü‚µ‚½B",
-    str_edit_save = "•ÒW“à—e‚ğ•Û‘¶‚·‚é",
-    str_edit_saved = "•ÒW“à—e‚ğ•Û‘¶‚µ‚Ü‚µ‚½B",
-    str_url_copy = "–¢•ñURL‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[",
-    str_url_clear = "‚±‚Ì€–Ú‚Ì–¢•ñURL‚ğ‚·‚×‚Äíœ";
-  str_deleted = "“ü—Í“à—e‚ğíœ‚µ‚Ü‚µ‚½B",
-    del_report = "íœ‚·‚é‚ÆA‚±‚Ì€–Ú‚ÌURL‚ÆƒAƒJƒEƒ“ƒg‚Ì‹L˜^‚Í‚·‚×‚Ä”jŠü‚³‚ê‚Ü‚·B\n\n“®ìŠm”F‚Æ‚µ‚Äg—p‚µ‚½ê‡‚È‚Ç‚ğœ‚«AŠî–{“I‚É‚Íu€–Ú‚ğ”ñ•\¦‚É‚·‚évƒIƒvƒVƒ‡ƒ“‚ğg—p‚·‚é‚±‚Æ‚ğ‚¨‚·‚·‚ß‚µ‚Ü‚·B\n\n–{“–‚É‚±‚Ì€–Ú‚ğíœ‚µ‚Ü‚·‚©H",
-    del_report2 = "–{“–‚É‚æ‚ë‚µ‚¢‚Å‚·‚©H",
-    str_input = "“ü—Í‚·‚é",
-    str_close = "‚Æ‚¶‚é",
-    str_nosetting = "uŠî–{İ’èv‚Æu•ñ“à—ev‚ğ‹L“ü‚·‚é‚ÆAƒcƒC[ƒg‚ÌŒŸõE•ñ‹@”\‚ªg‚¦‚é‚æ‚¤‚É‚È‚è‚Ü‚·B",
-    str_his_title = "<h2>•ñ—š—ğ‚ÌŠm”F‚ÆŠÇ—</h2><font size=\"-1\">“€Œ‹ó‹µ‚Ì‹L˜^‚ÍAu•ñ‚¸‚İURLv‚ÆuƒAƒJƒEƒ“ƒgv‚Ìˆê——‚©‚çs‚¦‚Ü‚·Biè“®j</font>",
-    str_edit = "•ÒW‚·‚é",
-    str_edit_report = "•ñ“à—e‚ğ’Ç‰ÁE•ÒW",
-    str_setting = "Šî–{İ’è",
-    str_setting_ex = "<font size=\"-1\">TwitterŒö®‚Ì<a href=\"https://support.twitter.com/forms/dmca\"><strong>’˜ìŒ NŠQ•ñƒtƒH[ƒ€</strong></a>‚É“ü—Í‚·‚é“à—e‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢B<br/>ZŠ–¼‚È‚ÇA‚·‚×‚Ä‚Ì•ñ‚É‹¤’Ê‚·‚é“ü—Í“à—e‚Æ‚È‚è‚Ü‚·B</font>",
-    str_taro = "—áF‘¾˜Y",
-    str_yamada = "—áFR“c",
-    str_company = "—áF©‰c‹Æ";
+  //ãƒ‘ã‚¯ãƒ„ã‚¤ã‚¹ãƒ¬ã‚¤ãƒ¤ãƒ¼
+  var str_ex1 = "ä¾‹ï¼šå£ãƒ‰ãƒ³å¯¾å‡¦æ³•",
+    str_ex2 = "ä¾‹ï¼šç§ãŒè£½ä½œã—ã€ä»¥ä¸‹ã®ãƒ„ã‚¤ãƒ¼ãƒˆã§æœ€åˆã«ç™ºè¡¨ã—ãŸã‚¤ãƒ©ã‚¹ãƒˆã§ã™ã€‚",
+    str_ex2 = "ä¾‹ï¼šç§ãŒè£½ä½œã—ã€ä»¥ä¸‹ã®ãƒ„ã‚¤ãƒ¼ãƒˆã§æœ€åˆã«ç™ºè¡¨ã—ãŸã‚¤ãƒ©ã‚¹ãƒˆã§ã™ã€‚",
+    str_ex3 = "ä¾‹ï¼šhttps://twitter.com/nakashima723/status/493780492345307136",
+    str_ex4 = "ä¾‹ï¼šè‘—ä½œæ¨©ã§ä¿è­·ã•ã‚ŒãŸç”»åƒã‚’ã€ç„¡æ–­ã§è»¢è¼‰ã—åˆ©ç”¨ã—ã¦ã„ã¾ã™ã€‚",
+    str_ex4_after = "è‘—ä½œæ¨©ã§ä¿è­·ã•ã‚ŒãŸç”»åƒã‚’ã€ç„¡æ–­ã§è»¢è¼‰ã—åˆ©ç”¨ã—ã¦ã„ã¾ã™ã€‚",
+    str_ex5 = "ä¾‹ï¼šä¸æœ¬æ„ãªå£ãƒ‰ãƒ³ å¯¾å‡¦æ³• -RT -nakashima723.info",
+    str_al_save_new = "æœªè¨˜å…¥ã¾ãŸã¯å†…å®¹ã«ä¸å‚™ã®ã‚ã‚‹é …ç›®ãŒã‚ã‚Šã¾ã™ã€‚\nã€Œä»»æ„ã€ã®é …ç›®ä»¥å¤–ã¯ã™ã¹ã¦å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚",
+    str_saved = "å…¥åŠ›å†…å®¹ã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚",
+    str_edit_save = "ç·¨é›†å†…å®¹ã‚’ä¿å­˜ã™ã‚‹",
+    str_edit_saved = "ç·¨é›†å†…å®¹ã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚",
+    str_url_copy = "æœªå ±å‘ŠURLã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼",
+    str_url_clear = "ã“ã®é …ç›®ã®æœªå ±å‘ŠURLã‚’ã™ã¹ã¦å‰Šé™¤";
+  str_deleted = "å…¥åŠ›å†…å®¹ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚",
+    del_report = "å‰Šé™¤ã™ã‚‹ã¨ã€ã“ã®é …ç›®ã®URLã¨ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®è¨˜éŒ²ã¯ã™ã¹ã¦ç ´æ£„ã•ã‚Œã¾ã™ã€‚\n\nå‹•ä½œç¢ºèªã¨ã—ã¦ä½¿ç”¨ã—ãŸå ´åˆãªã©ã‚’é™¤ãã€åŸºæœ¬çš„ã«ã¯ã€Œé …ç›®ã‚’éè¡¨ç¤ºã«ã™ã‚‹ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ã‚’ãŠã™ã™ã‚ã—ã¾ã™ã€‚\n\næœ¬å½“ã«ã“ã®é …ç›®ã‚’å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ",
+    del_report2 = "æœ¬å½“ã«ã‚ˆã‚ã—ã„ã§ã™ã‹ï¼Ÿ",
+    str_input = "å…¥åŠ›ã™ã‚‹",
+    str_close = "ã¨ã˜ã‚‹",
+    str_nosetting = "ã€ŒåŸºæœ¬è¨­å®šã€ã¨ã€Œå ±å‘Šå†…å®¹ã€ã‚’è¨˜å…¥ã™ã‚‹ã¨ã€ãƒ„ã‚¤ãƒ¼ãƒˆã®æ¤œç´¢ãƒ»å ±å‘Šæ©Ÿèƒ½ãŒä½¿ãˆã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™ã€‚",
+    str_his_title = "<h2>å ±å‘Šå±¥æ­´ã®ç¢ºèªã¨ç®¡ç†</h2><font size=\"-1\">å‡çµçŠ¶æ³ã®è¨˜éŒ²ã¯ã€ã€Œå ±å‘Šãšã¿URLã€ã¨ã€Œã‚¢ã‚«ã‚¦ãƒ³ãƒˆã€ã®ä¸€è¦§ã‹ã‚‰è¡Œãˆã¾ã™ã€‚ï¼ˆæ‰‹å‹•ï¼‰</font>",
+    str_edit = "ç·¨é›†ã™ã‚‹",
+    str_edit_report = "å ±å‘Šå†…å®¹ã‚’è¿½åŠ ãƒ»ç·¨é›†",
+    str_setting = "åŸºæœ¬è¨­å®š",
+    str_setting_ex = "<font size=\"-1\">Twitterå…¬å¼ã®<a href=\"https://support.twitter.com/forms/dmca\"><strong>è‘—ä½œæ¨©ä¾µå®³å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ </strong></a>ã«å…¥åŠ›ã™ã‚‹å†…å®¹ã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚<br/>ä½æ‰€æ°åãªã©ã€ã™ã¹ã¦ã®å ±å‘Šã«å…±é€šã™ã‚‹å…¥åŠ›å†…å®¹ã¨ãªã‚Šã¾ã™ã€‚</font>",
+    str_taro = "ä¾‹ï¼šå¤ªéƒ",
+    str_yamada = "ä¾‹ï¼šå±±ç”°",
+    str_company = "ä¾‹ï¼šè‡ªå–¶æ¥­";
 
-  //“o˜^‚³‚ê‚Ä‚¢‚é•ñ“à—e‚Ì”‚ğ”»’è
+  //ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ±å‘Šå†…å®¹ã®æ•°ã‚’åˆ¤å®š
   var repCounter = function () {
     chrome.storage.local.get(function (items) {
       //console.log(Object.keys(items));
@@ -90,7 +90,7 @@ var showSlyr = function () {
     });
   }
   repCounter();
-  // chrome.storage‚É•Û‘¶‚µ‚½ƒf[ƒ^‚Ì•\¦
+  // chrome.storageã«ä¿å­˜ã—ãŸãƒ‡ãƒ¼ã‚¿ã®è¡¨ç¤º
   var showSetting = function () {
     chrome.storage.local.get(function (items) {
       if (items.fullname == undefined) {
@@ -142,7 +142,7 @@ var showSlyr = function () {
       $('#faxnumber').val(items.faxnumber);
       if (items.fullname !== undefined) {
         $('#statement1,#statement2,#statement3').prop('checked', true);
-        $('#statement4').val('‚±‚Ì’Ê’m‚Ìî•ñ‚Í³Šm‚Å‚·B„‚ÍA’˜ìŒ Š—LÒ‚Ì‘ã—‚Æ‚µ‚Äs“®‚·‚éŒ ŒÀ‚ğ‚Á‚Ä‚¢‚é‚±‚Æ‚ª‹•‹U‚Ìê‡‚Í‹UØß‚É–â‚í‚ê‚é‚±‚Æ‚ğ—‰ğ‚µ‚Ä‚¢‚Ü‚·B');
+        $('#statement4').val('ã“ã®é€šçŸ¥ã®æƒ…å ±ã¯æ­£ç¢ºã§ã™ã€‚ç§ã¯ã€è‘—ä½œæ¨©æ‰€æœ‰è€…ã®ä»£ç†ã¨ã—ã¦è¡Œå‹•ã™ã‚‹æ¨©é™ã‚’æŒã£ã¦ã„ã‚‹ã“ã¨ãŒè™šå½ã®å ´åˆã¯å½è¨¼ç½ªã«å•ã‚ã‚Œã‚‹ã“ã¨ã‚’ç†è§£ã—ã¦ã„ã¾ã™ã€‚');
       }
     });
   }
@@ -209,13 +209,13 @@ var showSlyr = function () {
   }
 
 
-  //ƒpƒNƒcƒCƒXƒŒƒCƒ„[
+  //ãƒ‘ã‚¯ãƒ„ã‚¤ã‚¹ãƒ¬ã‚¤ãƒ¤ãƒ¼
   $(function () {
     chrome.storage.local.get(function (items) {
-      $('#setting_div').append("<h2>" + str_setting + "</h2>" + str_setting_ex + "<br/><br/><dl id=\"acMenu\" style =\'margin:0 auto; width: 100%;\'><dt><button id=\"setting\">" + str_edit + "</button><br /></dt><dd style =\'margin:0 30px auto; display:none; width:\"100%;\"'>–{ƒvƒƒOƒ‰ƒ€‚Í•ñ‘ÎÛ‚Æ‚È‚é’˜ì•¨‚Ì³®‚ÈŒ —˜Ò‚Ì•ûA‚Ü‚½‚Í‚»‚Ì‘ã—l‚Ì‚İ‚²—˜—p‚¢‚½‚¾‚¯‚Ü‚·B’˜ì•¨‚Ì’è‹`‚âA‚²©g‚ÌŒ —˜‚Ì—L–³‚É‚Â‚¢‚Ä‚ÍŠe©‚Å‚²Šm”F‚­‚¾‚³‚¢B<br /><br /><strong>˜A—æ</strong><br />‚ ‚È‚½‚Ì–{–¼iƒtƒ‹ƒl[ƒ€j:<br /><input id=\"fullname\" type=\"text\" value=\"—áFR“c‘¾˜Y\" /><br />‰ïĞ–¼EŠ‘®:<br /><input id=\"company\" type=\"text\" value=\"—áF©‰c‹Æ\" /><br />Œ¨‘‚«F<br /><input id=\"job\" type=\"text\" /><br />ƒ[ƒ‹ ƒAƒhƒŒƒX : <input id=\"email\" type=\"text\" /><br />ZŠ‚Pi”Ô’nEŒš•¨–¼E•”‰®”Ô†jF<br /><input id=\"address\" type=\"text\" /><br />ZŠ‚Qis‹æ’¬‘º–¼jF<br /><input id=\"city\" type=\"text\" /><br />ZŠ‚Ri“s“¹•{Œ§–¼jF<br /><input id=\"state\" type=\"text\" /><br />—X•Ö”Ô†F<br /><input id=\"postal\" type=\"text\" /><br />‹Z‘F<br /><input id=\"country\" type=\"text\" /><br />“d˜b”Ô†i”CˆÓjF<br /><input id=\"phone_number\" type=\"text\" /><br />FAX”Ô†i”CˆÓjF<br /><input id=\"faxnumber\" type=\"text\" /><br />©•ª‚ÌTwitterƒAƒJƒEƒ“ƒg–¼i”CˆÓj<br /><font size=\"-1\">¦‹L“ü‚µ‚Ä‚¨‚­‚ÆA©•ª‚ÌƒAƒJƒEƒ“ƒg‚ ‚Ä‚Ì”ñŒö®RT‚ğœŠO‚Å‚«‚Ü‚·B<br>@”¼Šp@‚©‚ç“ü—Í‚µ‚Ä‚­‚¾‚³‚¢Bi—áF@nakashima723j<br /></font><input id=\"account_name\" type=\"text\" value=\"—áF@nakashima723\" /><br /><strong>–@“I‚Èé¾F</strong><br /><font size=\"2.8em\"><br /><input id=\"statement1\" type=\"checkbox\">ŒÌˆÓ‚É•ñ‘fŞ‚Ü‚½‚ÍŠˆ“®‚ªd‘å‚ÈNŠQ‚ğ‚µ‚Ä‚¢‚é‚Æ‹U‚Á‚½ê‡A17 U.S.C. ˜ 512(f) (•Ä‘’˜ìŒ –@) ‚ÉŠî‚Ã‚«A„‚Í‘i×”ï—p‚¨‚æ‚Ñ•ÙŒìm”ï—p‚ğŠÜ‚Ş‚ ‚ç‚ä‚é‘¹ŠQ‚É‚Â‚¢‚ÄÓ”C‚ğ–â‚í‚ê‚é‰Â”\«‚ª‚ ‚é‚±‚Æ‚ğ—‰ğ‚µ‚Ä‚¢‚Ü‚·B<br /><br /><input id=\"statement2\" type=\"checkbox\">„‚Í\‚µ—§‚Ä‚½‘Ô—l‚Å‚Ì‘fŞ‚Ìg—p‚ªA’˜ìŒ ÒA‚»‚Ì‘ã—lA‚Ü‚½‚Í–@—¥‚É‚æ‚Á‚Ä‹–—e‚³‚ê‚Ä‚¢‚È‚¢‚±‚Æ‚ğA—ÇS‚É]‚¢½À‚É”F¯‚µ‚Ä‚¢‚Ü‚·B<br /><br /><input id=\"statement3\" type=\"checkbox\">–{ƒvƒƒOƒ‰ƒ€‚Í“–ŠYƒtƒH[ƒ€‚Ö‚Ì“ü—Í‚ğ•â•EŠÈ•Ö‰»‚·‚é‚à‚Ì‚Å‚ ‚èA‘—M‚µ‚½•ñ‚Ì“à—e‚Æ•ñŒ‹‰Ê‚É‚Â‚¢‚ÄAƒvƒƒOƒ‰ƒ€»ìÒ‚ÍˆêØ‚ÌÓ”C‚ğ•‰‚í‚È‚¢‚±‚Æ‚ğ³‘ø‚µ‚Ü‚·B<br /><br /></font>ˆÈ‰º‚Ì•¶Í‚ğ‰º‚Ì‹ó—“‚É³Šm‚É“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B<br /><blockquote cite=\"https://support.twitter.com/forms/dmca\">‚±‚Ì’Ê’m‚Ìî•ñ‚Í³Šm‚Å‚·B„‚ÍA’˜ìŒ Š—LÒ‚Ì‘ã—‚Æ‚µ‚Äs“®‚·‚éŒ ŒÀ‚ğ‚Á‚Ä‚¢‚é‚±‚Æ‚ª‹•‹U‚Ìê‡‚Í‹UØß‚É–â‚í‚ê‚é‚±‚Æ‚ğ—‰ğ‚µ‚Ä‚¢‚Ü‚·B</blockquote><textarea id=\"statement4\" rows=\"3\"></textarea><br /><input id=\"save_setting\" type=\"submit\" value=\"‚±‚Ì“ü—Í“à—e‚ğ•Û‘¶\" />@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br /></dd><h2>" + str_edit_report + "</h2>");
+      $('#setting_div').append("<h2>" + str_setting + "</h2>" + str_setting_ex + "<br/><br/><dl id=\"acMenu\" style =\'margin:0 auto; width: 100%;\'><dt><button id=\"setting\">" + str_edit + "</button><br /></dt><dd style =\'margin:0 30px auto; display:none; width:\"100%;\"'>æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯å ±å‘Šå¯¾è±¡ã¨ãªã‚‹è‘—ä½œç‰©ã®æ­£å¼ãªæ¨©åˆ©è€…ã®æ–¹ã€ã¾ãŸã¯ãã®ä»£ç†äººã®ã¿ã”åˆ©ç”¨ã„ãŸã ã‘ã¾ã™ã€‚è‘—ä½œç‰©ã®å®šç¾©ã‚„ã€ã”è‡ªèº«ã®æ¨©åˆ©ã®æœ‰ç„¡ã«ã¤ã„ã¦ã¯å„è‡ªã§ã”ç¢ºèªãã ã•ã„ã€‚<br /><br /><strong>é€£çµ¡å…ˆ</strong><br />ã‚ãªãŸã®æœ¬åï¼ˆãƒ•ãƒ«ãƒãƒ¼ãƒ ï¼‰:<br /><input id=\"fullname\" type=\"text\" value=\"ä¾‹ï¼šå±±ç”°å¤ªéƒ\" /><br />ä¼šç¤¾åãƒ»æ‰€å±:<br /><input id=\"company\" type=\"text\" value=\"ä¾‹ï¼šè‡ªå–¶æ¥­\" /><br />è‚©æ›¸ãï¼š<br /><input id=\"job\" type=\"text\" /><br />ãƒ¡ãƒ¼ãƒ« ã‚¢ãƒ‰ãƒ¬ã‚¹ : <input id=\"email\" type=\"text\" /><br />ä½æ‰€ï¼‘ï¼ˆç•ªåœ°ãƒ»å»ºç‰©åãƒ»éƒ¨å±‹ç•ªå·ï¼‰ï¼š<br /><input id=\"address\" type=\"text\" /><br />ä½æ‰€ï¼’ï¼ˆå¸‚åŒºç”ºæ‘åï¼‰ï¼š<br /><input id=\"city\" type=\"text\" /><br />ä½æ‰€ï¼“ï¼ˆéƒ½é“åºœçœŒåï¼‰ï¼š<br /><input id=\"state\" type=\"text\" /><br />éƒµä¾¿ç•ªå·ï¼š<br /><input id=\"postal\" type=\"text\" /><br />å±…ä½å›½ï¼š<br /><input id=\"country\" type=\"text\" /><br />é›»è©±ç•ªå·ï¼ˆä»»æ„ï¼‰ï¼š<br /><input id=\"phone_number\" type=\"text\" /><br />FAXç•ªå·ï¼ˆä»»æ„ï¼‰ï¼š<br /><input id=\"faxnumber\" type=\"text\" /><br />è‡ªåˆ†ã®Twitterã‚¢ã‚«ã‚¦ãƒ³ãƒˆåï¼ˆä»»æ„ï¼‰<br /><font size=\"-1\">â€»è¨˜å…¥ã—ã¦ãŠãã¨ã€è‡ªåˆ†ã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚ã¦ã®éå…¬å¼RTã‚’é™¤å¤–ã§ãã¾ã™ã€‚<br>ã€€åŠè§’@ã‹ã‚‰å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚ï¼ˆä¾‹ï¼š@nakashima723ï¼‰<br /></font><input id=\"account_name\" type=\"text\" value=\"ä¾‹ï¼š@nakashima723\" /><br /><strong>æ³•çš„ãªå®£èª“ï¼š</strong><br /><font size=\"2.8em\"><br /><input id=\"statement1\" type=\"checkbox\">æ•…æ„ã«å ±å‘Šç´ æã¾ãŸã¯æ´»å‹•ãŒé‡å¤§ãªä¾µå®³ã‚’ã—ã¦ã„ã‚‹ã¨å½ã£ãŸå ´åˆã€17 U.S.C. Â§ 512(f) (ç±³å›½è‘—ä½œæ¨©æ³•) ã«åŸºã¥ãã€ç§ã¯è¨´è¨Ÿè²»ç”¨ãŠã‚ˆã³å¼è­·å£«è²»ç”¨ã‚’å«ã‚€ã‚ã‚‰ã‚†ã‚‹æå®³ã«ã¤ã„ã¦è²¬ä»»ã‚’å•ã‚ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚‹ã“ã¨ã‚’ç†è§£ã—ã¦ã„ã¾ã™ã€‚<br /><br /><input id=\"statement2\" type=\"checkbox\">ç§ã¯ç”³ã—ç«‹ã¦ãŸæ…‹æ§˜ã§ã®ç´ æã®ä½¿ç”¨ãŒã€è‘—ä½œæ¨©è€…ã€ãã®ä»£ç†äººã€ã¾ãŸã¯æ³•å¾‹ã«ã‚ˆã£ã¦è¨±å®¹ã•ã‚Œã¦ã„ãªã„ã“ã¨ã‚’ã€è‰¯å¿ƒã«å¾“ã„èª å®Ÿã«èªè­˜ã—ã¦ã„ã¾ã™ã€‚<br /><br /><input id=\"statement3\" type=\"checkbox\">æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯å½“è©²ãƒ•ã‚©ãƒ¼ãƒ ã¸ã®å…¥åŠ›ã‚’è£œåŠ©ãƒ»ç°¡ä¾¿åŒ–ã™ã‚‹ã‚‚ã®ã§ã‚ã‚Šã€é€ä¿¡ã—ãŸå ±å‘Šã®å†…å®¹ã¨å ±å‘Šçµæœã«ã¤ã„ã¦ã€ãƒ—ãƒ­ã‚°ãƒ©ãƒ è£½ä½œè€…ã¯ä¸€åˆ‡ã®è²¬ä»»ã‚’è² ã‚ãªã„ã“ã¨ã‚’æ‰¿è«¾ã—ã¾ã™ã€‚<br /><br /></font>ä»¥ä¸‹ã®æ–‡ç« ã‚’ä¸‹ã®ç©ºæ¬„ã«æ­£ç¢ºã«å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚<br /><blockquote cite=\"https://support.twitter.com/forms/dmca\">ã“ã®é€šçŸ¥ã®æƒ…å ±ã¯æ­£ç¢ºã§ã™ã€‚ç§ã¯ã€è‘—ä½œæ¨©æ‰€æœ‰è€…ã®ä»£ç†ã¨ã—ã¦è¡Œå‹•ã™ã‚‹æ¨©é™ã‚’æŒã£ã¦ã„ã‚‹ã“ã¨ãŒè™šå½ã®å ´åˆã¯å½è¨¼ç½ªã«å•ã‚ã‚Œã‚‹ã“ã¨ã‚’ç†è§£ã—ã¦ã„ã¾ã™ã€‚</blockquote><textarea id=\"statement4\" rows=\"3\"></textarea><br /><input id=\"save_setting\" type=\"submit\" value=\"ã“ã®å…¥åŠ›å†…å®¹ã‚’ä¿å­˜\" />ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br /></dd><h2>" + str_edit_report + "</h2>");
       $(function () {
-        //“o˜^‚³‚ê‚Ä‚¢‚é•ñ“à—e‚Ì”‚ğ”»’è
-        // ƒIƒvƒVƒ‡ƒ“ƒf[ƒ^‚ÌXV
+        //ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹å ±å‘Šå†…å®¹ã®æ•°ã‚’åˆ¤å®š
+        // ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
         $('#save_setting').click(function () {
           var account_name = $('#account_name').val();
           var fullname = $('#fullname').val();
@@ -234,7 +234,7 @@ var showSlyr = function () {
           var statement3 = $('#statement3').prop('checked');
           var statement4 = $('#statement4').val();
           //console.log(account_name);
-          if (fullname === "" || company === "" || job === "" || email === "" || address === "" || city === "" || state === "" || postal === "" || country === "" || statement1 !== true || statement2 !== true || statement3 !== true || statement4 !== '‚±‚Ì’Ê’m‚Ìî•ñ‚Í³Šm‚Å‚·B„‚ÍA’˜ìŒ Š—LÒ‚Ì‘ã—‚Æ‚µ‚Äs“®‚·‚éŒ ŒÀ‚ğ‚Á‚Ä‚¢‚é‚±‚Æ‚ª‹•‹U‚Ìê‡‚Í‹UØß‚É–â‚í‚ê‚é‚±‚Æ‚ğ—‰ğ‚µ‚Ä‚¢‚Ü‚·B') {
+          if (fullname === "" || company === "" || job === "" || email === "" || address === "" || city === "" || state === "" || postal === "" || country === "" || statement1 !== true || statement2 !== true || statement3 !== true || statement4 !== 'ã“ã®é€šçŸ¥ã®æƒ…å ±ã¯æ­£ç¢ºã§ã™ã€‚ç§ã¯ã€è‘—ä½œæ¨©æ‰€æœ‰è€…ã®ä»£ç†ã¨ã—ã¦è¡Œå‹•ã™ã‚‹æ¨©é™ã‚’æŒã£ã¦ã„ã‚‹ã“ã¨ãŒè™šå½ã®å ´åˆã¯å½è¨¼ç½ªã«å•ã‚ã‚Œã‚‹ã“ã¨ã‚’ç†è§£ã—ã¦ã„ã¾ã™ã€‚') {
             alert(str_al_save_new);
           } else {
             var obj = new Object();
@@ -262,13 +262,13 @@ var showSlyr = function () {
           });
           alert(str_deleted);
         });
-        // ƒIƒvƒVƒ‡ƒ“ƒf[ƒ^‚Ì•\¦
+        // ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã®è¡¨ç¤º
         showSetting();
         showReports();
       });
-      //•ñ—š—ğˆê——‚ğ¶¬
+      //å ±å‘Šå±¥æ­´ä¸€è¦§ã‚’ç”Ÿæˆ
       if (items.repNum > 0) {
-        $('#acMenu h2').after("<font size=\"-1\">NŠQ‚Ì“à—e‚²‚Æ‚ÉAƒ^ƒCƒgƒ‹‚âŒ³ì•i‚ÌURL‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢B</br>u•ñ—š—ğˆê——‚É•\¦‚µ‚È‚¢v‚Éƒ`ƒFƒbƒN‚ğ“ü‚ê‚é‚ÆAƒIƒvƒVƒ‡ƒ“ƒy[ƒW‚Ì•\¦‚ğŒy—Ê‰»‚Å‚«‚Ü‚·B</br></br></font>");
+        $('#acMenu h2').after("<font size=\"-1\">ä¾µå®³ã®å†…å®¹ã”ã¨ã«ã€ã‚¿ã‚¤ãƒˆãƒ«ã‚„å…ƒä½œå“ã®URLã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚</br>ã€Œå ±å‘Šå±¥æ­´ä¸€è¦§ã«è¡¨ç¤ºã—ãªã„ã€ã«ãƒã‚§ãƒƒã‚¯ã‚’å…¥ã‚Œã‚‹ã¨ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒšãƒ¼ã‚¸ã®è¡¨ç¤ºã‚’è»½é‡åŒ–ã§ãã¾ã™ã€‚</br></br></font>");
       }
       for (var i = 0; i < items.repNum; i++) {
         window["thisUrlArr" + i] = items["urlArr" + i];
@@ -279,7 +279,7 @@ var showSlyr = function () {
         window["thisSusArr" + i] = items["accSusArr" + i];
         window["thisSusDateArr" + i] = items["accSusDateArr" + i];
 
-        // ƒoƒOC³
+        // ãƒã‚°ä¿®æ­£
         if (window["thisFinArr" + i].length !== window["thisFinDateArr" + i].length) {
           var dif = window["thisFinDateArr" + i].length - window["thisFinArr" + i].length;
           window["thisFinDateArr" + i].splice(0, dif);
@@ -288,7 +288,7 @@ var showSlyr = function () {
           chrome.storage.local.set(obj, function () {});
         }
 
-        // d•¡‚Ì‚È‚¢ˆê——‚ğ¶¬
+        // é‡è¤‡ã®ãªã„ä¸€è¦§ã‚’ç”Ÿæˆ
         window["accUniArr" + i] = window["thisAccArr" + i].filter(function (a, b, self) {
           return self.indexOf(a) === b;
         });
@@ -305,65 +305,65 @@ var showSlyr = function () {
 
         $('#acMenu').append('<dt><button id="report' + i + '"></button></dt>');
         $('#report' + i).text(thisTitle);
-        $('#acMenu').append('<dd id = "form' + i + '"><strong>‚±‚Ì•ñ“à—e‚Ì–¼‘O</strong><br /><font size ="-1">¦‘¼‚Ì•ñ“à—e‚Æ‹æ•Ê‚Å‚«‚é‚æ‚¤‚ÉA‚í‚©‚è‚â‚·‚¢–¼‘O‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢B</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">ŒŸõ—pƒ|ƒbƒvƒAƒbƒv‚Ìˆê——‚É•\¦‚µ‚È‚¢@<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">•ñ—š—ğˆê——‚É•\¦‚µ‚È‚¢<br/>’˜ìŒ Ò‚Ì–¼‘OF<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>ƒIƒŠƒWƒiƒ‹ì•i‚Ì“à—eF<textarea id="tweet_image_original' + i + '"></textarea><br />ƒIƒŠƒWƒiƒ‹ì•i‚ªŠm”F‚Å‚«‚éURLF<br /><font size ="-1">¦NŠQƒcƒC[ƒg‚ÌURL‚Å‚Í‚È‚­A‚²©g‚ÅƒAƒbƒvƒ[ƒh‚µ‚½ƒcƒC[ƒg‚âƒTƒCƒg‚È‚Ç<br />@’˜ìŒ NŠQ‚É‚ ‚½‚ç‚È‚¢g—p—á‚ÌURL‚ğ‹L“ü‚µ‚Ä‚­‚¾‚³‚¢.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />’˜ìŒ NŠQ‚Ì“à—eF<textarea id="tweet_image_infringement' + i + '"></textarea><br />NŠQƒcƒC[ƒg‚ÌŒŸõ‚Ég‚¤Œê‹åF<br /><font size ="-1">¦ƒXƒy[ƒX‚Å‹æØ‚é‚Æ•¡”“ü—Í‚Å‚«‚Ü‚·B’PŒê‚Ì‘O‚É”¼Šp‚Åu-iƒ}ƒCƒiƒXjv‚ğ‚Â‚¯‚é‚ÆA<br />@‚»‚Ì’PŒê‚ğŠÜ‚ŞƒcƒC[ƒg‚ªŒŸõŒ‹‰Ê‚©‚çœŠO‚³‚ê‚Ü‚·.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />ì•i‚Ìí—ŞF<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">ƒCƒ‰ƒXƒgEÊ^EŠG‰æ@@<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">“®‰æ@@<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">•¶Í<br/>•ñÒ‚Ì‘®«F<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">’˜ìŒ Ò–{l@@<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">’˜ìŒ Ò‚Ì³®‚È‘ã—l@<br/><center><input id="save' + i + '" type="submit" value="‚±‚Ì“ü—Í“à—e‚ğ•Û‘¶" />@<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">‚±‚Ì€–Ú‚ğíœ</button></center><br /><br /></dd>');
+        $('#acMenu').append('<dd id = "form' + i + '"><strong>ã“ã®å ±å‘Šå†…å®¹ã®åå‰</strong><br /><font size ="-1">â€»ä»–ã®å ±å‘Šå†…å®¹ã¨åŒºåˆ¥ã§ãã‚‹ã‚ˆã†ã«ã€ã‚ã‹ã‚Šã‚„ã™ã„åå‰ã‚’ã¤ã‘ã¦ãã ã•ã„ã€‚</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">æ¤œç´¢ç”¨ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã®ä¸€è¦§ã«è¡¨ç¤ºã—ãªã„ã€€<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">å ±å‘Šå±¥æ­´ä¸€è¦§ã«è¡¨ç¤ºã—ãªã„<br/>è‘—ä½œæ¨©è€…ã®åå‰ï¼š<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ã®å†…å®¹ï¼š<textarea id="tweet_image_original' + i + '"></textarea><br />ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ãŒç¢ºèªã§ãã‚‹URLï¼š<br /><font size ="-1">â€»ä¾µå®³ãƒ„ã‚¤ãƒ¼ãƒˆã®URLã§ã¯ãªãã€ã”è‡ªèº«ã§ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ„ã‚¤ãƒ¼ãƒˆã‚„ã‚µã‚¤ãƒˆãªã©<br />ã€€è‘—ä½œæ¨©ä¾µå®³ã«ã‚ãŸã‚‰ãªã„ä½¿ç”¨ä¾‹ã®URLã‚’è¨˜å…¥ã—ã¦ãã ã•ã„.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />è‘—ä½œæ¨©ä¾µå®³ã®å†…å®¹ï¼š<textarea id="tweet_image_infringement' + i + '"></textarea><br />ä¾µå®³ãƒ„ã‚¤ãƒ¼ãƒˆã®æ¤œç´¢ã«ä½¿ã†èªå¥ï¼š<br /><font size ="-1">â€»ã‚¹ãƒšãƒ¼ã‚¹ã§åŒºåˆ‡ã‚‹ã¨è¤‡æ•°å…¥åŠ›ã§ãã¾ã™ã€‚å˜èªã®å‰ã«åŠè§’ã§ã€Œ-ï¼ˆãƒã‚¤ãƒŠã‚¹ï¼‰ã€ã‚’ã¤ã‘ã‚‹ã¨ã€<br />ã€€ãã®å˜èªã‚’å«ã‚€ãƒ„ã‚¤ãƒ¼ãƒˆãŒæ¤œç´¢çµæœã‹ã‚‰é™¤å¤–ã•ã‚Œã¾ã™.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />ä½œå“ã®ç¨®é¡ï¼š<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">ã‚¤ãƒ©ã‚¹ãƒˆãƒ»å†™çœŸãƒ»çµµç”»ã€€ã€€<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">å‹•ç”»ã€€ã€€<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">æ–‡ç« <br/>å ±å‘Šè€…ã®å±æ€§ï¼š<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">è‘—ä½œæ¨©è€…æœ¬äººã€€ã€€<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">è‘—ä½œæ¨©è€…ã®æ­£å¼ãªä»£ç†äººã€€<br/><center><input id="save' + i + '" type="submit" value="ã“ã®å…¥åŠ›å†…å®¹ã‚’ä¿å­˜" />ã€€<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">ã“ã®é …ç›®ã‚’å‰Šé™¤</button></center><br /><br /></dd>');
 
         eval("$(\'#del_report" + i + "\').hide();");
         if (hide_his !== true) {
-          eval("$(\'#hisMenu\').append(\'<dt><button id=\"history" + i + "\" style=\"margin-bottom:10px;\">–¼Ì–¢İ’è</button><br/><span id = \"reported" + i + "\"><font size = \"-1\">@–¢•ñF " + urlNum + "Œ@ •ñ‚¸‚İF " + urlFinNum + "Œ@ “€Œ‹‚³‚ê‚½ƒAƒJƒEƒ“ƒg”F " + susNum + "</font><br /></span><br/></dt>\');");
+          eval("$(\'#hisMenu\').append(\'<dt><button id=\"history" + i + "\" style=\"margin-bottom:10px;\">åç§°æœªè¨­å®š</button><br/><span id = \"reported" + i + "\"><font size = \"-1\">ã€€æœªå ±å‘Šï¼š " + urlNum + "ä»¶ã€€ å ±å‘Šãšã¿ï¼š " + urlFinNum + "ä»¶ã€€ å‡çµã•ã‚ŒãŸã‚¢ã‚«ã‚¦ãƒ³ãƒˆæ•°ï¼š " + susNum + "</font><br /></span><br/></dt>\');");
 
-          //–¢•ñURLE•ñÏ‚İURL‚Ìƒ{ƒ^ƒ“‚ğ’Ç‰Á
-          eval("$(\'#hisMenu\').append(\'<dd id=\"hisBox" + i + "\"><dl class =\"hisBoxMenu\" style=\"margin: 0 auto; \"><dt><button id=\"urlHis" + i + "\">–¢•ñURLˆê——</button><dd id = \"urlBox" + i + "\"><div id = \"urlTable" + i + "\"></div></dd></dt></dl><dl class =\"finBoxMenu\" style=\"margin:0 auto ;\"><dt><button id=\"finHis" + i + "\">@•ñ‚¸‚İURLˆê——</button><dd id = \"finBox" + i + "\"><div id = \"finTable" + i + "\"></div></dd></dt></dl><dl class =\"accBoxMenu\" style=\"margin:0 auto ;\"><dt>@ <button id=\"accHis" + i + "\">ƒAƒJƒEƒ“ƒg•ÊURLˆê——</button><dd id = \"accBox" + i + "\"><div id = \"accTable" + i + "\"></div></dd></dt></dl><dl class =\"susBoxMenu\" style=\"margin:0 auto 0;\"><dt><button id=\"susHis" + i + "\">@“€Œ‹‚¸‚İƒAƒJƒEƒ“ƒgˆê——</button><dd id = \"susBox" + i + "\"><div id = \"susTable" + i + "\"></div></dd></dt></dl></dd>\');");
+          //æœªå ±å‘ŠURLãƒ»å ±å‘Šæ¸ˆã¿URLã®ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
+          eval("$(\'#hisMenu\').append(\'<dd id=\"hisBox" + i + "\"><dl class =\"hisBoxMenu\" style=\"margin: 0 auto; \"><dt><button id=\"urlHis" + i + "\">æœªå ±å‘ŠURLä¸€è¦§</button><dd id = \"urlBox" + i + "\"><div id = \"urlTable" + i + "\"></div></dd></dt></dl><dl class =\"finBoxMenu\" style=\"margin:0 auto ;\"><dt><button id=\"finHis" + i + "\">ã€€å ±å‘Šãšã¿URLä¸€è¦§</button><dd id = \"finBox" + i + "\"><div id = \"finTable" + i + "\"></div></dd></dt></dl><dl class =\"accBoxMenu\" style=\"margin:0 auto ;\"><dt>ã€€ <button id=\"accHis" + i + "\">ã‚¢ã‚«ã‚¦ãƒ³ãƒˆåˆ¥URLä¸€è¦§</button><dd id = \"accBox" + i + "\"><div id = \"accTable" + i + "\"></div></dd></dt></dl><dl class =\"susBoxMenu\" style=\"margin:0 auto 0;\"><dt><button id=\"susHis" + i + "\">ã€€å‡çµãšã¿ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä¸€è¦§</button><dd id = \"susBox" + i + "\"><div id = \"susTable" + i + "\"></div></dd></dt></dl></dd>\');");
 
           eval("$(\'#history" + i + "\').text(thisTitle);");
 
-          eval("$(\'#urlHis" + i + "\').text('–¢•ñURLˆê—— (" + urlNum + "Œ)');");
+          eval("$(\'#urlHis" + i + "\').text('æœªå ±å‘ŠURLä¸€è¦§ (" + urlNum + "ä»¶)');");
           eval("$(\'#urlHis" + i + "\').css({\"color\":\"#FFF\",\"background-color\":\"#888\"});");
-          eval("$(\'#finHis" + i + "\').text('•ñ‚¸‚İURLˆê—— (" + urlFinNum + "Œ)');");
+          eval("$(\'#finHis" + i + "\').text('å ±å‘Šãšã¿URLä¸€è¦§ (" + urlFinNum + "ä»¶)');");
           eval("$(\'#finHis" + i + "\').css({\"color\":\"#F4F4F4\",\"background-color\":\"#666\"});");
-          eval("$(\'#accHis" + i + "\').text('ƒAƒJƒEƒ“ƒg•Êˆê—— (" + accUniNum + "Œ)');");
+          eval("$(\'#accHis" + i + "\').text('ã‚¢ã‚«ã‚¦ãƒ³ãƒˆåˆ¥ä¸€è¦§ (" + accUniNum + "ä»¶)');");
           eval("$(\'#accHis" + i + "\').css({\"color\":\"#F6F6F6\",\"background-color\":\"#444\"});");
-          eval("$(\'#susHis" + i + "\').text('“€Œ‹‚¸‚İƒAƒJƒEƒ“ƒgˆê—— (" + susNum + "Œ)');");
+          eval("$(\'#susHis" + i + "\').text('å‡çµãšã¿ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä¸€è¦§ (" + susNum + "ä»¶)');");
           eval("$(\'#susHis" + i + "\').css({\"color\":\"#F8F8F8\",\"background-color\":\"#222\"});");
           eval("var susHis_txt = $(\'#susHis" + i + "\').text();");
           var a = susHis_txt.split("(");
           var b = a[1].split(")");
           eval("var nowSusNum" + i + " = b[0].slice(0,-1);");
 
-          //0Œ‚Ì‚Æ‚«‚ÍURLˆê——ƒ{ƒ^ƒ“‚ğ‰B‚·
+          //0ä»¶ã®ã¨ãã¯URLä¸€è¦§ãƒœã‚¿ãƒ³ã‚’éš ã™
           eval("if (urlNum == 0) $(\'#urlHis" + i + "\').hide();");
           eval("if (urlFinNum == 0) {$(\'#finHis" + i + "\').hide(); $(\'#accHis" + i + "\').hide();} ");
           eval("if (susNum == 0) $(\'#susHis" + i + "\').hide();");
 
-          //–¢•ñURL‚Ìˆê——‚ğ’Ç‰Á
+          //æœªå ±å‘ŠURLã®ä¸€è¦§ã‚’è¿½åŠ 
           for (var j = 0; j < urlNum; j++) {
             eval("var urlThis = thisUrlArr" + i + "[" + j + "];");
             eval("var dateThis = thisUrlDateArr" + i + "[" + j + "];");
-            eval("$(\'#urlTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlNum" + i + "_" + j + "\"></span><a href =\"" + urlThis + "\" target = \"_blank\"><span id =\"urlLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"urlDateLine" + i + "_" + j + "\"></span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"urlDel" + i + "_" + j + "\">íœ</button></font></td></tr></table>\');");
+            eval("$(\'#urlTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlNum" + i + "_" + j + "\"></span><a href =\"" + urlThis + "\" target = \"_blank\"><span id =\"urlLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"urlDateLine" + i + "_" + j + "\"></span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"urlDel" + i + "_" + j + "\">å‰Šé™¤</button></font></td></tr></table>\');");
             eval("$(\'#urlNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
             eval("$(\'#urlLine" + i + "_" + j + "\').append(\"" + urlThis + "\");");
-            eval("$(\'#urlDateLine" + i + "_" + j + "\').append(\"" + dateThis + "@" + "\");");
-            eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"íœ\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'–ß‚·\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'íœ\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
+            eval("$(\'#urlDateLine" + i + "_" + j + "\').append(\"" + dateThis + "ã€€" + "\");");
+            eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"å‰Šé™¤\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'æˆ»ã™\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'å‰Šé™¤\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
           }
-          //ƒAƒJƒEƒ“ƒg–¼ˆê——‚ğ’Ç‰Á
+          //ã‚¢ã‚«ã‚¦ãƒ³ãƒˆåä¸€è¦§ã‚’è¿½åŠ 
           for (var j = 0; j < accUniNum; j++) {
             eval("var accThis = accUniArr" + i + "[" + j + "];");
             eval("var nowAccArr" + i + "= [];");
             eval("for(l=0; l<thisAccArr" + i + ".length; l++){ var nowAcc = thisAccArr" + i + "[l]; if(accThis == nowAcc){ nowAccArr" + i + ".push(accThis);}}");
-            eval("$(\'#accTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><span id =\"accNum" + i + "_" + j + "\"></span><a href =\"https://twitter.com/" + accThis + "\" target = \"_blank\"><span id =\"accLine" + i + "_" + j + "\"></span></a><font size = \"3\"><span class = \"alignright\" id =\"accNumLine" + i + "_" + j + "\">‰ñ@ </span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"susAcc" + i + "_" + j + "\">–¢“€Œ‹</button></font></td></tr></table>\');");
+            eval("$(\'#accTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><span id =\"accNum" + i + "_" + j + "\"></span><a href =\"https://twitter.com/" + accThis + "\" target = \"_blank\"><span id =\"accLine" + i + "_" + j + "\"></span></a><font size = \"3\"><span class = \"alignright\" id =\"accNumLine" + i + "_" + j + "\">å›ã€€ </span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"susAcc" + i + "_" + j + "\">æœªå‡çµ</button></font></td></tr></table>\');");
             eval("$(\'#accNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
             eval("$(\'#accLine" + i + "_" + j + "\').append(\"" + accThis + "\");");
             eval("$(\'#accNumLine" + i + "_" + j + "\').prepend(nowAccArr" + i + ".length);");
             eval("var accRepNum" + i + "= [];");
             eval("accRepNum" + i + ".push(nowAccArr" + i + ".length)");
 
-            //“€Œ‹‹L˜^ƒ{ƒ^ƒ“‚Ì•\¦‚ğ•ÏX
-            eval("if (thisSusArr" + i + ".indexOf(accThis) !== -1){$(\'#susAcc" + i + "_" + j + "\').text(\"“€Œ‹Ï\"); $(\'#susAcc" + i + "_" + j + "\').css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); }");
+            //å‡çµè¨˜éŒ²ãƒœã‚¿ãƒ³ã®è¡¨ç¤ºã‚’å¤‰æ›´
+            eval("if (thisSusArr" + i + ".indexOf(accThis) !== -1){$(\'#susAcc" + i + "_" + j + "\').text(\"å‡çµæ¸ˆ\"); $(\'#susAcc" + i + "_" + j + "\').css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); }");
 
-            //ƒNƒŠƒbƒN‚µ‚½ˆÊ’u‚ÌƒAƒJƒEƒ“ƒg‚ğ“€Œ‹ˆµ‚¢‚É
-            eval("$(\'#susAcc" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];@var accHere = accUniArr" + i + "[x]; console.log(\"ƒAƒJƒEƒ“ƒg: \" + accHere); if($(this).text() == \"–¢“€Œ‹\") { $(this).text(\"“€Œ‹Ï\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"“€Œ‹Ï\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"–¢“€Œ‹\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"“€Œ‹Ï\"){$(this).text(\"–¢“€Œ‹\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"–¢“€Œ‹\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"–¢“€Œ‹\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸä½ç½®ã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å‡çµæ‰±ã„ã«
+            eval("$(\'#susAcc" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];ã€€var accHere = accUniArr" + i + "[x]; console.log(\"ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ: \" + accHere); if($(this).text() == \"æœªå‡çµ\") { $(this).text(\"å‡çµæ¸ˆ\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"å‡çµæ¸ˆ\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"æœªå‡çµ\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"å‡çµæ¸ˆ\"){$(this).text(\"æœªå‡çµ\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"æœªå‡çµ\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"æœªå‡çµ\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
           }
 
-          //•ñ‚¸‚İURL‚Ìˆê——‚ğ’Ç‰Á
+          //å ±å‘Šãšã¿URLã®ä¸€è¦§ã‚’è¿½åŠ 
           for (var j = 0; j < urlFinNum; j++) {
             eval("var finThis = thisFinArr" + i + "[" + j + "];");
             eval("var accThis = thisAccArr" + i + "[" + j + "];");
@@ -371,43 +371,43 @@ var showSlyr = function () {
             eval("var finRep" + i + "= [];");
 
             eval("for(l=0; l<thisFinArr" + i + ".length; l++){if(items.accNameArr" + i + "[j] == thisAccArr" + i + "[l]) finRep" + i + ".push(finThis);}");
-            eval("$(\'#finTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlFinNum" + i + "_" + j + "\"></span><a href =\"" + finThis + "\" target = \"_blank\"><span id =\"urlFinLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"finNumLine" + i + "_" + j + "\">‰ñ@ by <strong><a href=\"https://twitter.com/" + accThis + "\" target=\"_blank\">" + accThis + "</a></strong>@@</span><span class = \"alignright\" id =\"urlFinDateLine" + i + "_" + j + "\">Œv</span><br /><br /></font></td><td class =\"alignright\"><font size = \"1.8\"><button id=\"susFin" + i + "_" + j + "\">–¢“€Œ‹</button></font></td></tr></table>\');");
+            eval("$(\'#finTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlFinNum" + i + "_" + j + "\"></span><a href =\"" + finThis + "\" target = \"_blank\"><span id =\"urlFinLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"finNumLine" + i + "_" + j + "\">å›ã€€ by <strong><a href=\"https://twitter.com/" + accThis + "\" target=\"_blank\">" + accThis + "</a></strong>ã€€ã€€</span><span class = \"alignright\" id =\"urlFinDateLine" + i + "_" + j + "\">è¨ˆ</span><br /><br /></font></td><td class =\"alignright\"><font size = \"1.8\"><button id=\"susFin" + i + "_" + j + "\">æœªå‡çµ</button></font></td></tr></table>\');");
             eval("$(\'#urlFinNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
             eval("$(\'#urlFinLine" + i + "_" + j + "\').append(\"" + finThis + "\");");
-            eval("$(\'#urlFinDateLine" + i + "_" + j + "\').prepend(\"" + finDateThis + "@" + "\");");
+            eval("$(\'#urlFinDateLine" + i + "_" + j + "\').prepend(\"" + finDateThis + "ã€€" + "\");");
             eval("$(\'#finNumLine" + i + "_" + j + "\').prepend(finRep" + i + ".length);");
 
-            //“€Œ‹‹L˜^‚Ìƒ{ƒ^ƒ“‚Ì•\¦‚ğ•ÏX
-            eval("if (thisSusArr" + i + ".indexOf(accThis) !== -1){$(\'#susFin" + i + "_" + j + "\').text(\"“€Œ‹Ï\"); $(\'#susFin" + i + "_" + j + "\').css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(\'#urlFinNum" + i + "_" + j + ",#urlFinLine" + i + "_" + j + ", #urlFinDateLine" + i + "_" + j + ", #finNumLine" + i + "_" + j + "\').css(\"color\",\"#999\"); }");
+            //å‡çµè¨˜éŒ²ã®ãƒœã‚¿ãƒ³ã®è¡¨ç¤ºã‚’å¤‰æ›´
+            eval("if (thisSusArr" + i + ".indexOf(accThis) !== -1){$(\'#susFin" + i + "_" + j + "\').text(\"å‡çµæ¸ˆ\"); $(\'#susFin" + i + "_" + j + "\').css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(\'#urlFinNum" + i + "_" + j + ",#urlFinLine" + i + "_" + j + ", #urlFinDateLine" + i + "_" + j + ", #finNumLine" + i + "_" + j + "\').css(\"color\",\"#999\"); }");
 
-            //ƒNƒŠƒbƒN‚µ‚½ˆÊ’u‚ÌƒAƒJƒEƒ“ƒg‚ğ“€Œ‹ˆµ‚¢‚É
-            eval("$(\'#susFin" + i + "_" + j + "\').click(function(){var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];@var finHere = thisFinArr" + i + "[x]; var a = finHere.split(\"/\"); var accHere = a[3];  console.log(\"URL: \" + x + finHere + \"ƒAƒJƒEƒ“ƒg: \" + accHere); if ($(this).text() == \"–¢“€Œ‹\"){ for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"“€Œ‹Ï\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"“€Œ‹Ï\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"“€Œ‹Ï\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"“€Œ‹Ï\"){ $(\'#urlFinNum" + i + "_" + j + ", #urlFinLine" + i + "_" + j + ", #urlFinDateLine" + i + "_" + j + ", #finNumLine" + i + "_" + j + "\').css(\"color\", \"#222\"); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"–¢“€Œ‹\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"–¢“€Œ‹\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"–¢“€Œ‹\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); }} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸä½ç½®ã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å‡çµæ‰±ã„ã«
+            eval("$(\'#susFin" + i + "_" + j + "\').click(function(){var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];ã€€var finHere = thisFinArr" + i + "[x]; var a = finHere.split(\"/\"); var accHere = a[3];  console.log(\"URL: \" + x + finHere + \"ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ: \" + accHere); if ($(this).text() == \"æœªå‡çµ\"){ for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"å‡çµæ¸ˆ\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"å‡çµæ¸ˆ\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"å‡çµæ¸ˆ\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"å‡çµæ¸ˆ\"){ $(\'#urlFinNum" + i + "_" + j + ", #urlFinLine" + i + "_" + j + ", #urlFinDateLine" + i + "_" + j + ", #finNumLine" + i + "_" + j + "\').css(\"color\", \"#222\"); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"æœªå‡çµ\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"æœªå‡çµ\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"æœªå‡çµ\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); }} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
           }
 
-          //“€Œ‹‚¸‚İƒAƒJƒEƒ“ƒg–¼ˆê——‚ğ’Ç‰Á
+          //å‡çµãšã¿ã‚¢ã‚«ã‚¦ãƒ³ãƒˆåä¸€è¦§ã‚’è¿½åŠ 
           for (var j = 0; j < susNum; j++) {
             eval("var susThis = thisSusArr" + i + "[" + j + "];");
             eval("var susDateThis = thisSusDateArr" + i + "[" + j + "];");
             eval("var nowAccArr" + i + " = [];");
             eval("for(l=0; l<thisAccArr" + i + ".length; l++){ var nowAcc = thisAccArr" + i + "[l]; if(susThis == nowAcc){ nowAccArr" + i + ".push(susThis);}}");
             eval("var susRepNum = nowAccArr" + i + ".length;");
-            eval("$(\'#susTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><span id =\"susNum" + i + "_" + j + "\"></span><a href =\"https://twitter.com/" + susThis + "\" target = \"_blank\"><span id =\"susLine" + i + "_" + j + "\"></span></a><span class = \"alignright\" id =\"susNumLine" + i + "_" + j + "\"></span><br /></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"sus" + i + "_" + j + "\" style=\"color:#f5f5f5; background-color:#222; \" >“€Œ‹Ï</button></font></td></tr></table>\');");
+            eval("$(\'#susTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><span id =\"susNum" + i + "_" + j + "\"></span><a href =\"https://twitter.com/" + susThis + "\" target = \"_blank\"><span id =\"susLine" + i + "_" + j + "\"></span></a><span class = \"alignright\" id =\"susNumLine" + i + "_" + j + "\"></span><br /></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"sus" + i + "_" + j + "\" style=\"color:#f5f5f5; background-color:#222; \" >å‡çµæ¸ˆ</button></font></td></tr></table>\');");
             eval("$(\'#susNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
             eval("$(\'#susLine" + i + "_" + j + "\').append(\"" + susThis + "\");");
-            eval("$(\'#susNumLine" + i + "_" + j + "\').append(\"" + susDateThis + "@" + "\");");
-            eval("$(\'#susNumLine" + i + "_" + j + "\').append(\"" + susRepNum + "‰ñ\");");
+            eval("$(\'#susNumLine" + i + "_" + j + "\').append(\"" + susDateThis + "ã€€" + "\");");
+            eval("$(\'#susNumLine" + i + "_" + j + "\').append(\"" + susRepNum + "å›\");");
 
-            //ƒNƒŠƒbƒN‚µ‚½ˆÊ’u‚ÌƒAƒJƒEƒ“ƒg‚ğ“€Œ‹ˆµ‚¢‚É
-            eval("$(\'#sus" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1]; var id_susLine = \"#susLine\" + " + i + " + \"_\" + x;@var accHere = $(id_susLine).text(); console.log(\"ƒAƒJƒEƒ“ƒg: \" + accHere); if($(this).text() == \"–¢“€Œ‹\") { $(this).text(\"“€Œ‹Ï\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"“€Œ‹Ï\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"“€Œ‹Ï\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"–¢“€Œ‹\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"“€Œ‹Ï\"){$(this).text(\"–¢“€Œ‹\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"–¢“€Œ‹\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"–¢“€Œ‹\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"–¢“€Œ‹\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
+            //ã‚¯ãƒªãƒƒã‚¯ã—ãŸä½ç½®ã®ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã‚’å‡çµæ‰±ã„ã«
+            eval("$(\'#sus" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1]; var id_susLine = \"#susLine\" + " + i + " + \"_\" + x;ã€€var accHere = $(id_susLine).text(); console.log(\"ã‚¢ã‚«ã‚¦ãƒ³ãƒˆ: \" + accHere); if($(this).text() == \"æœªå‡çµ\") { $(this).text(\"å‡çµæ¸ˆ\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"å‡çµæ¸ˆ\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"å‡çµæ¸ˆ\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"æœªå‡çµ\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"å‡çµæ¸ˆ\"){$(this).text(\"æœªå‡çµ\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"æœªå‡çµ\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"æœªå‡çµ\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"æœªå‡çµ\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
 
           }
-          //URL‚Ìˆê——‚Ì‰º‚É•ÒW—pƒ{ƒ^ƒ“‚ğ’Ç‰Á
-          eval("$(\'#urlBox" + i + "\').append(\'<center><input id=\"save_urlArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br/><font size = \"-2\"><input id=\"clear_urlArr" + i + "\" type=\"submit\" value=\"" + str_url_clear + "\" style=\"background-color:#999\; color:#fff; \"/><br/><br/></font></center>\')");
-          eval("$(\'#finBox" + i + "\').append(\'<center><input id=\"save_finArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
-          eval("$(\'#accBox" + i + "\').append(\'<center><input id=\"save_accArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
-          eval("$(\'#susBox" + i + "\').append(\'<center><input id=\"save_susArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
+          //URLã®ä¸€è¦§ã®ä¸‹ã«ç·¨é›†ç”¨ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
+          eval("$(\'#urlBox" + i + "\').append(\'<center><input id=\"save_urlArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br/><font size = \"-2\"><input id=\"clear_urlArr" + i + "\" type=\"submit\" value=\"" + str_url_clear + "\" style=\"background-color:#999\; color:#fff; \"/><br/><br/></font></center>\')");
+          eval("$(\'#finBox" + i + "\').append(\'<center><input id=\"save_finArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
+          eval("$(\'#accBox" + i + "\').append(\'<center><input id=\"save_accArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
+          eval("$(\'#susBox" + i + "\').append(\'<center><input id=\"save_susArr" + i + "\" type=\"submit\" value=\"" + str_edit_save + "\"/>ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center>\')");
 
-          //ƒXƒNƒ[ƒ‹ƒo[‚ÌƒfƒUƒCƒ“
+          //ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒ‡ã‚¶ã‚¤ãƒ³
           var csObj = new Object();
           csObj.theme = "dark";
           eval("$(\"#urlTable" + i + "\").mCustomScrollbar(csObj);");
@@ -415,15 +415,15 @@ var showSlyr = function () {
           eval("$(\"#accTable" + i + "\").mCustomScrollbar(csObj);");
           eval("$(\"#susTable" + i + "\").mCustomScrollbar(csObj);");
 
-          //•ÒW“à—e•Û‘¶ƒ{ƒ^ƒ“‚Ì‹@”\
+          //ç·¨é›†å†…å®¹ä¿å­˜ãƒœã‚¿ãƒ³ã®æ©Ÿèƒ½
           eval("$('#save_urlArr" + i + "').click(function(){ var del = {}; del[\'urlArr" + i + "\'] = thisUrlArr" + i + "; del[\'urlDateArr" + i + "\'] = thisUrlDateArr" + i + ";  alert(str_edit_saved); chrome.storage.local.set(del,function(){	location.reload();});});");
-          eval("$('#clear_urlArr" + i + "').click(function(){ var del = {}; del[\'urlArr" + i + "\'] = []; del[\'urlDateArr" + i + "\'] = [];  alert(\"‚±‚Ì€–Ú‚Ì–¢•ñURL‚ğ‚·‚×‚Äíœ‚µ‚Ü‚µ‚½B\"); chrome.storage.local.set(del,function(){	location.reload();});});");
+          eval("$('#clear_urlArr" + i + "').click(function(){ var del = {}; del[\'urlArr" + i + "\'] = []; del[\'urlDateArr" + i + "\'] = [];  alert(\"ã“ã®é …ç›®ã®æœªå ±å‘ŠURLã‚’ã™ã¹ã¦å‰Šé™¤ã—ã¾ã—ãŸã€‚\"); chrome.storage.local.set(del,function(){	location.reload();});});");
           eval("$('#save_finArr" + i + ", #save_accArr" + i + ", #save_susArr" + i + "\').click(function(){ var del = {}; del[\'accSusArr" + i + "\'] = thisSusArr" + i + "; del[\'accSusDateArr" + i + "\'] = thisSusDateArr" + i + ";  alert(str_edit_saved); chrome.storage.local.set(del,function(){	location.reload();});});");
         }
-        //€–Úíœ•Û‘¶ƒ{ƒ^ƒ“‚Ì‹@”\	
+        //é …ç›®å‰Šé™¤ä¿å­˜ãƒœã‚¿ãƒ³ã®æ©Ÿèƒ½	
 
 
-        //ƒf[ƒ^‚ª—¼•û‚Æ‚à‹ó‚Ì‚Æ‚«Aƒ{ƒ^ƒ“‚ğ”ñ•\¦‚É‚·‚é
+        //ãƒ‡ãƒ¼ã‚¿ãŒä¸¡æ–¹ã¨ã‚‚ç©ºã®ã¨ãã€ãƒœã‚¿ãƒ³ã‚’éè¡¨ç¤ºã«ã™ã‚‹
         eval("if(urlNum == 0 && urlFinNum == 0) {$(\'#history" + i + "\').parent('dt').hide();}");
       }
       if (items.fullname !== undefined && items.report0 !== undefined) {
@@ -442,37 +442,37 @@ var showSlyr = function () {
           accUniSum = accUniSum + accSetArr.length;
           accSusSum = accSusSum + accSusArr.length;
         }
-        eval("$(\'#title\').append(\'<div id=\"sum\" style=\"padding:20px;\"><center><strong><font size=\"5em\">Œ»İ‚Ì‘Œv</font><br/><br/>•ñ‚¸‚İURLF  " + urlFinSum + "@ƒAƒJƒEƒ“ƒg‘”F " + accUniSum + "@“€Œ‹‚¸‚İƒAƒJƒEƒ“ƒgF " + accSusSum + "</strong></center>\');");
+        eval("$(\'#title\').append(\'<div id=\"sum\" style=\"padding:20px;\"><center><strong><font size=\"5em\">ç¾åœ¨ã®ç·è¨ˆ</font><br/><br/>å ±å‘Šãšã¿URLï¼š  " + urlFinSum + "ã€€ã‚¢ã‚«ã‚¦ãƒ³ãƒˆç·æ•°ï¼š " + accUniSum + "ã€€å‡çµãšã¿ã‚¢ã‚«ã‚¦ãƒ³ãƒˆï¼š " + accSusSum + "</strong></center>\');");
         if (urlSum == 0) {
-          $('#sum').append("<center><font size=\"-1\"><br/><strong>–¢•ñ‚ÌURL‚Í‚ ‚è‚Ü‚¹‚ñB</strong></font></center>");
+          $('#sum').append("<center><font size=\"-1\"><br/><strong>æœªå ±å‘Šã®URLã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</strong></font></center>");
         }
         if (urlSum !== 0) {
-          eval("$(\'#sum\').append(\'<center><font size=\"-1\"><br/><strong>–¢•ñ‚ÌURL‚ª " + urlSum + "Œ‚ ‚è‚Ü‚·B</strong></font></center>\');");
+          eval("$(\'#sum\').append(\'<center><font size=\"-1\"><br/><strong>æœªå ±å‘Šã®URLãŒ " + urlSum + "ä»¶ã‚ã‚Šã¾ã™ã€‚</strong></font></center>\');");
         }
         if (urlFinSum !== 0) {
-          var t_txt1 = "u–³’f“]ÚƒXƒŒƒCƒ„[v‚ÅŒv",
-            t_txt2 = "Œ‚ÌURL‚ğ’Ê•ñ‚µ‚Ü‚µ‚½BƒAƒJƒEƒ“ƒg‚Ì‘”‚Í" + accUniSum + "Œ‚Å‚µ‚½B",
-            t_txt3 = "‚¤‚¿AŒ»İ‚Ü‚Å‚É“€Œ‹‚ªŠm”F‚Å‚«‚½‚Ì‚Í",
-            t_txt4 = "Œ‚Å‚·B";
+          var t_txt1 = "ã€Œç„¡æ–­è»¢è¼‰ã‚¹ãƒ¬ã‚¤ãƒ¤ãƒ¼ã€ã§è¨ˆ",
+            t_txt2 = "ä»¶ã®URLã‚’é€šå ±ã—ã¾ã—ãŸã€‚ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ç·æ•°ã¯" + accUniSum + "ä»¶ã§ã—ãŸã€‚",
+            t_txt3 = "ã†ã¡ã€ç¾åœ¨ã¾ã§ã«å‡çµãŒç¢ºèªã§ããŸã®ã¯",
+            t_txt4 = "ä»¶ã§ã™ã€‚";
           t_txt1 = encodeURIComponent(t_txt1);
           t_txt2 = encodeURIComponent(t_txt2);
           t_txt3 = encodeURIComponent(t_txt3);
           t_txt4 = encodeURIComponent(t_txt4);
           if (accSusSum == 0) {
-            $('#sum').append("<center><br/><strong><a href=\"http://twitter.com/share?url=https://twitter.com/nakashima723/status/588309694160113664&text=" + t_txt1 + urlFinSum + t_txt2 + "&related=nakashima723\"><button id=\"tweet\" style=\"padding:20px 50px; background-color:#55acee; border:none; color:#FFF;\">‚±‚ê‚Ü‚Å‚Ì¬‰Ê‚ğƒcƒC[ƒg</button></a></strong></center>");
+            $('#sum').append("<center><br/><strong><a href=\"http://twitter.com/share?url=https://twitter.com/nakashima723/status/588309694160113664&text=" + t_txt1 + urlFinSum + t_txt2 + "&related=nakashima723\"><button id=\"tweet\" style=\"padding:20px 50px; background-color:#55acee; border:none; color:#FFF;\">ã“ã‚Œã¾ã§ã®æˆæœã‚’ãƒ„ã‚¤ãƒ¼ãƒˆ</button></a></strong></center>");
           } else if (accSusSum !== 0) {
-            $('#sum').append("<center><br/><strong><a href=\"http://twitter.com/share?url=https://twitter.com/nakashima723/status/588309694160113664&text=" + t_txt1 + urlFinSum + t_txt2 + t_txt3 + accSusSum + t_txt4 + "&related=nakashima723\"><button id=\"tweet\" style=\"padding:20px 50px; background-color:#00aced; border:none; list-style:none; color:#FFF;\">‚±‚ê‚Ü‚Å‚Ì¬‰Ê‚ğƒcƒC[ƒg</button></a></strong></center>");
+            $('#sum').append("<center><br/><strong><a href=\"http://twitter.com/share?url=https://twitter.com/nakashima723/status/588309694160113664&text=" + t_txt1 + urlFinSum + t_txt2 + t_txt3 + accSusSum + t_txt4 + "&related=nakashima723\"><button id=\"tweet\" style=\"padding:20px 50px; background-color:#00aced; border:none; list-style:none; color:#FFF;\">ã“ã‚Œã¾ã§ã®æˆæœã‚’ãƒ„ã‚¤ãƒ¼ãƒˆ</button></a></strong></center>");
           }
         }
       }
-      //Url•\¦•”•ª‚ÌI‚í‚è
+      //Urlè¡¨ç¤ºéƒ¨åˆ†ã®çµ‚ã‚ã‚Š
       var num = items.repNum;
       if (!items.repNum) {
         var num = 0;
       }
-      $('#acMenu').append('<dt><button id="new_report">V‚µ‚¢•ñ“à—e‚ğì¬</button></dt>');
-      $('#acMenu').append('<dd id="form' + num + '"><strong>V‚µ‚¢•ñ“à—e‚Ì–¼‘O</strong><br /><font size="-1">¦‘¼‚Ì•ñ“à—e‚Æ‹æ•Ê‚Å‚«‚é‚æ‚¤‚ÉA‚í‚©‚è‚â‚·‚¢–¼‘O‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢B</font><input id="report' + num + '_input" type="text" value="—áF•Çƒhƒ“‘Îˆ–@"/><br/>’˜ìŒ Ò‚Ì–¼‘OF<br /><input id="owner_name' + num + '_input" type="text" style="margin-bottom:10px" /><br />ƒIƒŠƒWƒiƒ‹ì•i‚Ì“à—eF<textarea id="tweet_image_original' + num + '">—áF„‚ª»ì‚µAˆÈ‰º‚ÌƒcƒC[ƒg‚ÅÅ‰‚É”­•\‚µ‚½ƒCƒ‰ƒXƒg‚Å‚·B</textarea><br />ƒIƒŠƒWƒiƒ‹ì•i‚ªŠm”F‚Å‚«‚éURLF<br /><font size="-1">¦ã‹L‚Ìu“à—ev‚É‘±‚¯‚Ä‹L“ü‚³‚ê‚Ü‚·B<br />@NŠQƒcƒC[ƒg‚ÌURL‚Å‚Í‚È‚­A‚²©g‚ÅƒAƒbƒvƒ[ƒh‚µ‚½ƒcƒC[ƒg‚âƒTƒCƒg‚È‚Ç<br />@’˜ìŒ NŠQ‚É‚ ‚½‚ç‚È‚¢g—p—á‚ÌURL‚ğ‹L“ü‚µ‚Ä‚­‚¾‚³‚¢B</font><br/><input id="tweet_url_original' + num + '" type="text" value="—áFhttps://twitter.com/nakashima723/status/493780492345307136" style="width:600px"/><br />’˜ìŒ NŠQ‚Ì“à—eF<textarea id="tweet_image_infringement' + num + '">—áF’˜ìŒ ‚Å•ÛŒì‚³‚ê‚½ì•i‚ğA–³’f‚Å“]Ú‚µ—˜—p‚µ‚Ä‚¢‚Ü‚·B</textarea><br />NŠQƒcƒC[ƒg‚ÌŒŸõ‚Ég‚¤Œê‹åF(•K{)<br /><font size="-1">¦ƒXƒy[ƒX‚Å‹æØ‚é‚Æ•¡”“ü—Í‚Å‚«‚Ü‚·B’PŒê‚Ì‘O‚É”¼Šp‚Åu-iƒ}ƒCƒiƒXjv‚ğ‚Â‚¯‚é‚ÆA<br />@‚»‚Ì’PŒê‚ğŠÜ‚ŞƒcƒC[ƒg‚ªŒŸõŒ‹‰Ê‚©‚çœŠO‚³‚ê‚Ü‚·B</font><br /><input id="query' + num + '" type="text" style="width:600px" value="' + str_ex5 + '"/><br />ì•i‚Ìí—ŞF<br /><input type="radio" name="art_type' + num + '" value="image' + num + '" id="image_type' + num + '" style="margin-bottom:40px">ƒCƒ‰ƒXƒgEÊ^EŠG‰æ@@<input type="radio" name="art_type' + num + '" value="movie' + num + '" id="movie_type' + num + '" style="margin-bottom:40px">“®‰æ@@<input type="radio" name="art_type' + num + '" value="writing' + num + '" id="writing_type' + num + '" style="margin-bottom:40px">•¶Í<br/>•ñÒ‚Ì‘®«F<br /><input type="radio" name="owner_type' + num + '" value="owner" id="owner_type' + num + '" style="margin-bottom:40px">’˜ìŒ Ò–{l@@<input type="radio" name="owner_type' + num + '" value="represent" id="represent_type' + num + '" style="margin-bottom:40px">’˜ìŒ Ò‚Ì³®‚È‘ã—l@<br/><center><input id="save_new" type="submit" value="‚±‚Ì“à—e‚ÅV‹Kì¬" />@<input class="closure" type="submit" value="' + str_close + '" /></center><br /></dd>');
-      //‹L“ü—á‚ğ“ü—ÍEŠÇ—
+      $('#acMenu').append('<dt><button id="new_report">æ–°ã—ã„å ±å‘Šå†…å®¹ã‚’ä½œæˆ</button></dt>');
+      $('#acMenu').append('<dd id="form' + num + '"><strong>æ–°ã—ã„å ±å‘Šå†…å®¹ã®åå‰</strong><br /><font size="-1">â€»ä»–ã®å ±å‘Šå†…å®¹ã¨åŒºåˆ¥ã§ãã‚‹ã‚ˆã†ã«ã€ã‚ã‹ã‚Šã‚„ã™ã„åå‰ã‚’ã¤ã‘ã¦ãã ã•ã„ã€‚</font><input id="report' + num + '_input" type="text" value="ä¾‹ï¼šå£ãƒ‰ãƒ³å¯¾å‡¦æ³•"/><br/>è‘—ä½œæ¨©è€…ã®åå‰ï¼š<br /><input id="owner_name' + num + '_input" type="text" style="margin-bottom:10px" /><br />ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ã®å†…å®¹ï¼š<textarea id="tweet_image_original' + num + '">ä¾‹ï¼šç§ãŒè£½ä½œã—ã€ä»¥ä¸‹ã®ãƒ„ã‚¤ãƒ¼ãƒˆã§æœ€åˆã«ç™ºè¡¨ã—ãŸã‚¤ãƒ©ã‚¹ãƒˆã§ã™ã€‚</textarea><br />ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ãŒç¢ºèªã§ãã‚‹URLï¼š<br /><font size="-1">â€»ä¸Šè¨˜ã®ã€Œå†…å®¹ã€ã«ç¶šã‘ã¦è¨˜å…¥ã•ã‚Œã¾ã™ã€‚<br />ã€€ä¾µå®³ãƒ„ã‚¤ãƒ¼ãƒˆã®URLã§ã¯ãªãã€ã”è‡ªèº«ã§ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ„ã‚¤ãƒ¼ãƒˆã‚„ã‚µã‚¤ãƒˆãªã©<br />ã€€è‘—ä½œæ¨©ä¾µå®³ã«ã‚ãŸã‚‰ãªã„ä½¿ç”¨ä¾‹ã®URLã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚</font><br/><input id="tweet_url_original' + num + '" type="text" value="ä¾‹ï¼šhttps://twitter.com/nakashima723/status/493780492345307136" style="width:600px"/><br />è‘—ä½œæ¨©ä¾µå®³ã®å†…å®¹ï¼š<textarea id="tweet_image_infringement' + num + '">ä¾‹ï¼šè‘—ä½œæ¨©ã§ä¿è­·ã•ã‚ŒãŸä½œå“ã‚’ã€ç„¡æ–­ã§è»¢è¼‰ã—åˆ©ç”¨ã—ã¦ã„ã¾ã™ã€‚</textarea><br />ä¾µå®³ãƒ„ã‚¤ãƒ¼ãƒˆã®æ¤œç´¢ã«ä½¿ã†èªå¥ï¼š(å¿…é ˆ)<br /><font size="-1">â€»ã‚¹ãƒšãƒ¼ã‚¹ã§åŒºåˆ‡ã‚‹ã¨è¤‡æ•°å…¥åŠ›ã§ãã¾ã™ã€‚å˜èªã®å‰ã«åŠè§’ã§ã€Œ-ï¼ˆãƒã‚¤ãƒŠã‚¹ï¼‰ã€ã‚’ã¤ã‘ã‚‹ã¨ã€<br />ã€€ãã®å˜èªã‚’å«ã‚€ãƒ„ã‚¤ãƒ¼ãƒˆãŒæ¤œç´¢çµæœã‹ã‚‰é™¤å¤–ã•ã‚Œã¾ã™ã€‚</font><br /><input id="query' + num + '" type="text" style="width:600px" value="' + str_ex5 + '"/><br />ä½œå“ã®ç¨®é¡ï¼š<br /><input type="radio" name="art_type' + num + '" value="image' + num + '" id="image_type' + num + '" style="margin-bottom:40px">ã‚¤ãƒ©ã‚¹ãƒˆãƒ»å†™çœŸãƒ»çµµç”»ã€€ã€€<input type="radio" name="art_type' + num + '" value="movie' + num + '" id="movie_type' + num + '" style="margin-bottom:40px">å‹•ç”»ã€€ã€€<input type="radio" name="art_type' + num + '" value="writing' + num + '" id="writing_type' + num + '" style="margin-bottom:40px">æ–‡ç« <br/>å ±å‘Šè€…ã®å±æ€§ï¼š<br /><input type="radio" name="owner_type' + num + '" value="owner" id="owner_type' + num + '" style="margin-bottom:40px">è‘—ä½œæ¨©è€…æœ¬äººã€€ã€€<input type="radio" name="owner_type' + num + '" value="represent" id="represent_type' + num + '" style="margin-bottom:40px">è‘—ä½œæ¨©è€…ã®æ­£å¼ãªä»£ç†äººã€€<br/><center><input id="save_new" type="submit" value="ã“ã®å†…å®¹ã§æ–°è¦ä½œæˆ" />ã€€<input class="closure" type="submit" value="' + str_close + '" /></center><br /></dd>');
+      //è¨˜å…¥ä¾‹ã‚’å…¥åŠ›ãƒ»ç®¡ç†
       eval("var report_input_id =  \"#report" + num + "_input\";");
       $(report_input_id).focus(function () {
         if ($(report_input_id).val() == str_ex1) {
@@ -667,18 +667,18 @@ var showSlyr = function () {
         });
       });
     });
-    $('#main').append('<font size="-1"><br/><center><span>¦NŠQƒcƒC[ƒg‚ÌŒŸõE•ñ‚Í<strong>ƒEƒBƒ“ƒhƒE‰Eã‚ÌƒAƒCƒRƒ“<img src=\"images/ccslyrt_16.png\" width=\"24\"></strong>‚©‚çs‚¦‚Ü‚·B<br/><br/>¦•ñƒŠƒXƒg‚Ö‚ÌURL’Ç‰Á—pƒ{ƒ^ƒ“‚ÍA<strong>ŠeƒcƒC[ƒg‚Ì“ú•t‚Ì‰¡</strong>‚É•\¦‚³‚ê‚Ü‚·B<br/>‚¤‚Ü‚­•\¦‚³‚ê‚È‚¢ê‡‚ÍACtrlƒL[‚ğ‰Ÿ‚µ‚È‚ª‚ç‚»‚Ìƒy[ƒW‚ğXV‚µ‚Ä‚­‚¾‚³‚¢B<br/><br/>¦Twitter‘¤‚Ìèˆá‚¢‚ÅAƒIƒŠƒWƒiƒ‹‚Ì‰æ‘œE“®‰æ‚ªíœ‚³‚ê‚Ä‚µ‚Ü‚Á‚½ê‡‚Ì‘Îˆ–@‚Í<a href=\"http://botslyr.nakashima723.info/fax-sample/\"><strong>‚±‚¿‚ç</strong></a><br/><br/></ br>developed by <a href=\"https://twitter.com/nakashima723\">nakashima723</a> since 2015</font><br/><font size=\"-2\">•s‹ï‡E‚²—v–]‚È‚Ç‚ ‚è‚Ü‚µ‚½‚çAã‹LƒAƒJƒEƒ“ƒg‚Ü‚½‚ÍˆÈ‰º‚ÌƒAƒhƒŒƒX‚Ü‚Å‚²˜A—‚­‚¾‚³‚¢B</font><br/><a href=\"mailto:yokoshima723@gmail.com\">yokoshima723@gmail.com</a></span></center></font>');
+    $('#main').append('<font size="-1"><br/><center><span>â€»ä¾µå®³ãƒ„ã‚¤ãƒ¼ãƒˆã®æ¤œç´¢ãƒ»å ±å‘Šã¯<strong>ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å³ä¸Šã®ã‚¢ã‚¤ã‚³ãƒ³<img src=\"images/ccslyrt_16.png\" width=\"24\"></strong>ã‹ã‚‰è¡Œãˆã¾ã™ã€‚<br/><br/>â€»å ±å‘Šãƒªã‚¹ãƒˆã¸ã®URLè¿½åŠ ç”¨ãƒœã‚¿ãƒ³ã¯ã€<strong>å„ãƒ„ã‚¤ãƒ¼ãƒˆã®æ—¥ä»˜ã®æ¨ª</strong>ã«è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚<br/>ã†ã¾ãè¡¨ç¤ºã•ã‚Œãªã„å ´åˆã¯ã€Ctrlã‚­ãƒ¼ã‚’æŠ¼ã—ãªãŒã‚‰ãã®ãƒšãƒ¼ã‚¸ã‚’æ›´æ–°ã—ã¦ãã ã•ã„ã€‚<br/><br/>â€»Twitterå´ã®æ‰‹é•ã„ã§ã€ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ç”»åƒãƒ»å‹•ç”»ãŒå‰Šé™¤ã•ã‚Œã¦ã—ã¾ã£ãŸå ´åˆã®å¯¾å‡¦æ³•ã¯<a href=\"http://botslyr.nakashima723.info/fax-sample/\"><strong>ã“ã¡ã‚‰</strong></a><br/><br/></ br>developed by <a href=\"https://twitter.com/nakashima723\">nakashima723</a> since 2015</font><br/><font size=\"-2\">ä¸å…·åˆãƒ»ã”è¦æœ›ãªã©ã‚ã‚Šã¾ã—ãŸã‚‰ã€ä¸Šè¨˜ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã¾ãŸã¯ä»¥ä¸‹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¾ã§ã”é€£çµ¡ãã ã•ã„ã€‚</font><br/><a href=\"mailto:yokoshima723@gmail.com\">yokoshima723@gmail.com</a></span></center></font>');
   });
-  //ƒ€ƒ‰ƒnƒ` for Google
-  //•¶š—ñ‚ğ’è‹`
-  var m_str_ex1 = "—áF•Çƒhƒ“‘Îˆ–@",
-    m_str_ex2 = "—á1F„‚ª»ì‚µAˆÈ‰º‚ÌURL‚ÅŒöŠJ‚µ‚½››‚ÌƒCƒ‰ƒXƒg‚ª–³’f‚Å“]Ú‚³‚ê—˜—p‚³‚ê‚Ä‚¢‚Ü‚·B„‚ª»ìÒ–{l‚Å‚ ‚é‚±‚Æ‚ÍATwitterƒAƒJƒEƒ“ƒg‚ÌƒvƒƒtƒB[ƒ‹‚ÉA‚±‚Ì•ñ‚Ég—p‚µ‚Ä‚¢‚éƒ[ƒ‹ƒAƒhƒŒƒX‚ª‹LÚ‚³‚ê‚Ä‚¢‚é‚±‚Æ‚©‚ç‚²Šm”F‚¢‚½‚¾‚¯‚Ü‚·B\n—á2F•¾Ğ‚ª2015”N‚É»ìE”Ì”„‚µ‚½PCƒQ[ƒ€u›››v‚Ìƒtƒ@ƒCƒ‹‹¤—L‚ğ‰Â”\‚É‚·‚éˆá–@‚ÈTorrentƒtƒ@ƒCƒ‹‚Ì”z•zA‚Ü‚½‚Í–³’f‚Å“]Ú‚³‚ê‚½ƒAƒbƒvƒ[ƒ_[‚Ö‚ÌƒŠƒ“ƒN‚ªs‚í‚ê‚Ä‚¢‚Ü‚·B",
-    m_str_ex3 = "—áFhttps://twitter.com/nakashima723/status/493780492345307136",
-    m_str_ex4 = "—áFi©•ª‚Ìì•i–¼j zip OR rar OR torrent OR raw -site:nakashima723.info",
-    m_str_setting = "Šî–{İ’è",
-    str_holder = "‚±‚±‚ÉˆÏ”CŒ³‚ÌìÒEŒ —˜Ò–¼‚ğ“ü—Í",
-    m_str_setting_ex = "<font size=\"-1\">Google‚Ì<a href=\"https://www.google.com/webmasters/tools/dmca-notice\" target=\"report\"><strong>’˜ìŒ NŠQ•ñƒtƒH[ƒ€</strong></a>‚É“ü—Í‚·‚é“à—e‚ğİ’è‚µ‚Ü‚·B<br/>–¼‚È‚Ç‚·‚×‚Ä‚Ì•ñ‚É‹¤’Ê‚·‚éuŠî–{İ’èv‚ÆA<br/>NŠQ‚Ì“à—e‚²‚Æ‚ÉˆÙ‚È‚éu•ñ“à—ev‚ğ‹L“ü‚µ‚Ä‚­‚¾‚³‚¢B</font>",
-    m_str_company = "—áF‰A—zĞ";
+  //ãƒ ãƒ©ãƒãƒ for Google
+  //æ–‡å­—åˆ—ã‚’å®šç¾©
+  var m_str_ex1 = "ä¾‹ï¼šå£ãƒ‰ãƒ³å¯¾å‡¦æ³•",
+    m_str_ex2 = "ä¾‹1ï¼šç§ãŒè£½ä½œã—ã€ä»¥ä¸‹ã®URLã§å…¬é–‹ã—ãŸâ—‹â—‹ã®ã‚¤ãƒ©ã‚¹ãƒˆãŒç„¡æ–­ã§è»¢è¼‰ã•ã‚Œåˆ©ç”¨ã•ã‚Œã¦ã„ã¾ã™ã€‚ç§ãŒè£½ä½œè€…æœ¬äººã§ã‚ã‚‹ã“ã¨ã¯ã€Twitterã‚¢ã‚«ã‚¦ãƒ³ãƒˆã®ãƒ—ãƒ­ãƒ•ã‚£ãƒ¼ãƒ«ã«ã€ã“ã®å ±å‘Šã«ä½¿ç”¨ã—ã¦ã„ã‚‹ãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒè¨˜è¼‰ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‹ã‚‰ã”ç¢ºèªã„ãŸã ã‘ã¾ã™ã€‚\nä¾‹2ï¼šå¼Šç¤¾ãŒ2015å¹´ã«è£½ä½œãƒ»è²©å£²ã—ãŸPCã‚²ãƒ¼ãƒ ã€Œâ—‹â—‹â—‹ã€ã®ãƒ•ã‚¡ã‚¤ãƒ«å…±æœ‰ã‚’å¯èƒ½ã«ã™ã‚‹é•æ³•ãªTorrentãƒ•ã‚¡ã‚¤ãƒ«ã®é…å¸ƒã€ã¾ãŸã¯ç„¡æ–­ã§è»¢è¼‰ã•ã‚ŒãŸã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ€ãƒ¼ã¸ã®ãƒªãƒ³ã‚¯ãŒè¡Œã‚ã‚Œã¦ã„ã¾ã™ã€‚",
+    m_str_ex3 = "ä¾‹ï¼šhttps://twitter.com/nakashima723/status/493780492345307136",
+    m_str_ex4 = "ä¾‹ï¼šï¼ˆè‡ªåˆ†ã®ä½œå“åï¼‰ zip OR rar OR torrent OR raw -site:nakashima723.info",
+    m_str_setting = "åŸºæœ¬è¨­å®š",
+    str_holder = "ã“ã“ã«å§”ä»»å…ƒã®ä½œè€…ãƒ»æ¨©åˆ©è€…åã‚’å…¥åŠ›",
+    m_str_setting_ex = "<font size=\"-1\">Googleã®<a href=\"https://www.google.com/webmasters/tools/dmca-notice\" target=\"report\"><strong>è‘—ä½œæ¨©ä¾µå®³å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ </strong></a>ã«å…¥åŠ›ã™ã‚‹å†…å®¹ã‚’è¨­å®šã—ã¾ã™ã€‚<br/>æ°åãªã©ã™ã¹ã¦ã®å ±å‘Šã«å…±é€šã™ã‚‹ã€ŒåŸºæœ¬è¨­å®šã€ã¨ã€<br/>ä¾µå®³ã®å†…å®¹ã”ã¨ã«ç•°ãªã‚‹ã€Œå ±å‘Šå†…å®¹ã€ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚</font>",
+    m_str_company = "ä¾‹ï¼šé™°é™½ç¤¾";
 
   var m_save = function () {
     chrome.storage.local.get(function (items) {
@@ -714,13 +714,13 @@ var showSlyr = function () {
     });
   }
 
-  //“ü—ÍƒtƒH[ƒ€‚ğ¶¬
+  //å…¥åŠ›ãƒ•ã‚©ãƒ¼ãƒ ã‚’ç”Ÿæˆ
   chrome.storage.local.get(function (items) {
     var num = items.m_repNum;
     if (!items.m_repNum) {
       var num = 0;
     }
-    //“o˜^‚¸‚İ‚Ì’˜ìÒ–¼‚©‚çƒvƒ‹ƒ_ƒEƒ“ƒƒjƒ…[‚ğ¶¬
+    //ç™»éŒ²ãšã¿ã®è‘—ä½œè€…åã‹ã‚‰ãƒ—ãƒ«ãƒ€ã‚¦ãƒ³ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ç”Ÿæˆ
     const holderArr = [];
     for (let i = 0; i < num; i++) {
       const holderTemp = items[`m_holder${i}`];
@@ -729,14 +729,14 @@ var showSlyr = function () {
 
     const uniqueHolderArr = Array.from(new Set(holderArr));
     uniqueHolderArr.sort();
-    let holderMenu = "<option value=\"0\">“o˜^‚¸‚İ‚ÌŒ —˜Ò–¼‚©‚ç“ü—Í</option>";
+    let holderMenu = "<option value=\"0\">ç™»éŒ²ãšã¿ã®æ¨©åˆ©è€…åã‹ã‚‰å…¥åŠ›</option>";
     for (let i = 0; i < uniqueHolderArr.length; i++) {
       const holderOption = uniqueHolderArr[i];
       const holderLine = `<option value="${holderOption}">${holderOption}</option>`;
       holderMenu += holderLine;
     }
 
-    $('#m-setting_div').append("<dl id=\"m-acMenu\" style =\'margin:0 auto; width: 100%;\'><h2>" + m_str_setting + "</h2>" + m_str_setting_ex + "<br/><br/><dt><button id=\"m-setting\">" + str_edit + "</button><br /></dt><dd style =\'margin:0 30px auto; display:none; width:\"100%;\"'>–{ƒvƒƒOƒ‰ƒ€‚Í•ñ‘ÎÛ‚Æ‚È‚é’˜ì•¨‚Ì³®‚ÈŒ —˜Ò‚Ì•ûA‚Ü‚½‚Í‚»‚Ì‘ã—l‚Ì‚İ‚²—˜—p‚¢‚½‚¾‚¯‚Ü‚·B’˜ì•¨‚Ì’è‹`‚âA‚²©g‚ÌŒ —˜‚Ì—L–³‚É‚Â‚¢‚Ä‚ÍŠe©‚Å‚²Šm”F‚­‚¾‚³‚¢B<br /><br /><strong>˜A—æ</strong><br />–{–¼i©j:<br /><input id=\"m-family\" type=\"text\" value=\"" + str_yamada + "\"/><br />–{–¼i–¼j:<br /><input id=\"m-name\" type=\"text\" value=\"" + str_taro + "\" /><br />‰ïĞ–¼i”CˆÓj:<br /><input id=\"m-company\" type=\"text\" value=\"" + m_str_company + "\" /><br />ƒ[ƒ‹ ƒAƒhƒŒƒX : <input id=\"m-email\" type=\"text\" /><br /><strong>–@“I‚Èé¾F</strong><br /><font size=\"2.8em\"><br /><input id=\"m-statement1\" type=\"checkbox\">„‚ÍA•ñ‘ÎÛ‚Æ‚È‚éURLã‚Ì’˜ì•¨‚ª’˜ìŒ ‚ÌŠ—LÒA‘ã—lA‚Ü‚½‚Í–@—¥‚É‚æ‚é‹–‰Â‚È‚­g—p‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ğ½À‚ÉŠmM‚µ‚½‚¤‚¦‚ÅA‚±‚Ìƒc[ƒ‹‚ğg—p‚µ‚Ü‚·B<br /><br /><input id=\"m-statement2\" type=\"checkbox\">‚±‚Ìƒc[ƒ‹“à‚Å“ü—Í‚µ‚Ä‚¢‚éî•ñ‚É‹U‚è‚Í‚ ‚è‚Ü‚¹‚ñB„‚ÍA‹UØ‚ªˆ”±‚Ì‘ÎÛ‚Å‚ ‚é‚±‚Æ‚ğ³’m‚Ì‚¤‚¦‚ÅA“Æè“IŒ —˜‚ğNŠQ‚³‚ê‚½’˜ì•¨‚Ì’˜ìŒ Š—LÒ‚Ü‚½‚Í‚»‚Ì³®‚È‘ã—l‚Å‚ ‚é‚±‚Æ‚ğ¾‚¢‚Ü‚·B<br /><br /><input id=\"m-statement3\" type=\"checkbox\">–@“I‚È’Ê’m‚Í‚·‚×‚Ä‚»‚ÌÊ‚µ‚ª Lumen ƒvƒƒWƒFƒNƒgihttp://lumendatabase.orgj‚É‘—•t‚³‚êAŒöŠJ‚³‚ê‚½‚è’ß‚ğ•t‚¯‚ç‚ê‚½‚è‚·‚éê‡‚ª‚ ‚é‚±‚Æ‚ğ—‰ğ‚µ‚Ä‚¢‚Ü‚·B‚Ü‚½AŒÂl‚Ì˜A—æî•ñ‚Í Lumen ‚É‚æ‚Á‚ÄŒöŠJ‘O‚É’Ê’m‚©‚çíœ‚³‚ê‚é‚à‚Ì‚ÌA‘½‚­‚Ìê‡AŒÂl–¼‚Ííœ‚³‚ê‚È‚¢‚±‚Æ‚à—‰ğ‚µ‚Ä‚¢‚Ü‚·B<br /><br /></font><br /><input id=\"m_save_setting\" type=\"submit\" value=\"‚±‚Ì“ü—Í“à—e‚ğ•Û‘¶\" />@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br /></dd> <h2>" + str_edit_report + "</h2><dt><button id=\"m-new_report\">V‚µ‚¢•ñ“à—e‚ğì¬</button></dt> <dd id = \"m-form" + num + "\"><strong>V‚µ‚¢•ñ“à—e‚Ì–¼‘O</strong><br /><font size =\"-1\">¦‘¼‚Ì•ñ“à—e‚Æ‹æ•Ê‚Å‚«‚é‚æ‚¤‚ÉA‚í‚©‚è‚â‚·‚¢–¼‘O‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢B</font><input id=\"m-report" + num + "_input\" type=\"text\" value=\"" + m_str_ex1 + "\"/><br /><strong>ƒIƒŠƒWƒiƒ‹ì•i‚Ì“à—e‚ÆA’˜ìŒ NŠQ‚Ì“à—eF</strong></br><font size=\"-1\">¦Google‚Ìíœ’S“–Ò‚ªAíœ‘ÎÛ‚Æ‚È‚éƒy[ƒW‚É‚»‚Ìì•i‚ªoŒ»‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚·‚é‚Ì‚É</br>@g‚í‚ê‚Ü‚·B<strong>‚P‚Â‚Ì•ñ“à—e‚Åˆµ‚¤‚Ì‚Í‚Pí—Ş‚Ìì•ii¤•ij‚Ì‚İ</strong>‚Æ‚µA‚í‚©‚è‚â‚·‚­‹Lq‚µ‚Ä</br>@‚­‚¾‚³‚¢B</font><textarea id=\"m-original" + num + "\" style=\"height:140px;\" \">" + m_str_ex2 + "</textarea><br /><strong>•ñÒ‚Ì‘®«F</strong></br><input type=\"radio\" name=\"reporter-type\" value=\"author\" id=\"author-type\" style=\"margin-bottom:15px\"> ìÒA‚Ü‚½‚ÍŒ —˜Ò<strong>–{l</strong></br><input type=\"radio\" name=\"reporter-type\" value=\"attoney\" id=\"attoney-type\" style=\"margin-bottom:20px\"> ìÒ‚Ü‚½‚ÍŒ —˜Ò‚ÌA³®‚È<strong>‘ã—l</strong> <input id=\"m-holder" + num + "\" style=\"margin-bottom:10px\" name=\"holder\" type=\"text\" value=\"\"/><form><select id=\"holder-menu" + num + "\">" + holderMenu + "</select></form><p id=\"g-input" + num + "\"><font size =\"-1\">¦V‹K‚ÉŒ —˜Ò–¼‚ğ“o˜^‚·‚éê‡AGoogle‘¤‚Ì•ñƒtƒH[ƒ€‚Å‚à<strong>‰‰ñ•ñ‚Ì‚İè“ü—Í</strong>‚ª•K—v‚Å‚·B</br>@‚±‚±‚É‹L“ü‚µ‚½‚à‚Ì‚Æ<strong>“¯‚¶Œ —˜Ò–¼</strong>‚ğAGoogle‘¤‚Ì•ñƒtƒH[ƒ€‚É‚à“o˜^‚µ‚Ä‚­‚¾‚³‚¢B</font></p id=\"g-input" + num + "\"><strong>ƒIƒŠƒWƒiƒ‹‚Ìì•i‚ªŠm”F‚Å‚«‚éURLF</strong></br><font size=\"-1\">¦íœ‘ÎÛ‚Æ‚È‚éURL‚Å‚Í‚È‚­Aì•i‚Ì”Ì”„ƒy[ƒW‚â©g‚ÅƒAƒbƒvƒ[ƒh‚µ‚½ƒTƒCƒg‚È‚ÇA</br><strong>@’˜ìŒ ‚ğNŠQ‚µ‚Ä‚¢‚È‚¢ƒy[ƒW‚ÌURL</strong>‚ğ‹L“ü‚µ‚Ä‚­‚¾‚³‚¢Bi1s‚É1Œj</font><textarea id=\"m-infringement" + num + "\">" + m_str_ex3 + "</textarea><br /><strong>NŠQƒTƒCƒg‚ÌŒŸõ‚Ég‚¤Œê‹åF</strong></br><font size=\"-1\">¦•K—v‚É‰‚¶‚Ä<a href=\"https://support.google.com/websearch/answer/2466433\" target=\"_blank\"><strong>ŒŸõ‰‰Zq</a></strong>‚ğg—p‚·‚é‚ÆAƒTƒCƒg‚Ìi‚İ‚ª‚µ‚â‚·‚­‚È‚è‚Ü‚·B</font><input id=\"m-query" + num + "\" type=\"text\" style=\"width:600px\" value=\"" + m_str_ex4 + "\"/><br /><center><input id=\"m-save_new\" type=\"submit\" value=\"‚±‚Ì“à—e‚ÅV‹Kì¬\" />@<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center><br /></dd>");
+    $('#m-setting_div').append("<dl id=\"m-acMenu\" style =\'margin:0 auto; width: 100%;\'><h2>" + m_str_setting + "</h2>" + m_str_setting_ex + "<br/><br/><dt><button id=\"m-setting\">" + str_edit + "</button><br /></dt><dd style =\'margin:0 30px auto; display:none; width:\"100%;\"'>æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯å ±å‘Šå¯¾è±¡ã¨ãªã‚‹è‘—ä½œç‰©ã®æ­£å¼ãªæ¨©åˆ©è€…ã®æ–¹ã€ã¾ãŸã¯ãã®ä»£ç†äººã®ã¿ã”åˆ©ç”¨ã„ãŸã ã‘ã¾ã™ã€‚è‘—ä½œç‰©ã®å®šç¾©ã‚„ã€ã”è‡ªèº«ã®æ¨©åˆ©ã®æœ‰ç„¡ã«ã¤ã„ã¦ã¯å„è‡ªã§ã”ç¢ºèªãã ã•ã„ã€‚<br /><br /><strong>é€£çµ¡å…ˆ</strong><br />æœ¬åï¼ˆå§“ï¼‰:<br /><input id=\"m-family\" type=\"text\" value=\"" + str_yamada + "\"/><br />æœ¬åï¼ˆåï¼‰:<br /><input id=\"m-name\" type=\"text\" value=\"" + str_taro + "\" /><br />ä¼šç¤¾åï¼ˆä»»æ„ï¼‰:<br /><input id=\"m-company\" type=\"text\" value=\"" + m_str_company + "\" /><br />ãƒ¡ãƒ¼ãƒ« ã‚¢ãƒ‰ãƒ¬ã‚¹ : <input id=\"m-email\" type=\"text\" /><br /><strong>æ³•çš„ãªå®£èª“ï¼š</strong><br /><font size=\"2.8em\"><br /><input id=\"m-statement1\" type=\"checkbox\">ç§ã¯ã€å ±å‘Šå¯¾è±¡ã¨ãªã‚‹URLä¸Šã®è‘—ä½œç‰©ãŒè‘—ä½œæ¨©ã®æ‰€æœ‰è€…ã€ä»£ç†äººã€ã¾ãŸã¯æ³•å¾‹ã«ã‚ˆã‚‹è¨±å¯ãªãä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹ã“ã¨ã‚’èª å®Ÿã«ç¢ºä¿¡ã—ãŸã†ãˆã§ã€ã“ã®ãƒ„ãƒ¼ãƒ«ã‚’ä½¿ç”¨ã—ã¾ã™ã€‚<br /><br /><input id=\"m-statement2\" type=\"checkbox\">ã“ã®ãƒ„ãƒ¼ãƒ«å†…ã§å…¥åŠ›ã—ã¦ã„ã‚‹æƒ…å ±ã«å½ã‚Šã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ç§ã¯ã€å½è¨¼ãŒå‡¦ç½°ã®å¯¾è±¡ã§ã‚ã‚‹ã“ã¨ã‚’æ‰¿çŸ¥ã®ã†ãˆã§ã€ç‹¬å çš„æ¨©åˆ©ã‚’ä¾µå®³ã•ã‚ŒãŸè‘—ä½œç‰©ã®è‘—ä½œæ¨©æ‰€æœ‰è€…ã¾ãŸã¯ãã®æ­£å¼ãªä»£ç†äººã§ã‚ã‚‹ã“ã¨ã‚’èª“ã„ã¾ã™ã€‚<br /><br /><input id=\"m-statement3\" type=\"checkbox\">æ³•çš„ãªé€šçŸ¥ã¯ã™ã¹ã¦ãã®å†™ã—ãŒ Lumen ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆï¼ˆhttp://lumendatabase.orgï¼‰ã«é€ä»˜ã•ã‚Œã€å…¬é–‹ã•ã‚ŒãŸã‚Šæ³¨é‡ˆã‚’ä»˜ã‘ã‚‰ã‚ŒãŸã‚Šã™ã‚‹å ´åˆãŒã‚ã‚‹ã“ã¨ã‚’ç†è§£ã—ã¦ã„ã¾ã™ã€‚ã¾ãŸã€å€‹äººã®é€£çµ¡å…ˆæƒ…å ±ã¯ Lumen ã«ã‚ˆã£ã¦å…¬é–‹å‰ã«é€šçŸ¥ã‹ã‚‰å‰Šé™¤ã•ã‚Œã‚‹ã‚‚ã®ã®ã€å¤šãã®å ´åˆã€å€‹äººåã¯å‰Šé™¤ã•ã‚Œãªã„ã“ã¨ã‚‚ç†è§£ã—ã¦ã„ã¾ã™ã€‚<br /><br /></font><br /><input id=\"m_save_setting\" type=\"submit\" value=\"ã“ã®å…¥åŠ›å†…å®¹ã‚’ä¿å­˜\" />ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br /></dd> <h2>" + str_edit_report + "</h2><dt><button id=\"m-new_report\">æ–°ã—ã„å ±å‘Šå†…å®¹ã‚’ä½œæˆ</button></dt> <dd id = \"m-form" + num + "\"><strong>æ–°ã—ã„å ±å‘Šå†…å®¹ã®åå‰</strong><br /><font size =\"-1\">â€»ä»–ã®å ±å‘Šå†…å®¹ã¨åŒºåˆ¥ã§ãã‚‹ã‚ˆã†ã«ã€ã‚ã‹ã‚Šã‚„ã™ã„åå‰ã‚’ã¤ã‘ã¦ãã ã•ã„ã€‚</font><input id=\"m-report" + num + "_input\" type=\"text\" value=\"" + m_str_ex1 + "\"/><br /><strong>ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ã®å†…å®¹ã¨ã€è‘—ä½œæ¨©ä¾µå®³ã®å†…å®¹ï¼š</strong></br><font size=\"-1\">â€»Googleã®å‰Šé™¤æ‹…å½“è€…ãŒã€å‰Šé™¤å¯¾è±¡ã¨ãªã‚‹ãƒšãƒ¼ã‚¸ã«ãã®ä½œå“ãŒå‡ºç¾ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹ã®ã«</br>ã€€ä½¿ã‚ã‚Œã¾ã™ã€‚<strong>ï¼‘ã¤ã®å ±å‘Šå†…å®¹ã§æ‰±ã†ã®ã¯ï¼‘ç¨®é¡ã®ä½œå“ï¼ˆå•†å“ï¼‰ã®ã¿</strong>ã¨ã—ã€ã‚ã‹ã‚Šã‚„ã™ãè¨˜è¿°ã—ã¦</br>ã€€ãã ã•ã„ã€‚</font><textarea id=\"m-original" + num + "\" style=\"height:140px;\" \">" + m_str_ex2 + "</textarea><br /><strong>å ±å‘Šè€…ã®å±æ€§ï¼š</strong></br><input type=\"radio\" name=\"reporter-type\" value=\"author\" id=\"author-type\" style=\"margin-bottom:15px\"> ä½œè€…ã€ã¾ãŸã¯æ¨©åˆ©è€…<strong>æœ¬äºº</strong></br><input type=\"radio\" name=\"reporter-type\" value=\"attoney\" id=\"attoney-type\" style=\"margin-bottom:20px\"> ä½œè€…ã¾ãŸã¯æ¨©åˆ©è€…ã®ã€æ­£å¼ãª<strong>ä»£ç†äºº</strong> <input id=\"m-holder" + num + "\" style=\"margin-bottom:10px\" name=\"holder\" type=\"text\" value=\"\"/><form><select id=\"holder-menu" + num + "\">" + holderMenu + "</select></form><p id=\"g-input" + num + "\"><font size =\"-1\">â€»æ–°è¦ã«æ¨©åˆ©è€…åã‚’ç™»éŒ²ã™ã‚‹å ´åˆã€Googleå´ã®å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ ã§ã‚‚<strong>åˆå›å ±å‘Šæ™‚ã®ã¿æ‰‹å…¥åŠ›</strong>ãŒå¿…è¦ã§ã™ã€‚</br>ã€€ã“ã“ã«è¨˜å…¥ã—ãŸã‚‚ã®ã¨<strong>åŒã˜æ¨©åˆ©è€…å</strong>ã‚’ã€Googleå´ã®å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ ã«ã‚‚ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚</font></p id=\"g-input" + num + "\"><strong>ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ä½œå“ãŒç¢ºèªã§ãã‚‹URLï¼š</strong></br><font size=\"-1\">â€»å‰Šé™¤å¯¾è±¡ã¨ãªã‚‹URLã§ã¯ãªãã€ä½œå“ã®è²©å£²ãƒšãƒ¼ã‚¸ã‚„è‡ªèº«ã§ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸã‚µã‚¤ãƒˆãªã©ã€</br><strong>ã€€è‘—ä½œæ¨©ã‚’ä¾µå®³ã—ã¦ã„ãªã„ãƒšãƒ¼ã‚¸ã®URL</strong>ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚ï¼ˆ1è¡Œã«1ä»¶ï¼‰</font><textarea id=\"m-infringement" + num + "\">" + m_str_ex3 + "</textarea><br /><strong>ä¾µå®³ã‚µã‚¤ãƒˆã®æ¤œç´¢ã«ä½¿ã†èªå¥ï¼š</strong></br><font size=\"-1\">â€»å¿…è¦ã«å¿œã˜ã¦<a href=\"https://support.google.com/websearch/answer/2466433\" target=\"_blank\"><strong>æ¤œç´¢æ¼”ç®—å­</a></strong>ã‚’ä½¿ç”¨ã™ã‚‹ã¨ã€ã‚µã‚¤ãƒˆã®çµè¾¼ã¿ãŒã—ã‚„ã™ããªã‚Šã¾ã™ã€‚</font><input id=\"m-query" + num + "\" type=\"text\" style=\"width:600px\" value=\"" + m_str_ex4 + "\"/><br /><center><input id=\"m-save_new\" type=\"submit\" value=\"ã“ã®å†…å®¹ã§æ–°è¦ä½œæˆ\" />ã€€<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /></center><br /></dd>");
     $('#m-holder' + num).hide();
     $('#g-input' + num).hide();
     $('#holder-menu' + num).hide();
@@ -763,7 +763,7 @@ var showSlyr = function () {
     });
 
     if (items.m_repNum > 0) {
-      $('#m-acMenu h2:eq(1)').after("<font size=\"-1\">NŠQ‚Ì“à—e‚²‚Æ‚ÉAƒ^ƒCƒgƒ‹‚âŒ³ì•i‚ÌURL‚ğİ’è‚µ‚Ä‚­‚¾‚³‚¢B</br></font>");
+      $('#m-acMenu h2:eq(1)').after("<font size=\"-1\">ä¾µå®³ã®å†…å®¹ã”ã¨ã«ã€ã‚¿ã‚¤ãƒˆãƒ«ã‚„å…ƒä½œå“ã®URLã‚’è¨­å®šã—ã¦ãã ã•ã„ã€‚</br></font>");
       for (var i = 0; i < items.m_repNum; i++) {
         var m_thisTitle = (i + 1) + ': ' + items['m_report' + i];
         var m_hide_his = items['m_hide_his' + i];
@@ -772,13 +772,13 @@ var showSlyr = function () {
         $('#m-new_report').closest('dt').before($newDt);
         $('#m_report' + i).text(m_thisTitle);
         $('#m-new_report').closest('dt').before(`<dd id="m-form${i}">
-  <strong>‚±‚Ì•ñ“à—e‚Ì–¼‘O</strong><br />
-  <font size="-1">¦‘¼‚Ì•ñ“à—e‚Æ‹æ•Ê‚Å‚«‚é‚æ‚¤‚ÉA‚í‚©‚è‚â‚·‚¢–¼‘O‚ğ‚Â‚¯‚Ä‚­‚¾‚³‚¢B</font>
+  <strong>ã“ã®å ±å‘Šå†…å®¹ã®åå‰</strong><br />
+  <font size="-1">â€»ä»–ã®å ±å‘Šå†…å®¹ã¨åŒºåˆ¥ã§ãã‚‹ã‚ˆã†ã«ã€ã‚ã‹ã‚Šã‚„ã™ã„åå‰ã‚’ã¤ã‘ã¦ãã ã•ã„ã€‚</font>
   <input id="m-report${i}_input" type="text" style="margin-bottom:10px" />
-  <input type="checkbox" id="m-hide_pop${i}" style="margin-bottom:30px">ŒŸõ—pƒ|ƒbƒvƒAƒbƒv‚Ìˆê——‚É•\¦‚µ‚È‚¢
-  <input type="checkbox" id="m-hide_his${i}" style="margin-bottom:30px">•ñ—š—ğˆê——‚É•\¦‚µ‚È‚¢<br />
-  <strong>ƒIƒŠƒWƒiƒ‹ì•i‚Ì“à—e‚ÆA’˜ìŒ NŠQ‚Ì“à—eF</strong><br />
-  <font size="-1">¦Google‚Ìíœ’S“–Ò‚ªAíœ‘ÎÛ‚Æ‚È‚éƒy[ƒW‚É‚»‚Ìì•i‚ªoŒ»‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚·‚é‚Ì‚Ég‚í‚ê‚Ü‚·B<strong>‚P‚Â‚Ì•ñ“à—e‚Åˆµ‚¤‚Ì‚Í‚Pí—Ş‚Ìì•ii¤•ij‚Ì‚İ</strong>‚Æ‚µA‚í‚©‚è‚â‚·‚­‹Lq‚µ‚Ä‚­‚¾‚³‚¢B</font><textarea style="height:140px;" id="m-original${i}"></textarea><br /><strong>•ñÒ‚Ì‘®«F</strong></br><input type="radio" name="reporter-type${i}" value="author" id="author-type${i}" style="margin-bottom:15px">ìÒA‚Ü‚½‚ÍŒ —˜Ò<strong>–{l</strong></br><input type="radio" name="reporter-type${i}" value="attoney" id="attoney-type${i}" style="margin-bottom:15px">ìÒ‚Ü‚½‚ÍŒ —˜Ò‚ÌA³®‚È<strong>‘ã—l</strong> <input name="holder" style="margin-bottom:10px" id="m-holder${i}" type="text" value=""/><form><select id="holder-menu${i}">${holderMenu}</select></form><p id="g-input${i}"><font size ="-1">¦V‹K‚ÉŒ —˜Ò–¼‚ğ“o˜^‚·‚éê‡AGoogle‘¤‚Ì•ñƒtƒH[ƒ€‚Å‚à<strong>‰‰ñ•ñ‚Ì‚İè“ü—Í</strong>‚ª•K—v‚Å‚·B</br>@‚±‚±‚É‹L“ü‚µ‚½‚à‚Ì‚Æ<strong>“¯‚¶Œ —˜Ò–¼</strong>‚ğAGoogle‘¤‚Ì•ñƒtƒH[ƒ€‚É‚à“o˜^‚µ‚Ä‚­‚¾‚³‚¢B</font></p><strong>ƒIƒŠƒWƒiƒ‹‚Ìì•i‚ªŠm”F‚Å‚«‚éURLF</strong></br><font size=" -1">¦íœ‘ÎÛ‚Æ‚È‚éURL‚Å‚Í‚È‚­Aì•i‚Ì”Ì”„ƒy[ƒW‚â©g‚ÅƒAƒbƒvƒ[ƒh‚µ‚½ƒTƒCƒg‚È‚ÇA</br><strong>@’˜ìŒ ‚ğNŠQ‚µ‚Ä‚¢‚È‚¢ƒy[ƒW‚ÌURL</strong>‚ğ‹L“ü‚µ‚Ä‚­‚¾‚³‚¢Bi1s‚É1Œj</font><textarea id="m-infringement${i}"></textarea><br /><strong>NŠQƒTƒCƒg‚ÌŒŸõ‚Ég‚¤Œê‹åF</strong></br><font size=" -1">¦•K—v‚É‰‚¶‚Ä<a href="https://support.google.com/websearch/answer/2466433" target="_blank"><strong>ŒŸõ‰‰Zq</a></strong>‚ğg—p‚·‚é‚ÆAƒTƒCƒg‚Ìi‚İ‚ª‚µ‚â‚·‚­‚È‚è‚Ü‚·B</font><input id="m-query${i}" type="text" style="width:600px"/><br /><center><input id="m-save${i}" type="submit" value="‚±‚Ì“ü—Í“à—e‚ğ•Û‘¶" />@<input class="closure" type="submit" value='${str_close}' /><br /><button id ="m-del_report${i}" style="font-size:0.9em; background-color:#666; color:#fff;">‚±‚Ì€–Ú‚ğíœ</button></center><br /><br />
+  <input type="checkbox" id="m-hide_pop${i}" style="margin-bottom:30px">æ¤œç´¢ç”¨ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ã®ä¸€è¦§ã«è¡¨ç¤ºã—ãªã„
+  <input type="checkbox" id="m-hide_his${i}" style="margin-bottom:30px">å ±å‘Šå±¥æ­´ä¸€è¦§ã«è¡¨ç¤ºã—ãªã„<br />
+  <strong>ã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ã®å†…å®¹ã¨ã€è‘—ä½œæ¨©ä¾µå®³ã®å†…å®¹ï¼š</strong><br />
+  <font size="-1">â€»Googleã®å‰Šé™¤æ‹…å½“è€…ãŒã€å‰Šé™¤å¯¾è±¡ã¨ãªã‚‹ãƒšãƒ¼ã‚¸ã«ãã®ä½œå“ãŒå‡ºç¾ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã™ã‚‹ã®ã«ä½¿ã‚ã‚Œã¾ã™ã€‚<strong>ï¼‘ã¤ã®å ±å‘Šå†…å®¹ã§æ‰±ã†ã®ã¯ï¼‘ç¨®é¡ã®ä½œå“ï¼ˆå•†å“ï¼‰ã®ã¿</strong>ã¨ã—ã€ã‚ã‹ã‚Šã‚„ã™ãè¨˜è¿°ã—ã¦ãã ã•ã„ã€‚</font><textarea style="height:140px;" id="m-original${i}"></textarea><br /><strong>å ±å‘Šè€…ã®å±æ€§ï¼š</strong></br><input type="radio" name="reporter-type${i}" value="author" id="author-type${i}" style="margin-bottom:15px">ä½œè€…ã€ã¾ãŸã¯æ¨©åˆ©è€…<strong>æœ¬äºº</strong></br><input type="radio" name="reporter-type${i}" value="attoney" id="attoney-type${i}" style="margin-bottom:15px">ä½œè€…ã¾ãŸã¯æ¨©åˆ©è€…ã®ã€æ­£å¼ãª<strong>ä»£ç†äºº</strong> <input name="holder" style="margin-bottom:10px" id="m-holder${i}" type="text" value=""/><form><select id="holder-menu${i}">${holderMenu}</select></form><p id="g-input${i}"><font size ="-1">â€»æ–°è¦ã«æ¨©åˆ©è€…åã‚’ç™»éŒ²ã™ã‚‹å ´åˆã€Googleå´ã®å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ ã§ã‚‚<strong>åˆå›å ±å‘Šæ™‚ã®ã¿æ‰‹å…¥åŠ›</strong>ãŒå¿…è¦ã§ã™ã€‚</br>ã€€ã“ã“ã«è¨˜å…¥ã—ãŸã‚‚ã®ã¨<strong>åŒã˜æ¨©åˆ©è€…å</strong>ã‚’ã€Googleå´ã®å ±å‘Šãƒ•ã‚©ãƒ¼ãƒ ã«ã‚‚ç™»éŒ²ã—ã¦ãã ã•ã„ã€‚</font></p><strong>ã‚ªãƒªã‚¸ãƒŠãƒ«ã®ä½œå“ãŒç¢ºèªã§ãã‚‹URLï¼š</strong></br><font size=" -1">â€»å‰Šé™¤å¯¾è±¡ã¨ãªã‚‹URLã§ã¯ãªãã€ä½œå“ã®è²©å£²ãƒšãƒ¼ã‚¸ã‚„è‡ªèº«ã§ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸã‚µã‚¤ãƒˆãªã©ã€</br><strong>ã€€è‘—ä½œæ¨©ã‚’ä¾µå®³ã—ã¦ã„ãªã„ãƒšãƒ¼ã‚¸ã®URL</strong>ã‚’è¨˜å…¥ã—ã¦ãã ã•ã„ã€‚ï¼ˆ1è¡Œã«1ä»¶ï¼‰</font><textarea id="m-infringement${i}"></textarea><br /><strong>ä¾µå®³ã‚µã‚¤ãƒˆã®æ¤œç´¢ã«ä½¿ã†èªå¥ï¼š</strong></br><font size=" -1">â€»å¿…è¦ã«å¿œã˜ã¦<a href="https://support.google.com/websearch/answer/2466433" target="_blank"><strong>æ¤œç´¢æ¼”ç®—å­</a></strong>ã‚’ä½¿ç”¨ã™ã‚‹ã¨ã€ã‚µã‚¤ãƒˆã®çµè¾¼ã¿ãŒã—ã‚„ã™ããªã‚Šã¾ã™ã€‚</font><input id="m-query${i}" type="text" style="width:600px"/><br /><center><input id="m-save${i}" type="submit" value="ã“ã®å…¥åŠ›å†…å®¹ã‚’ä¿å­˜" />ã€€<input class="closure" type="submit" value='${str_close}' /><br /><button id ="m-del_report${i}" style="font-size:0.9em; background-color:#666; color:#fff;">ã“ã®é …ç›®ã‚’å‰Šé™¤</button></center><br /><br />
 </dd>`);
         $('#m-del_report' + i).hide();
 
@@ -814,8 +814,8 @@ var showSlyr = function () {
         });
 
       }
-      //•ñ—š—ğˆê——‚ğ¶¬
-      $('#m-hisMenu').append('<h2>•ñ—š—ğ‚ÌŠm”F‚ÆŠÇ—</h2><font size="-1">•ñŒã‚ÌŒ‹‰Ê‚ÍA<a href ="https://www.google.com/webmasters/tools/dmca-dashboard" target="m_dashboard"><strong>Google‚Ìíœ—pƒ_ƒbƒVƒ…ƒ{[ƒh</strong></a>‚©‚çŠm”F‚Å‚«‚Ü‚·B</font></br></br>');
+      //å ±å‘Šå±¥æ­´ä¸€è¦§ã‚’ç”Ÿæˆ
+      $('#m-hisMenu').append('<h2>å ±å‘Šå±¥æ­´ã®ç¢ºèªã¨ç®¡ç†</h2><font size="-1">å ±å‘Šå¾Œã®çµæœã¯ã€<a href ="https://www.google.com/webmasters/tools/dmca-dashboard" target="m_dashboard"><strong>Googleã®å‰Šé™¤ç”¨ãƒ€ãƒƒã‚·ãƒ¥ãƒœãƒ¼ãƒ‰</strong></a>ã‹ã‚‰ç¢ºèªã§ãã¾ã™ã€‚</font></br></br>');
       for (var i = 0; i < items.m_repNum; i++) {
         var thisArr = items['m_Arr' + i];
         var thisDateArr = items['m_DateArr' + i];
@@ -828,69 +828,69 @@ var showSlyr = function () {
         var urlNum = thisArr.length;
         var urlFinNum = thisFinArr.length;
 
-        //ƒhƒƒCƒ“•Êˆê——‚ğ¶¬
+        //ãƒ‰ãƒ¡ã‚¤ãƒ³åˆ¥ä¸€è¦§ã‚’ç”Ÿæˆ
         var DomArr = [],
           DomUniArr = [],
           domUniNum = DomUniArr.length;
-        //d•¡‚Ì‚È‚¢ˆê——‚ğ¶¬
+        //é‡è¤‡ã®ãªã„ä¸€è¦§ã‚’ç”Ÿæˆ
 
         //	var DomeUniArr= thisDomeArr.filter(function (a, b, self) { return self.indexOf(a) === b; });
         //	var finDomeUniArr= thisFinDomeArr.filter(function (a, b, self) { return self.indexOf(a) === b; });	
         //	var accUniNum = accUniArr" + i + ".length;
-        //•\¦‚ªON‚É‚È‚Á‚Ä‚¢‚é‚©”»’è
+        //è¡¨ç¤ºãŒONã«ãªã£ã¦ã„ã‚‹ã‹åˆ¤å®š
         if (hide_his !== true) {
-          // dt—v‘f‚Ì’Ç‰Á
+          // dtè¦ç´ ã®è¿½åŠ 
           var $newDt = $('<dt>');
-          $newDt.append($('<button>').attr('id', 'm-history' + i).text('–¼Ì–¢İ’è'));
+          $newDt.append($('<button>').attr('id', 'm-history' + i).text('åç§°æœªè¨­å®š'));
           $newDt.append('<br/>');
-          $newDt.append($('<span>').attr('id', 'm-reported' + i).html('<font size="-1">@–¢•ñF ' + urlNum + 'Œ@ •ñ‚¸‚İF ' + urlFinNum + 'Œ@</font><br /><br/>'));
+          $newDt.append($('<span>').attr('id', 'm-reported' + i).html('<font size="-1">ã€€æœªå ±å‘Šï¼š ' + urlNum + 'ä»¶ã€€ å ±å‘Šãšã¿ï¼š ' + urlFinNum + 'ä»¶ã€€</font><br /><br/>'));
           $('#m-hisMenu').append($newDt);
 
-          // dd—v‘f‚Ì’Ç‰Á
+          // ddè¦ç´ ã®è¿½åŠ 
           var $newDd = $('<dd>').attr('id', 'm-hisBox' + i);
 
-          // m-urlBoxMenu‚Ì’Ç‰Á
+          // m-urlBoxMenuã®è¿½åŠ 
           var $newDl1 = $('<dl>').addClass('m-hisBoxMenu').css('margin', '0 auto');
-          $newDl1.append($('<dt>').append($('<button>').attr('id', 'm-urlHis' + i).text('–¢•ñURLˆê—— (' + urlNum + 'Œ)')));
+          $newDl1.append($('<dt>').append($('<button>').attr('id', 'm-urlHis' + i).text('æœªå ±å‘ŠURLä¸€è¦§ (' + urlNum + 'ä»¶)')));
           $newDl1.append($('<dd>').attr('id', 'm-urlBox' + i).append($('<div>').attr('id', 'm-urlTable' + i)));
           $newDd.append($newDl1);
 
-          // m-finBoxMenu‚Ì’Ç‰Á
+          // m-finBoxMenuã®è¿½åŠ 
           var $newDl2 = $('<dl>').addClass('m-finBoxMenu').css('margin', '0 auto');
-          $newDl2.append($('<dt>').append($('<button>').attr('id', 'm-finHis' + i).text('•ñ‚¸‚İURLˆê—— (' + urlFinNum + 'Œ)')));
+          $newDl2.append($('<dt>').append($('<button>').attr('id', 'm-finHis' + i).text('å ±å‘Šãšã¿URLä¸€è¦§ (' + urlFinNum + 'ä»¶)')));
           $newDl2.append($('<dd>').attr('id', 'm-finBox' + i).append($('<div>').attr('id', 'm-finTable' + i)));
           $newDd.append($newDl2);
 
-          // m-domBoxMenu‚Ì’Ç‰Á
+          // m-domBoxMenuã®è¿½åŠ 
           var $newDl3 = $('<dl>').addClass('m-domBoxMenu').css('margin', '0 auto');
-          $newDl3.append($('<dt>').append($('<button>').attr('id', 'm-domHis' + i).text('ƒTƒCƒg•Êˆê—— (ŠJ”­’†)')));
-          $newDl3.append($('<dd>').attr('id', 'm-domBox' + i).append($('<div>').attr('id', 'm-domTable' + i).text('¦©“®Web‹›‘ñ‹@”\‚ÍAƒT[ƒo[‚Ö‚Ì•‰’S‚©‚çŠJ”­‚ğŒ©‘—‚è‚Ü‚µ‚½B\n\n')));
+          $newDl3.append($('<dt>').append($('<button>').attr('id', 'm-domHis' + i).text('ã‚µã‚¤ãƒˆåˆ¥ä¸€è¦§ (é–‹ç™ºä¸­)')));
+          $newDl3.append($('<dd>').attr('id', 'm-domBox' + i).append($('<div>').attr('id', 'm-domTable' + i).text('â€»è‡ªå‹•Webé­šæ‹“æ©Ÿèƒ½ã¯ã€ã‚µãƒ¼ãƒãƒ¼ã¸ã®è² æ‹…ã‹ã‚‰é–‹ç™ºã‚’è¦‹é€ã‚Šã¾ã—ãŸã€‚\n\n')));
           $newDd.append($newDl3);
 
           $('#m-hisMenu').append($newDd);
 
-          // ƒ{ƒ^ƒ“‚Ìƒ^ƒCƒgƒ‹‚ğXV
+          // ãƒœã‚¿ãƒ³ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’æ›´æ–°
           $('#m-history' + i).text(thisTitle);
 
-          // m-urlHis‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+          // m-urlHisã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
           $('#m-urlHis' + i).css({
             color: '#FFF',
             backgroundColor: '#888'
           });
 
-          // m-finHis‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+          // m-finHisã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
           $('#m-finHis' + i).css({
             color: '#F4F4F4',
             backgroundColor: '#666'
           });
 
-          // m-domHis‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+          // m-domHisã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
           $('#m-domHis' + i).css({
             color: '#F6F6F6',
             backgroundColor: '#444'
           });
 
-          // 0Œ‚Ì‚Æ‚«‚ÍURLˆê——ƒ{ƒ^ƒ“‚ğ”ñ•\¦
+          // 0ä»¶ã®ã¨ãã¯URLä¸€è¦§ãƒœã‚¿ãƒ³ã‚’éè¡¨ç¤º
           if (urlNum == 0) {
             $('#m-urlHis' + i).hide();
           }
@@ -904,7 +904,7 @@ var showSlyr = function () {
             var urlThis = thisArr[j];
             var siteThis = thisSiteArr[j];
             var dateThis = thisDateArr[j];
-            var lineThis = siteThis + '@' + urlThis;
+            var lineThis = siteThis + 'ã€€' + urlThis;
 
             var $newTable = $('<table>').attr('width', '100%');
             var $newTr = $('<tr>');
@@ -919,9 +919,9 @@ var showSlyr = function () {
             $newTable.append($newTr);
 
             $('#m-urlTable' + i).prepend($newTable);
-          } //URL‚Ìˆê——‚ğ’Ç‰Á‚ÌI‚í‚è
+          } //URLã®ä¸€è¦§ã‚’è¿½åŠ ã®çµ‚ã‚ã‚Š
 
-          //•ñ‚¸‚İURL‚Ìˆê——‚ğ’Ç‰Á
+          //å ±å‘Šãšã¿URLã®ä¸€è¦§ã‚’è¿½åŠ 
           for (var j = 0; j < urlFinNum; j++) {
             var finThis = thisFinArr[j];
             var siteThis = thisFinSiteArr[j];
@@ -940,7 +940,7 @@ var showSlyr = function () {
             $newTd.append($('<font>').attr('size', '2.5').append($('<span>').attr('id', 'm-urlFinNum' + i + '_' + j).text((j + 1) + ': ')));
             $newTd.append($('<a>').attr('href', finThis).attr('target', '_blank').append($('<font>').attr('size', '2.5').append($('<span>').attr('id', 'm-urlFinLine' + i + '_' + j).text(finThis))));
             $newTd.append($('<br>'));
-            $newTd.append($('<font>').attr('size', '1.8').append($('<span>').addClass('alignright').attr('id', 'm-finNumLine' + i + '_' + j).append(finDateThis + '@by ').append($('<strong>').append($('<a>').attr('href', finThis).attr('target', '_blank').text(siteThis)))));
+            $newTd.append($('<font>').attr('size', '1.8').append($('<span>').addClass('alignright').attr('id', 'm-finNumLine' + i + '_' + j).append(finDateThis + 'ã€€by ').append($('<strong>').append($('<a>').attr('href', finThis).attr('target', '_blank').text(siteThis)))));
             $newTd.append($('<br>'));
             $newTd.append($('<br>'));
             $newTr.append($newTd);
@@ -948,8 +948,8 @@ var showSlyr = function () {
 
             $('#m-finTable' + i).prepend($newTable);
           }
-          //•ñ‚¸‚İURL‚Ìˆê——‚ğ’Ç‰Á‚ÌI‚í‚è
-          //ƒXƒNƒ[ƒ‹ƒo[‚ÌƒfƒUƒCƒ“
+          //å ±å‘Šãšã¿URLã®ä¸€è¦§ã‚’è¿½åŠ ã®çµ‚ã‚ã‚Š
+          //ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã®ãƒ‡ã‚¶ã‚¤ãƒ³
           // Create object for custom scrollbar settings
           var csObj = new Object();
           csObj.theme = "dark";
@@ -981,10 +981,10 @@ var showSlyr = function () {
               .catch((error) => {
                 console.error(`Failed to copy "${textToCopy}" to clipboard: ${error}`);
               });
-            alert("URLˆê——‚ğƒNƒŠƒbƒvƒ{[ƒh‚ÉƒRƒs[‚µ‚Ü‚µ‚½B");
+            alert("URLä¸€è¦§ã‚’ã‚¯ãƒªãƒƒãƒ—ãƒœãƒ¼ãƒ‰ã«ã‚³ãƒ”ãƒ¼ã—ã¾ã—ãŸã€‚");
           });
           $("#clear_m_Arr" + i).click(function () {
-            if (window.confirm("‚±‚Ì€–Ú‚Ì–¢•ñURL‚ğ‚·‚×‚Äíœ‚µ‚Ü‚·‚©H")) {
+            if (window.confirm("ã“ã®é …ç›®ã®æœªå ±å‘ŠURLã‚’ã™ã¹ã¦å‰Šé™¤ã—ã¾ã™ã‹ï¼Ÿ")) {
               // Create object for storage keys to be deleted
               var del = {};
               var mode = $(this).attr("id").replace("clear_m_Arr", "");
@@ -997,14 +997,14 @@ var showSlyr = function () {
                 location.reload();
               });
 
-              alert("‚±‚Ì€–Ú‚Ì–¢•ñURL‚ğ‚·‚×‚Äíœ‚µ‚Ü‚µ‚½B");
+              alert("ã“ã®é …ç›®ã®æœªå ±å‘ŠURLã‚’ã™ã¹ã¦å‰Šé™¤ã—ã¾ã—ãŸã€‚");
             } else {}
           });
-        } //•\¦‚ªON‚É‚È‚Á‚Ä‚¢‚é‚©”»’è‚ÌI‚í‚è			
-      } //•ñ—š—ğˆê——¶¬‚ÌI‚í‚è
+        } //è¡¨ç¤ºãŒONã«ãªã£ã¦ã„ã‚‹ã‹åˆ¤å®šã®çµ‚ã‚ã‚Š			
+      } //å ±å‘Šå±¥æ­´ä¸€è¦§ç”Ÿæˆã®çµ‚ã‚ã‚Š
     }
 
-    //Šî–{İ’è‚Ì•Û‘¶EXVƒ{ƒ^ƒ“‚ÉƒNƒŠƒbƒNƒCƒxƒ“ƒg‚ğİ’è
+    //åŸºæœ¬è¨­å®šã®ä¿å­˜ãƒ»æ›´æ–°ãƒœã‚¿ãƒ³ã«ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
     $('#m_save_setting').click(function () {
       var m_name = $('#m-name').val();
       var m_family = $('#m-family').val();
@@ -1028,7 +1028,7 @@ var showSlyr = function () {
         alert(str_saved);
       }
     });
-    //•ñ“à—e‚Ì•Û‘¶EXVƒ{ƒ^ƒ“‚ÉƒNƒŠƒbƒNƒCƒxƒ“ƒg‚ğİ’è
+    //å ±å‘Šå†…å®¹ã®ä¿å­˜ãƒ»æ›´æ–°ãƒœã‚¿ãƒ³ã«ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
     for (i = 0; i < items.m_repNum; i++) {
       $('#m-save' + i).click(m_save);
     }
@@ -1045,28 +1045,28 @@ var showSlyr = function () {
         const m_query = $(m_query_id).val();
         const m_holder = $("#m-holder" + num).val();
 
-        //³‚µ‚­“ü—Í‚³‚ê‚Ä‚¢‚é‚©”»’è
+        //æ­£ã—ãå…¥åŠ›ã•ã‚Œã¦ã„ã‚‹ã‹åˆ¤å®š
         const m_repNew = m_report;
         const m_origNew = m_original;
         const m_infNew = m_infringement;
         const m_queryNew = m_query;
         const m_holdNew = m_holder;
 
-        //URL—“‚ÉURL‚ª‹L“ü‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©”»’è
+        //URLæ¬„ã«URLãŒè¨˜å…¥ã•ã‚Œã¦ã„ã‚‹ã‹ã©ã†ã‹åˆ¤å®š
         var urls = m_infNew.split("\n");
         for (i = 0; i < urls.length; i++) {
           if (urls[i].indexOf('http://') == -1 && urls[i].indexOf('https://') == -1) {
             var notURL = true;
           }
-          if (urls[i].indexOf(' ') !== -1 || urls[i].indexOf('@') !== -1) {
+          if (urls[i].indexOf(' ') !== -1 || urls[i].indexOf('ã€€') !== -1) {
             var notURL = true;
           }
         }
-        //“ü—Í“à—e‚É•s”õ‚ª‚È‚¢‚©”»’è
+        //å…¥åŠ›å†…å®¹ã«ä¸å‚™ãŒãªã„ã‹åˆ¤å®š
         if (m_repNew === m_str_ex1 || m_repNew === "" || m_origNew === m_str_ex2 || m_origNew === "" || m_infNew === m_str_ex3 || m_infNew === "" || m_queryNew === m_str_ex4 || m_queryNew === "" || m_holdNew === "" || m_holdNew === str_holder || m_holdNew === null || m_holdNew === undefined || notURL === true) {
           alert(str_al_save_new);
           if (notURL === true) {
-            alert("uƒIƒŠƒWƒiƒ‹ì•i‚ÌURLv‚Í1s‚É1ŒAuhttp://v‚Ü‚½‚Íuhttps://v‚©‚ç‚Í‚¶‚Ü‚éURL‚Ì‚İ‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B");
+            alert("ã€Œã‚ªãƒªã‚¸ãƒŠãƒ«ä½œå“ã®URLã€ã¯1è¡Œã«1ä»¶ã€ã€Œhttp://ã€ã¾ãŸã¯ã€Œhttps://ã€ã‹ã‚‰ã¯ã˜ã¾ã‚‹URLã®ã¿ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚");
           }
         } else {
           var obj = new Object();
@@ -1096,7 +1096,7 @@ var showSlyr = function () {
 
       });
     });
-    //‹L“ü—á‚Ì•\¦/”ñ•\¦‚ğŠÇ—
+    //è¨˜å…¥ä¾‹ã®è¡¨ç¤º/éè¡¨ç¤ºã‚’ç®¡ç†
     $('#m-name').focus(function () {
       if ($('#m-name').val() == str_taro) {
         $(this).val("");
@@ -1198,7 +1198,7 @@ var showSlyr = function () {
         }).val(m_str_ex4);
     });
 
-    //ƒgƒOƒ‹‚ğİ’è
+    //ãƒˆã‚°ãƒ«ã‚’è¨­å®š
     $("#m-acMenu dt, #m-hisMenu dt").on("click", function () {
       $(this).next('dd').slideToggle("fast");
       var contents = $(this).next('dd');
@@ -1215,10 +1215,10 @@ var showSlyr = function () {
       $(this).closest('dd').slideToggle("fast");
     });
 
-    $('#m-main').append('<font size="-1"><br/><center><span>¦NŠQƒTƒCƒg‚ÌŒŸõE•ñ‚Í<strong>ƒEƒBƒ“ƒhƒE‰Eã‚ÌƒAƒCƒRƒ“<img src=\"images/ccslyrt_16.png\" width=\"24\"></strong>‚©‚çs‚¦‚Ü‚·B<br/><br/>¦•ñƒŠƒXƒg‚Ö‚ÌURL’Ç‰Á—pƒ{ƒ^ƒ“‚ÍAuŠî–{İ’èv‚Æu•ñ“à—ev‹L“üŒã‚É</br><strong>Šeƒy[ƒW‚ÌÅã•”</strong>‚É•\¦‚³‚ê‚Ü‚·B<br/>‚Ü‚¸‚Íƒc[ƒ‹ƒAƒCƒRƒ“‚©‚çGoogleŒŸõ‚ğs‚Á‚Ä‚İ‚Ä‚­‚¾‚³‚¢B<br/></br><font size=\"3\"><strong>’˜ìŒ NŠQ‚É‚ ‚½‚ç‚È‚¢—á‚ğ’Ê•ñ‚µ‚È‚¢‚æ‚¤\•ª‚²’ˆÓ‚­‚¾‚³‚¢B</strong></font></br>‚½‚Æ‚¦‚ÎATwitterEFacebookEPixiv‚È‚Ç</br>SNS‚ÌŒö®ƒEƒBƒWƒFƒbƒg‚ğg—p‚µ‚½ì•i‚Ì“]Úi–„‚ß‚İj‚Í</br>—˜—p‹K–ñ‚É‚æ‚Á‚Ä”F‚ß‚ç‚ê‚Ä‚¨‚èA‡–@‚Èˆø—p‚Ì—vŒ‚ğ–‚½‚³‚È‚­‚Ä‚à</br>’˜ìŒ NŠQ‚Æ‚Í‚È‚è‚Ü‚¹‚ñB</br></br>developed by <a href=\"https://twitter.com/nakashima723\">nakashima723</a> since 2015</font><br/><font size=\"-2\">•s‹ï‡E‚²—v–]‚È‚Ç‚ ‚è‚Ü‚µ‚½‚çAã‹LƒAƒJƒEƒ“ƒg‚Ü‚½‚ÍˆÈ‰º‚ÌƒAƒhƒŒƒX‚Ü‚Å‚²˜A—‚­‚¾‚³‚¢B</font><br/><a href=\"mailto:yokoshima723@gmail.com\">yokoshima723@gmail.com</a></span></center></font>');
+    $('#m-main').append('<font size="-1"><br/><center><span>â€»ä¾µå®³ã‚µã‚¤ãƒˆã®æ¤œç´¢ãƒ»å ±å‘Šã¯<strong>ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦å³ä¸Šã®ã‚¢ã‚¤ã‚³ãƒ³<img src=\"images/ccslyrt_16.png\" width=\"24\"></strong>ã‹ã‚‰è¡Œãˆã¾ã™ã€‚<br/><br/>â€»å ±å‘Šãƒªã‚¹ãƒˆã¸ã®URLè¿½åŠ ç”¨ãƒœã‚¿ãƒ³ã¯ã€ã€ŒåŸºæœ¬è¨­å®šã€ã¨ã€Œå ±å‘Šå†…å®¹ã€è¨˜å…¥å¾Œã«</br><strong>å„ãƒšãƒ¼ã‚¸ã®æœ€ä¸Šéƒ¨</strong>ã«è¡¨ç¤ºã•ã‚Œã¾ã™ã€‚<br/>ã¾ãšã¯ãƒ„ãƒ¼ãƒ«ã‚¢ã‚¤ã‚³ãƒ³ã‹ã‚‰Googleæ¤œç´¢ã‚’è¡Œã£ã¦ã¿ã¦ãã ã•ã„ã€‚<br/></br><font size=\"3\"><strong>è‘—ä½œæ¨©ä¾µå®³ã«ã‚ãŸã‚‰ãªã„ä¾‹ã‚’é€šå ±ã—ãªã„ã‚ˆã†ååˆ†ã”æ³¨æ„ãã ã•ã„ã€‚</strong></font></br>ãŸã¨ãˆã°ã€Twitterãƒ»Facebookãƒ»Pixivãªã©</br>SNSã®å…¬å¼ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã‚’ä½¿ç”¨ã—ãŸä½œå“ã®è»¢è¼‰ï¼ˆåŸ‹ã‚è¾¼ã¿ï¼‰ã¯</br>åˆ©ç”¨è¦ç´„ã«ã‚ˆã£ã¦èªã‚ã‚‰ã‚Œã¦ãŠã‚Šã€åˆæ³•ãªå¼•ç”¨ã®è¦ä»¶ã‚’æº€ãŸã•ãªãã¦ã‚‚</br>è‘—ä½œæ¨©ä¾µå®³ã¨ã¯ãªã‚Šã¾ã›ã‚“ã€‚</br></br>developed by <a href=\"https://twitter.com/nakashima723\">nakashima723</a> since 2015</font><br/><font size=\"-2\">ä¸å…·åˆãƒ»ã”è¦æœ›ãªã©ã‚ã‚Šã¾ã—ãŸã‚‰ã€ä¸Šè¨˜ã‚¢ã‚«ã‚¦ãƒ³ãƒˆã¾ãŸã¯ä»¥ä¸‹ã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã¾ã§ã”é€£çµ¡ãã ã•ã„ã€‚</font><br/><a href=\"mailto:yokoshima723@gmail.com\">yokoshima723@gmail.com</a></span></center></font>');
 
-  }); //chromestorage‚ÌI‚í‚è
-} //showSlyr‚ÌI‚í‚è
+  }); //chromestorageã®çµ‚ã‚ã‚Š
+} //showSlyrã®çµ‚ã‚ã‚Š
 showSlyr();
 //
 $(function () {
@@ -1231,7 +1231,7 @@ $(function () {
   return false;
 });
 
-//ƒ€ƒ‰ƒnƒ`d“_‚Ì‚Æ‚«Aƒ€ƒ‰ƒnƒ`‚Ì‰æ–Ê‚ğ•\¦
+//ãƒ ãƒ©ãƒãƒé‡ç‚¹ã®ã¨ãã€ãƒ ãƒ©ãƒãƒã®ç”»é¢ã‚’è¡¨ç¤º
 chrome.storage.local.get(function (items) {
   if (items.slyr_mode === "murahachi") {
     $('#tabMenu li a').eq(1).trigger("click");
