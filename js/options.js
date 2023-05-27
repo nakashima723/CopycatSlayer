@@ -314,60 +314,108 @@ var showSlyr = function () {
           $('#hisMenu').append('<dt><button id="history' + i + '" style="margin-bottom:10px;">名称未設定</button><br/><span id="reported' + i + '"><font size="-1">　未報告：' + urlNum + '件　 報告ずみ：' + urlFinNum + '件　 凍結されたアカウント数：' + susNum + '</font><br /></span><br/></dt>');
 
           //未報告URL・報告済みURLのボタンを追加
-          eval("$(\'#hisMenu\').append(\'<dd id=\"hisBox" + i + "\"><dl class =\"hisBoxMenu\" style=\"margin: 0 auto; \"><dt><button id=\"urlHis" + i + "\">未報告URL一覧</button><dd id = \"urlBox" + i + "\"><div id = \"urlTable" + i + "\"></div></dd></dt></dl><dl class =\"finBoxMenu\" style=\"margin:0 auto ;\"><dt><button id=\"finHis" + i + "\">　報告ずみURL一覧</button><dd id = \"finBox" + i + "\"><div id = \"finTable" + i + "\"></div></dd></dt></dl><dl class =\"accBoxMenu\" style=\"margin:0 auto ;\"><dt>　 <button id=\"accHis" + i + "\">アカウント別URL一覧</button><dd id = \"accBox" + i + "\"><div id = \"accTable" + i + "\"></div></dd></dt></dl><dl class =\"susBoxMenu\" style=\"margin:0 auto 0;\"><dt><button id=\"susHis" + i + "\">　凍結ずみアカウント一覧</button><dd id = \"susBox" + i + "\"><div id = \"susTable" + i + "\"></div></dd></dt></dl></dd>\');");
+          $('#hisMenu').append('<dd id="hisBox' + i + '"><dl class ="hisBoxMenu" style="margin: 0 auto; "><dt><button id="urlHis' + i + '">未報告URL一覧</button><dd id = "urlBox' + i + '"><div id = "urlTable' + i + '"></div></dd></dt></dl><dl class ="finBoxMenu" style="margin:0 auto ;"><dt><button id="finHis' + i + '">　報告ずみURL一覧</button><dd id = "finBox' + i + '"><div id = "finTable' + i + '"></div></dd></dt></dl><dl class ="accBoxMenu" style="margin:0 auto ;"><dt>　 <button id="accHis' + i + '">アカウント別URL一覧</button><dd id = "accBox' + i + '"><div id = "accTable' + i + '"></div></dd></dt></dl><dl class ="susBoxMenu" style="margin:0 auto 0;"><dt><button id="susHis' + i + '">　凍結ずみアカウント一覧</button><dd id = "susBox' + i + '"><div id = "susTable' + i + '"></div></dd></dt></dl></dd>');
 
-          eval("$(\'#history" + i + "\').text(thisTitle);");
+          $('#history' + i).text(thisTitle);
 
-          eval("$(\'#urlHis" + i + "\').text('未報告URL一覧 (" + urlNum + "件)');");
-          eval("$(\'#urlHis" + i + "\').css({\"color\":\"#FFF\",\"background-color\":\"#888\"});");
-          eval("$(\'#finHis" + i + "\').text('報告ずみURL一覧 (" + urlFinNum + "件)');");
-          eval("$(\'#finHis" + i + "\').css({\"color\":\"#F4F4F4\",\"background-color\":\"#666\"});");
-          eval("$(\'#accHis" + i + "\').text('アカウント別一覧 (" + accUniNum + "件)');");
-          eval("$(\'#accHis" + i + "\').css({\"color\":\"#F6F6F6\",\"background-color\":\"#444\"});");
-          eval("$(\'#susHis" + i + "\').text('凍結ずみアカウント一覧 (" + susNum + "件)');");
-          eval("$(\'#susHis" + i + "\').css({\"color\":\"#F8F8F8\",\"background-color\":\"#222\"});");
-          eval("var susHis_txt = $(\'#susHis" + i + "\').text();");
+          $('#urlHis' + i).text('未報告URL一覧 (' + urlNum + '件)');
+          $('#urlHis' + i).css({
+            "color": "#FFF",
+            "background-color": "#888"
+          });
+          $('#finHis' + i).text('報告ずみURL一覧 (' + urlFinNum + '件)');
+          $('#finHis' + i).css({
+            "color": "#F4F4F4",
+            "background-color": "#666"
+          });
+          $('#accHis' + i).text('アカウント別一覧 (' + accUniNum + '件)');
+          $('#accHis' + i).css({
+            "color": "#F6F6F6",
+            "background-color": "#444"
+          });
+          $('#susHis' + i).text('凍結ずみアカウント一覧 (' + susNum + '件)');
+          $('#susHis' + i).css({
+            "color": "#F8F8F8",
+            "background-color": "#222"
+          });
+          var susHis_txt = $('#susHis' + i).text();
+
           var a = susHis_txt.split("(");
           var b = a[1].split(")");
-          eval("var nowSusNum" + i + " = b[0].slice(0,-1);");
+          window["nowSusNum" + i] = b[0].slice(0, -1);
 
           //0件のときはURL一覧ボタンを隠す
-          eval("if (urlNum == 0) $(\'#urlHis" + i + "\').hide();");
-          eval("if (urlFinNum == 0) {$(\'#finHis" + i + "\').hide(); $(\'#accHis" + i + "\').hide();} ");
-          eval("if (susNum == 0) $(\'#susHis" + i + "\').hide();");
+          if (urlNum == 0) $('#urlHis' + i).hide();
+          if (urlFinNum == 0) {
+            $('#finHis' + i).hide();
+            $('#accHis' + i).hide();
+          }
+          if (susNum == 0) $('#susHis' + i).hide();
 
           //未報告URLの一覧を追加
           for (var j = 0; j < urlNum; j++) {
-            eval("var urlThis = thisUrlArr" + i + "[" + j + "];");
-            eval("var dateThis = thisUrlDateArr" + i + "[" + j + "];");
-            eval("$(\'#urlTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlNum" + i + "_" + j + "\"></span><a href =\"" + urlThis + "\" target = \"_blank\"><span id =\"urlLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"urlDateLine" + i + "_" + j + "\"></span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"urlDel" + i + "_" + j + "\">削除</button></font></td></tr></table>\');");
-            eval("$(\'#urlNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
-            eval("$(\'#urlLine" + i + "_" + j + "\').append(\"" + urlThis + "\");");
-            eval("$(\'#urlDateLine" + i + "_" + j + "\').append(\"" + dateThis + "　" + "\");");
-            eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"削除\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'戻す\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'削除\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
+            var urlThis = thisUrlArr[j];
+            var dateThis = thisUrDatelArr[j];
+            $('#urlTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><font size = "2.5"><span id ="urlNum' + i + "_" + j + '"></span><a href ="' + urlThis + '" target = "_blank"><span id ="urlLine' + i + "_" + j + '"></span></a></font><br /><font size = "1.8"><span class = "alignright" id ="urlDateLine' + i + "_" + j + '"></span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="urlDel' + i + "_" + j + '">削除</button></font></td></tr></table>');
+            $('#urlNum' + i + "_" + j).append((j + 1) + ": ");
+            $('#urlLine' + i + "_" + j).append(urlThis);
+            $('#urlDateLine' + i + "_" + j).append(dateThis + "　");
+            $('#urlDel' + i + "_" + j).click(function () {
+              var urlHere = $('#urlLine' + i + "_" + j).text();
+              var dateHere = $('#urlDateLine' + i + "_" + j).text();
+              if ($(this).text() == "削除") {
+                $(this).css({
+                  "color": "#F5F5F5",
+                  "background-color": "#222"
+                });
+                $(this).text('戻す');
+                $('#urlNum' + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j).css({
+                  "color": "#999"
+                });
+                for (k = 0; k < thisUrlArr.length; k++) {
+                  if (thisUrlArr[k] == urlHere) {
+                    thisUrlArr.splice(k, 1);
+                    thisUrDatelArr.splice(k, 1);
+                  }
+                }
+              } else {
+                $(this).text('削除');
+                $(this).css({
+                  "color": "",
+                  "background-color": ""
+                });
+                $('#urlNum' + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j).css("color", "");
+                thisUrlArr.push(urlHere);
+                thisUrDatelArr.push(dateHere);
+              }
+            });
           }
+
           //アカウント名一覧を追加
-for (var j = 0; j < accUniNum; j++) {
-    var accThis = window["accUniArr" + i][j];
-    var nowAccArr = [];
-    for (l = 0; l < window["thisAccArr" + i].length; l++) {
-        var nowAcc = window["thisAccArr" + i][l];
-        if (accThis == nowAcc) {
-            nowAccArr.push(accThis);
-        }
-    }
-    $('#accTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><span id ="accNum' + i + '_' + j + '"></span><a href ="https://twitter.com/' + accThis + '" target = "_blank"><span id ="accLine' + i + '_' + j + '"></span></a><font size = "3"><span class = "alignright" id ="accNumLine' + i + '_' + j + '">回　 </span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="susAcc' + i + '_' + j + '">未凍結</button></font></td></tr></table>');
-    $('#accNum' + i + '_' + j).append((j + 1) + ": ");
-    $('#accLine' + i + '_' + j).append(accThis);
-    $('#accNumLine' + i + '_' + j).prepend(nowAccArr.length);
+          for (var j = 0; j < accUniNum; j++) {
+            var accThis = window["accUniArr" + i][j];
+            var nowAccArr = [];
+            for (l = 0; l < thisAccArr.length; l++) {
+              var nowAcc = thisAccArr[l];
+              if (accThis == nowAcc) {
+                nowAccArr.push(accThis);
+              }
+            }
+            $('#accTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><span id ="accNum' + i + '_' + j + '"></span><a href ="https://twitter.com/' + accThis + '" target = "_blank"><span id ="accLine' + i + '_' + j + '"></span></a><font size = "3"><span class = "alignright" id ="accNumLine' + i + '_' + j + '">回　 </span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="susAcc' + i + '_' + j + '">未凍結</button></font></td></tr></table>');
+            $('#accNum' + i + '_' + j).append((j + 1) + ": ");
+            $('#accLine' + i + '_' + j).append(accThis);
+            $('#accNumLine' + i + '_' + j).prepend(nowAccArr.length);
 
-    var accRepNum = [];
-    accRepNum.push(nowAccArr.length);
+            var accRepNum = [];
+            accRepNum.push(nowAccArr.length);
 
-    if (window["thisSusArr" + i].indexOf(accThis) !== -1) {
-        $('#susAcc' + i + '_' + j).text("凍結済");
-        $('#susAcc' + i + '_' + j).css({ "color": "#F5F5F5", "background-color": "#222" });
-    }
+            if (window["thisSusArr" + i].indexOf(accThis) !== -1) {
+              $('#susAcc' + i + '_' + j).text("凍結済");
+              $('#susAcc' + i + '_' + j).css({
+                "color": "#F5F5F5",
+                "background-color": "#222"
+              });
+            }
             //クリックした位置のアカウントを凍結扱いに
             eval("$(\'#susAcc" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];　var accHere = accUniArr" + i + "[x]; console.log(\"アカウント: \" + accHere); if($(this).text() == \"未凍結\") { $(this).text(\"凍結済\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"凍結済\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"凍結済\"){$(this).text(\"未凍結\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"未凍結\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
           }
