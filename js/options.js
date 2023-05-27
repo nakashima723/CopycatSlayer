@@ -20,13 +20,9 @@ var showSlyr = function () {
         });
       });
     }
-
   });
 
   //パクツイスレイヤー
-  //文字列を定義
-  //chrome.storage.local.clear(function(){});
-
   var str_ex1 = "例：壁ドン対処法",
     str_ex2 = "例：私が製作し、以下のツイートで最初に発表したイラストです。",
     str_ex3 = "例：https://twitter.com/nakashima723/status/493780492345307136",
