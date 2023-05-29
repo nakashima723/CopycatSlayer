@@ -10,12 +10,12 @@ chrome.storage.local.get(function (items) {
   var mode = items.mode;
   var setting = items.fullname;
   var report = items.report0;
-  var urlArr = items['urlArr${mode}'];
+  var urlArr = items[`urlArr${mode}`];
   if (setting == undefined || report == undefined) {
     alert(al_setting);
   }
   if (urlArr.length == 0) {
-    alert('「${mode+1}: ${items['report${mode}']}」について、報告対象となるURLがありません。\n\n無断転載スレイヤーを使用する場合は画面右上アイコンの各項目から侵害ツイートを検索して、リストに追加してください。');
+    alert(`「${mode+1}: ${items['report' + mode]}」について、報告対象となるURLがありません。\n\n無断転載スレイヤーを使用する場合は画面右上アイコンの各項目から侵害ツイートを検索して、リストに追加してください。`);
   }
 
   if (mode !== undefined && setting !== undefined && report !== undefined && mode !== "disabled" && urlArr.length !== 0) {
@@ -50,6 +50,18 @@ chrome.storage.local.get(function (items) {
         var origLine = items["tweet_image_original" + mode];
         var urlLine = items["tweet_url_original" + mode];
         var infLine = items["tweet_image_infringement" + mode];
+
+        function copyToClipboard(element, textToCopy) {
+          $(element).on('click', function () {
+            navigator.clipboard.writeText(textToCopy)
+              .then(() => {
+                console.log('「' + textToCopy + '」をクリップボードにコピーしました');
+              })
+              .catch(err => {
+                console.error('Could not copy text: ', err);
+              });
+          });
+        }
         $("input").each(function () {
           var selector = $(this).attr('name');
           if (selector === "acknowledgement") $(this).prop('checked', true);
@@ -58,16 +70,16 @@ chrome.storage.local.get(function (items) {
           if (selector === "signature") $(this).val(items.fullname);
           var name = selector.split("@"),
             name = name[1];
-          if (name === "Content_Owner_Name__c") $(this).val(owner_name);
-          if (name === "Form_Name__c") $(this).val(items.fullname);
-          if (name === "company") $(this).val(items.company);
-          if (name === "jobTitle") $(this).val(items.job);
-          if (name === "streetAddress") $(this).val(items.address);
-          if (name === "city") $(this).val(items.city);
-          if (name === "state") $(this).val(items.state);
-          if (name === "postalCode") $(this).val(items.postal);
-          if (name === "Form_number__c") $(this).val(items.phone_number);
-          if (name === "faxNumber") $(this).val(items.faxnumber);
+          if (name === "Content_Owner_Name__c") copyToClipboard(this, owner_name);
+          if (name === "Form_Name__c") copyToClipboard(this, items.fullname);
+          if (name === "company") copyToClipboard(this, items.company);
+          if (name === "jobTitle") copyToClipboard(this, items.job);
+          if (name === "streetAddress") copyToClipboard(this, items.address);
+          if (name === "city") copyToClipboard(this, items.city);
+          if (name === "state") copyToClipboard(this, items.state);
+          if (name === "postalCode") copyToClipboard(this, items.postal);
+          if (name === "Form_number__c") copyToClipboard(this, items.phone_number);
+          if (name === "faxNumber") copyToClipboard(this, items.faxnumber);
           if (name === "Type_of_Issue__c") {
             if ($(this).val() === "Twitter") $(this).prop('checked', true);
           }
@@ -82,7 +94,7 @@ chrome.storage.local.get(function (items) {
               if (type === "m") $(this).prop('checked', true);
             }
           }
-          if (name === "originalWork[0].value") $(this).val(urlLine);
+          if (name === "originalWork[0].value") copyToClipboard(this, urlLine);
         });
         $("select").each(function () {
           var test = $(this).attr('name');
@@ -99,9 +111,8 @@ chrome.storage.local.get(function (items) {
           var test = $(this).attr('name'),
             name = test.split("@"),
             name = name[1];
-          console.log(name);
-          if (name === "DescriptionText") $(this).val(origLine);
-          if (name === "describeInfringement") $(this).val(infLine);
+          if (name === "DescriptionText") copyToClipboard(this, origLine);
+          if (name === "describeInfringement") copyToClipboard(this, infLine);
         });
         for (i = 1; i < urlArr.length; i++) {
           $(".Button-adornment").eq(1).trigger("click");
@@ -117,8 +128,7 @@ chrome.storage.local.get(function (items) {
               name = test.split("@"),
               name = name[1];
             if (name === selector) {
-              $(this).val(urlArr[0]);
-              console.log(urlArr[0]);
+              copyToClipboard(this, urlArr[0]);
             }
           });
           urlFinArrNow.push(urlArr[0]);
@@ -130,19 +140,20 @@ chrome.storage.local.get(function (items) {
         $('#liability_disclaimer').prop("checked", true);
         $('#good_faith_disclaimer').prop("checked", true);
         $('#exact_match_input').val("この通知の情報は正確です。私は、著作権所有者の代理として行動する権限を持っていることが虚偽の場合は偽証罪に問われることを理解しています。");
-        $('#submit_button').click(function () {
+        $('[type="submit"]').click(function () {
           var obj = {};
           var d = new Date();
           d = d.toLocaleString();
           var date = d.slice(0, -3);
           for (j = 0; j < urlFinArrNow.length; j++) {
+            console.log(date);
             urlFinDateArr.push(date);
           }
-          obj['urlArr${mode}'] = items['urlArr${mode}'];
-          obj['urlDateArr${mode}'] = items['urlDateArr${mode}'];
-          obj['urlFinArr${mode}'] = items['urlFinArr${mode}'];
-          obj['urlFinDateArr${mode}'] = items['urlFinDateArr${mode}'];
-          obj['accNameArr${mode}'] = items['accNameArr${mode}'];
+          obj[`urlArr${mode}`] = urlArr;
+          obj[`urlDateArr${mode}`] = urlDateArr;
+          obj[`urlFinArr${mode}`] = urlFinArr;
+          obj[`urlFinDateArr${mode}`] = urlFinDateArr;
+          obj[`accNameArr${mode}`] = accNameArr;
           chrome.storage.local.set(obj, function (items) {});
           if (urlArr.length !== 0) {
             alert(urlFinArrNow.length + "件のURLを送信し、報告ずみURLとして記録しました。\n\n未報告のURLは残り" + urlArr.length + "件です。\n\n送信後に表示されたページから戻ると、ひきつづき入力できます。");

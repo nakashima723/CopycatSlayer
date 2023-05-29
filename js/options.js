@@ -307,41 +307,56 @@
         $('#report' + i).text(thisTitle);
         $('#acMenu').append('<dd id = "form' + i + '"><strong>この報告内容の名前</strong><br /><font size ="-1">※他の報告内容と区別できるように、わかりやすい名前をつけてください。</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">検索用ポップアップの一覧に表示しない　<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">報告履歴一覧に表示しない<br/>著作権者の名前：<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>オリジナル作品の内容：<textarea id="tweet_image_original' + i + '"></textarea><br />オリジナル作品が確認できるURL：<br /><font size ="-1">※侵害ツイートのURLではなく、ご自身でアップロードしたツイートやサイトなど<br />　著作権侵害にあたらない使用例のURLを記入してください.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />著作権侵害の内容：<textarea id="tweet_image_infringement' + i + '"></textarea><br />侵害ツイートの検索に使う語句：<br /><font size ="-1">※スペースで区切ると複数入力できます。単語の前に半角で「-（マイナス）」をつけると、<br />　その単語を含むツイートが検索結果から除外されます.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />作品の種類：<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">イラスト・写真・絵画　　<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">動画　　<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">文章<br/>報告者の属性：<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">著作権者本人　　<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">著作権者の正式な代理人　<br/><center><input id="save' + i + '" type="submit" value="この入力内容を保存" />　<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">この項目を削除</button></center><br /><br /></dd>');
 
-        eval("$(\'#del_report" + i + "\').hide();");
+        $('#del_report' + i).hide();
         if (hide_his !== true) {
-          eval("$(\'#hisMenu\').append(\'<dt><button id=\"history" + i + "\" style=\"margin-bottom:10px;\">名称未設定</button><br/><span id = \"reported" + i + "\"><font size = \"-1\">　未報告： " + urlNum + "件　 報告ずみ： " + urlFinNum + "件　 凍結されたアカウント数： " + susNum + "</font><br /></span><br/></dt>\');");
+          $('#hisMenu').append('<dt><button id="history' + i + '" style="margin-bottom:10px;">名称未設定</button><br/><span id="reported' + i + '"><font size="-1">　未報告： ' + urlNum + '件　 報告ずみ： ' + urlFinNum + '件　 凍結されたアカウント数： ' + susNum + '</font><br /></span><br/></dt>');
 
           //未報告URL・報告済みURLのボタンを追加
-          eval("$(\'#hisMenu\').append(\'<dd id=\"hisBox" + i + "\"><dl class =\"hisBoxMenu\" style=\"margin: 0 auto; \"><dt><button id=\"urlHis" + i + "\">未報告URL一覧</button><dd id = \"urlBox" + i + "\"><div id = \"urlTable" + i + "\"></div></dd></dt></dl><dl class =\"finBoxMenu\" style=\"margin:0 auto ;\"><dt><button id=\"finHis" + i + "\">　報告ずみURL一覧</button><dd id = \"finBox" + i + "\"><div id = \"finTable" + i + "\"></div></dd></dt></dl><dl class =\"accBoxMenu\" style=\"margin:0 auto ;\"><dt>　 <button id=\"accHis" + i + "\">アカウント別URL一覧</button><dd id = \"accBox" + i + "\"><div id = \"accTable" + i + "\"></div></dd></dt></dl><dl class =\"susBoxMenu\" style=\"margin:0 auto 0;\"><dt><button id=\"susHis" + i + "\">　凍結ずみアカウント一覧</button><dd id = \"susBox" + i + "\"><div id = \"susTable" + i + "\"></div></dd></dt></dl></dd>\');");
+          $('#hisMenu').append('<dd id="hisBox' + i + '"><dl class ="hisBoxMenu" style="margin: 0 auto; "><dt><button id="urlHis' + i + '">未報告URL一覧</button><dd id = "urlBox' + i + '"><div id = "urlTable' + i + '"></div></dd></dt></dl><dl class ="finBoxMenu" style="margin:0 auto ;"><dt><button id="finHis' + i + '">　報告ずみURL一覧</button><dd id = "finBox' + i + '"><div id = "finTable' + i + '"></div></dd></dt></dl><dl class ="accBoxMenu" style="margin:0 auto ;"><dt>　 <button id="accHis' + i + '">アカウント別URL一覧</button><dd id = "accBox' + i + '"><div id = "accTable' + i + '"></div></dd></dt></dl><dl class ="susBoxMenu" style="margin:0 auto 0;"><dt><button id="susHis' + i + '">　凍結ずみアカウント一覧</button><dd id = "susBox' + i + '"><div id = "susTable' + i + '"></div></dd></dt></dl></dd>');
 
-          eval("$(\'#history" + i + "\').text(thisTitle);");
+          $('#history' + i).text(thisTitle);
+          $('#urlHis' + i).text('未報告URL一覧 (' + urlNum + '件)');
+          $('#urlHis' + i).css({
+            "color": "#FFF",
+            "background-color": "#888"
+          });
+          $('#finHis' + i).text('報告ずみURL一覧 (' + urlFinNum + '件)');
+          $('#finHis' + i).css({
+            "color": "#F4F4F4",
+            "background-color": "#666"
+          });
+          $('#accHis' + i).text('アカウント別一覧 (' + accUniNum + '件)');
+          $('#accHis' + i).css({
+            "color": "#F6F6F6",
+            "background-color": "#444"
+          });
+          $('#susHis' + i).text('凍結ずみアカウント一覧 (' + susNum + '件)');
+          $('#susHis' + i).css({
+            "color": "#F8F8F8",
+            "background-color": "#222"
+          });
+          var susHis_txt = $('#susHis' + i).text();
 
-          eval("$(\'#urlHis" + i + "\').text('未報告URL一覧 (" + urlNum + "件)');");
-          eval("$(\'#urlHis" + i + "\').css({\"color\":\"#FFF\",\"background-color\":\"#888\"});");
-          eval("$(\'#finHis" + i + "\').text('報告ずみURL一覧 (" + urlFinNum + "件)');");
-          eval("$(\'#finHis" + i + "\').css({\"color\":\"#F4F4F4\",\"background-color\":\"#666\"});");
-          eval("$(\'#accHis" + i + "\').text('アカウント別一覧 (" + accUniNum + "件)');");
-          eval("$(\'#accHis" + i + "\').css({\"color\":\"#F6F6F6\",\"background-color\":\"#444\"});");
-          eval("$(\'#susHis" + i + "\').text('凍結ずみアカウント一覧 (" + susNum + "件)');");
-          eval("$(\'#susHis" + i + "\').css({\"color\":\"#F8F8F8\",\"background-color\":\"#222\"});");
-          eval("var susHis_txt = $(\'#susHis" + i + "\').text();");
           var a = susHis_txt.split("(");
           var b = a[1].split(")");
-          eval("var nowSusNum" + i + " = b[0].slice(0,-1);");
+          var nowSusNum = window["nowSusNum" + i] = b[0].slice(0, -1);
 
           //0件のときはURL一覧ボタンを隠す
-          eval("if (urlNum == 0) $(\'#urlHis" + i + "\').hide();");
-          eval("if (urlFinNum == 0) {$(\'#finHis" + i + "\').hide(); $(\'#accHis" + i + "\').hide();} ");
-          eval("if (susNum == 0) $(\'#susHis" + i + "\').hide();");
+          if (urlNum == 0) $('#urlHis' + i).hide();
+          if (urlFinNum == 0) {
+            $('#finHis' + i).hide();
+            $('#accHis' + i).hide();
+          }
+          if (susNum == 0) $('#susHis' + i).hide();
 
           //未報告URLの一覧を追加
           for (var j = 0; j < urlNum; j++) {
-            eval("var urlThis = thisUrlArr" + i + "[" + j + "];");
-            eval("var dateThis = thisUrlDateArr" + i + "[" + j + "];");
-            eval("$(\'#urlTable" + i + "\').prepend(\'<table width = \"100%\"><tr><td style = \"margin : 0 auto;\" width = \"85%\"><font size = \"2.5\"><span id =\"urlNum" + i + "_" + j + "\"></span><a href =\"" + urlThis + "\" target = \"_blank\"><span id =\"urlLine" + i + "_" + j + "\"></span></a></font><br /><font size = \"1.8\"><span class = \"alignright\" id =\"urlDateLine" + i + "_" + j + "\"></span><br /><br /></font></td><td><font size = \"1.8\"><button class = \"alignright\" id=\"urlDel" + i + "_" + j + "\">削除</button></font></td></tr></table>\');");
-            eval("$(\'#urlNum" + i + "_" + j + "\').append(\"" + (j + 1) + ": \");");
-            eval("$(\'#urlLine" + i + "_" + j + "\').append(\"" + urlThis + "\");");
-            eval("$(\'#urlDateLine" + i + "_" + j + "\').append(\"" + dateThis + "　" + "\");");
+			  var urlThis = window["thisUrlArr" + i][j];
+			  var dateThis = window["thisUrlDateArr" + i][j];
+			$('#urlTable' + i).prepend('<table width = "100%"><tr><td style = "margin : 0 auto;" width = "85%"><font size = "2.5"><span id ="urlNum' + i + '_' + j + '"></span><a href ="' + urlThis + '" target = "_blank"><span id ="urlLine' + i + '_' + j + '"></span></a></font><br /><font size = "1.8"><span class = "alignright" id ="urlDateLine' + i + '_' + j + '"></span><br /><br /></font></td><td><font size = "1.8"><button class = "alignright" id="urlDel' + i + '_' + j + '">削除</button></font></td></tr></table>');
+			$('#urlNum' + i + '_' + j).append((j + 1) + ": ");
+			$('#urlLine' + i + '_' + j).append(urlThis);
+			$('#urlDateLine' + i + '_' + j).append(dateThis + "　");
             eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"削除\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'戻す\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'削除\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
           }
           //アカウント名一覧を追加

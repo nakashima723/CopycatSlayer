@@ -11,7 +11,7 @@
  "options_page": "options.html",
  "web_accessible_resources": ["options.html"],
  "content_scripts": [{
-			"matches":["https://help.twitter.com/forms/dmca","https://help.twitter.com/*/dmca/*","https://help.twitter.com/*/dmca"],
+			"matches":["https://help.twitter.com/*/dmca/*","https://help.twitter.com/ja/forms/ipi/dmca","https://help.twitter.com/ja/forms/ipi/dmca/copyright-owner"],
 			"js": ["js/jquery.min.js","js/writer.js"]
 },{
 			"matches": ["https://www.google.co.jp/search?q=*"],
