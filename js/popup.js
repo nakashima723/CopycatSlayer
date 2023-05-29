@@ -11,19 +11,19 @@ var showOption = function () {
       var urlNum = items["urlArr" + i].length;
       var urlFinNum = items["urlFinArr" + i].length;
       var accSusNum = items["accSusArr" + i].length;
-      var query = items["query" + i];
+      window["query"+i] = items["query" + i];
       var query_type;
-      var artType = items["art_type" + i];
-      if (artType === "image" + i || artType === undefined) {
+      window["artType"+i] = items["art_type" + i];
+      if (window["artType"+i] === "image"|| window["artType"+i] === undefined) {
         query_type = " filter:images -filter:videos -twipple&src=typd";
-      } else if (artType === "movie" + i) {
+      } else if (window["artType"+i] === "movie") {
         query_type = " filter:videos -filter:images -youtube -vine&src=typd";
-      } else if (artType === "writing" + i) {
+      } else if (window["artType"+i] === "writing") {
         query_type = " -filter:videos -filter:images&src=typd";
       }
 
       var hide_pop = items["hide_pop" + i];
-      var query = encodeURIComponent(query);
+      window["query"+i] = encodeURIComponent(window["query"+i]);
       if (hide_pop !== true) {
         var data = items["report" + i];
         var repTitle = i + 1 + ": " + data;
@@ -49,7 +49,7 @@ var showOption = function () {
             'mode': i
           };
           chrome.storage.local.set(obj, function () {});
-          window.open("https://mobile.twitter.com/search?q=" + query + " -" + items.account_name + query_type + "&f=live");
+          window.open("https://twitter.com/search?q=" + window["query"+i] + " -" + items.account_name + query_type + "&f=live");
         });
 
         $('#report' + i).click(function () {
@@ -58,7 +58,22 @@ var showOption = function () {
           };
           chrome.storage.local.set(obj, function () {});
           console.log(obj['mode'] = i);
-          window.open("https://support.twitter.com/forms/dmca");
+	var mode = items.mode;
+	var owner_type = items[`owner_type${mode}`];
+    var lang = "ja",
+      front = "https://help.twitter.com/",
+      back = "/forms/ipi/dmca",
+      mergedURL = front + lang + back;
+      if (owner_type === undefined || owner_type === "" || owner_type === "owner") {
+        var end = "/copyright-owner",
+          mergedURL = front + lang + back + end;
+        url = mergedURL;
+      } else {
+        var end = "/authorized-rep",
+          mergedURL = front + lang + back + end;
+        url = mergedURL;
+      }
+          window.open(url);
         });
 
         $("#acMenu dt").eq(i).on("click", function () {
@@ -79,8 +94,8 @@ var showOption = function () {
       if (m_hide_pop !== true) {
         var m_data = items['m_report' + i];
         var m_repTitle = (i + 1) + ": " + m_data;
-        const mListButton = `<dt><button style="margin-bottom: 10px" id="m-list${i}">${m_repTitle}</button></dt>`;
-        const mForm = `<dd id="m-form${i}"><span id="m-reported"><font size="-1">未報告： ${m_Num}件<br/>報告ずみ： ${m_FinNum}件</font><br /></span><center><input id="m-search${i}" type="submit" value="　検索　" style="margin:10 auto;" /><br /><input id="m-report${i}" type="submit" value="　報告　" style="background-color:#cc0000; color:#F5F5F5; border-color:#990000;" /><center></dd>`;
+        var mListButton = `<dt><button style="margin-bottom: 10px" id="m-list${i}">${m_repTitle}</button></dt>`;
+        var mForm = `<dd id="m-form${i}"><span id="m-reported"><font size="-1">未報告： ${m_Num}件<br/>報告ずみ： ${m_FinNum}件</font><br /></span><center><input id="m-search${i}" type="submit" value="　検索　" style="margin:10 auto;" /><br /><input id="m-report${i}" type="submit" value="　報告　" style="background-color:#cc0000; color:#F5F5F5; border-color:#990000;" /><center></dd>`;
         $('#m-acMenu').append(mListButton, mForm);
         $('dl').css('margin', '10 auto 0 auto');
         $('#m-options').css('margin-bottom', '5px');

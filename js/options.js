@@ -147,7 +147,7 @@
     });
   }
 
-  const showReports = function () {
+  var showReports = function () {
     chrome.storage.local.get(function (items) {
       for (let i = 0; i < items.repNum; i++) {
         if (items[`art_type${i}`] === undefined) {
@@ -186,7 +186,7 @@
         $(`#m-infringement${i}`).val(items[`m_infringement${i}`]);
         $(`#m-original${i}`).val(items[`m_original${i}`]);
 
-        const holder = items[`m_holder${i}`];
+        var holder = items[`m_holder${i}`];
 
         if (holder === undefined || holder === 'self') {
           $(`#author-type${i}`).prop('checked', true);
@@ -305,7 +305,7 @@
 
         $('#acMenu').append('<dt><button id="report' + i + '"></button></dt>');
         $('#report' + i).text(thisTitle);
-        $('#acMenu').append('<dd id = "form' + i + '"><strong>この報告内容の名前</strong><br /><font size ="-1">※他の報告内容と区別できるように、わかりやすい名前をつけてください。</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">検索用ポップアップの一覧に表示しない　<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">報告履歴一覧に表示しない<br/>著作権者の名前：<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>オリジナル作品の内容：<textarea id="tweet_image_original' + i + '"></textarea><br />オリジナル作品が確認できるURL：<br /><font size ="-1">※侵害ツイートのURLではなく、ご自身でアップロードしたツイートやサイトなど<br />　著作権侵害にあたらない使用例のURLを記入してください.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />著作権侵害の内容：<textarea id="tweet_image_infringement' + i + '"></textarea><br />侵害ツイートの検索に使う語句：<br /><font size ="-1">※スペースで区切ると複数入力できます。単語の前に半角で「-（マイナス）」をつけると、<br />　その単語を含むツイートが検索結果から除外されます.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />作品の種類：<br /><input type="radio" name="art_type' + i + '" value="image' + i + '" id="image_type' + i + '" style="margin-bottom:40px">イラスト・写真・絵画　　<input type="radio" name="art_type' + i + '" value="movie' + i + '" id="movie_type' + i + '" style="margin-bottom:40px">動画　　<input type="radio" name="art_type' + i + '" value="writing' + i + '" id="writing_type' + i + '" style="margin-bottom:40px">文章<br/>報告者の属性：<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">著作権者本人　　<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">著作権者の正式な代理人　<br/><center><input id="save' + i + '" type="submit" value="この入力内容を保存" />　<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">この項目を削除</button></center><br /><br /></dd>');
+        $('#acMenu').append('<dd id = "form' + i + '"><strong>この報告内容の名前</strong><br /><font size ="-1">※他の報告内容と区別できるように、わかりやすい名前をつけてください。</font><input id="report' + i + '_input" type="text" style="margin-bottom:10px" /><input type="checkbox" id="hide_pop' + i + '" style="margin-bottom:30px">検索用ポップアップの一覧に表示しない　<input type="checkbox" id="hide_his' + i + '" style="margin-bottom:30px">報告履歴一覧に表示しない<br/>著作権者の名前：<br /><input id="owner_name' + i + '_input" type="text" style="margin-bottom:10px" /><br/>オリジナル作品の内容：<textarea id="tweet_image_original' + i + '"></textarea><br />オリジナル作品が確認できるURL：<br /><font size ="-1">※侵害ツイートのURLではなく、ご自身でアップロードしたツイートやサイトなど<br />　著作権侵害にあたらない使用例のURLを記入してください.</font><br/><input id="tweet_url_original' + i + '" type="text" style="width:600px"/><br />著作権侵害の内容：<textarea id="tweet_image_infringement' + i + '"></textarea><br />侵害ツイートの検索に使う語句：<br /><font size ="-1">※スペースで区切ると複数入力できます。単語の前に半角で「-（マイナス）」をつけると、<br />　その単語を含むツイートが検索結果から除外されます.</font><br /><input id="query' + i + '" type="text" style="width:600px"/><br />作品の種類：<br /><input type="radio" name="art_type' + i + '" value="image" id="image_type' + i + '" style="margin-bottom:40px">イラスト・写真・絵画　　<input type="radio" name="art_type' + i + '" value="movie" id="movie_type' + i + '" style="margin-bottom:40px">動画　　<input type="radio" name="art_type' + i + '" value="writing" id="writing_type' + i + '" style="margin-bottom:40px">文章<br/>報告者の属性：<br /><input type="radio" name="owner_type' + i + '" value="owner" id="owner_type' + i + '" style="margin-bottom:40px">著作権者本人　　<input type="radio" name="owner_type' + i + '" value="represent" id="represent_type' + i + '" style="margin-bottom:40px">著作権者の正式な代理人　<br/><center><input id="save' + i + '" type="submit" value="この入力内容を保存" />　<input class="closure" type="submit" value="' + str_close + '" /><br /><button id ="del_report' + i + '" style="font-size:0.9em; background-color:#666; color:#fff;">この項目を削除</button></center><br /><br /></dd>');
 
         $('#del_report' + i).hide();
         if (hide_his !== true) {
@@ -567,23 +567,23 @@
         var save = function () {
           chrome.storage.local.get(function (items) {
             for (let i = 0; i < items.repNum; i++) {
-              const report = $('#report' + i + '_input').val();
-              const owner_name = $('#owner_name' + i + '_input').val();
-              const hide_pop = $('#hide_pop' + i).prop('checked');
-              const hide_his = $('#hide_his' + i).prop('checked');
-              const tweet_image_original = $('#tweet_image_original' + i).val();
-              const tweet_url_original = $('#tweet_url_original' + i).val();
-              const tweet_image_infringement = $('#tweet_image_infringement' + i).val();
-              const query = $('#query' + i).val();
-              const art_type = $('input[name=art_type' + i + ']:checked').val();
-              const owner_type = $('input[name=owner_type' + i + ']:checked').val();
+              var report = $('#report' + i + '_input').val();
+              var owner_name = $('#owner_name' + i + '_input').val();
+              var hide_pop = $('#hide_pop' + i).prop('checked');
+              var hide_his = $('#hide_his' + i).prop('checked');
+              var tweet_image_original = $('#tweet_image_original' + i).val();
+              var tweet_url_original = $('#tweet_url_original' + i).val();
+              var tweet_image_infringement = $('#tweet_image_infringement' + i).val();
+              var query = $('#query' + i).val();
+              var art_type = $('input[name=art_type' + i + ']:checked').val();
+              var owner_type = $('input[name=owner_type' + i + ']:checked').val();
 
               if (report === "" || owner_name === "" || tweet_image_original === "" || tweet_url_original === "" || tweet_image_infringement === "" || query === "") {
                 alert(str_al_save_new);
                 break;
               }
 
-              const rep = {
+              var rep = {
                 ['report' + i]: report,
                 ['owner_name' + i]: owner_name,
                 ['hide_pop' + i]: hide_pop,
@@ -736,18 +736,18 @@
       var num = 0;
     }
     //登録ずみの著作者名からプルダウンメニューを生成
-    const holderArr = [];
+    var holderArr = [];
     for (let i = 0; i < num; i++) {
-      const holderTemp = items[`m_holder${i}`];
+      var holderTemp = items[`m_holder${i}`];
       if (holderTemp !== "self") holderArr.push(holderTemp);
     }
 
-    const uniqueHolderArr = Array.from(new Set(holderArr));
+    var uniqueHolderArr = Array.from(new Set(holderArr));
     uniqueHolderArr.sort();
     let holderMenu = "<option value=\"0\">登録ずみの権利者名から入力</option>";
     for (let i = 0; i < uniqueHolderArr.length; i++) {
-      const holderOption = uniqueHolderArr[i];
-      const holderLine = `<option value="${holderOption}">${holderOption}</option>`;
+      var holderOption = uniqueHolderArr[i];
+      var holderLine = `<option value="${holderOption}">${holderOption}</option>`;
       holderMenu += holderLine;
     }
 
@@ -988,7 +988,7 @@
             for (var i = 0; i < Arr.length; i++) {
               ArrString = ArrString + Arr[i] + "\n";
             }
-            const textToCopy = ArrString;
+            var textToCopy = ArrString;
             navigator.clipboard.writeText(textToCopy)
               .then(() => {
                 console.log(`Copied "${textToCopy}" to clipboard successfully.`);
@@ -1049,23 +1049,23 @@
     }
     $('#m-save_new').click(function () {
       chrome.storage.local.get(function (items) {
-        const m_report_input_id = "#m-report" + num + "_input";
-        const m_original_id = "#m-original" + num;
-        const m_infringement_id = "#m-infringement" + num;
-        const m_query_id = "#m-query" + num;
+        var m_report_input_id = "#m-report" + num + "_input";
+        var m_original_id = "#m-original" + num;
+        var m_infringement_id = "#m-infringement" + num;
+        var m_query_id = "#m-query" + num;
 
-        const m_report = $(m_report_input_id).val();
-        const m_infringement = $(m_infringement_id).val();
-        const m_original = $(m_original_id).val();
-        const m_query = $(m_query_id).val();
-        const m_holder = $("#m-holder" + num).val();
+        var m_report = $(m_report_input_id).val();
+        var m_infringement = $(m_infringement_id).val();
+        var m_original = $(m_original_id).val();
+        var m_query = $(m_query_id).val();
+        var m_holder = $("#m-holder" + num).val();
 
         //正しく入力されているか判定
-        const m_repNew = m_report;
-        const m_origNew = m_original;
-        const m_infNew = m_infringement;
-        const m_queryNew = m_query;
-        const m_holdNew = m_holder;
+        var m_repNew = m_report;
+        var m_origNew = m_original;
+        var m_infNew = m_infringement;
+        var m_queryNew = m_query;
+        var m_holdNew = m_holder;
 
         //URL欄にURLが記入されているかどうか判定
         var urls = m_infNew.split("\n");

@@ -19,23 +19,6 @@ chrome.storage.local.get(function (items) {
   }
 
   if (mode !== undefined && setting !== undefined && report !== undefined && mode !== "disabled" && urlArr.length !== 0) {
-    const owner_type = items['owner_type${mode}'];
-    var url = location.href,
-      lang = "ja",
-      front = "https://help.twitter.com/",
-      back = "/forms/ipi/dmca",
-      mergedURL = front + lang + back;
-    if (url === "https://help.twitter.com/forms/dmca" || url === mergedURL) {
-      if (owner_type === undefined || owner_type === "" || owner_type === "owner") {
-        var end = "/copyright-owner",
-          mergedURL = front + lang + back + end;
-        window.location.href = mergedURL;
-      } else {
-        var end = "/authorized-rep",
-          mergedURL = front + lang + back + end;
-        window.location.href = mergedURL;
-      }
-    } else {}
     $(function () {
       setTimeout(function () {
         var owner_type = items["owner_type" + mode];
@@ -46,12 +29,16 @@ chrome.storage.local.get(function (items) {
         var urlFinDateArr = items["urlFinDateArr" + mode];
         var accNameArr = items["accNameArr" + mode];
         var artType = items["art_type" + mode];
-        var type = artType.slice(0, 1);
         var origLine = items["tweet_image_original" + mode];
         var urlLine = items["tweet_url_original" + mode];
         var infLine = items["tweet_image_infringement" + mode];
-
-        function copyToClipboard(element, textToCopy) {
+	  alert(`「${mode+1}: ${items['report' + mode]}」について、「${items['urlArr'+ mode].length}件」の未報告URLを入力します。\n\n空のテキスト入力欄をクリックすると、それぞれの欄に対応したデータが【クリップボードに入力】されます。そのままペースト（Ctrl+Vなど）の操作を行って、順に空欄を埋めてください。\n\n・今あるクリップボードの内容を消したくない場合は、入力を中止してください。\n・プルダウンメニュー（国の選択）やラジオボタン、宣誓のチェックボックスは手動で入力する必要があることに注意してください。`);
+        function inputData(element, textToInput) {
+          $(element).on('click', function () {
+             $(this).val('テスト');
+          });
+        }		  
+		function copyToClipboard(element, textToCopy) {
           $(element).on('click', function () {
             navigator.clipboard.writeText(textToCopy)
               .then(() => {
@@ -64,10 +51,10 @@ chrome.storage.local.get(function (items) {
         }
         $("input").each(function () {
           var selector = $(this).attr('name');
-          if (selector === "acknowledgement") $(this).prop('checked', true);
-          if (selector === "good-faith-belief") $(this).prop('checked', true);
-          if (selector === "authority-to-act") $(this).prop('checked', true);
-          if (selector === "signature") $(this).val(items.fullname);
+          //if (selector === "acknowledgement") $(this).prop('checked', true);
+          //if (selector === "good-faith-belief") $(this).prop('checked', true);
+          //if (selector === "authority-to-act") $(this).prop('checked', true);
+          if (selector === "signature") copyToClipboard(this, items.fullname); //$(this).val(items.fullname);
           var name = selector.split("@"),
             name = name[1];
           if (name === "Content_Owner_Name__c") copyToClipboard(this, owner_name);
@@ -81,17 +68,17 @@ chrome.storage.local.get(function (items) {
           if (name === "Form_number__c") copyToClipboard(this, items.phone_number);
           if (name === "faxNumber") copyToClipboard(this, items.faxnumber);
           if (name === "Type_of_Issue__c") {
-            if ($(this).val() === "Twitter") $(this).prop('checked', true);
+            if ($(this).val() === "Twitter") {} //$(this).prop('checked', true);
           }
           if (name === "type") {
             if ($(this).val() === "Text") {
-              if (type === "t") $(this).prop('checked', true);
+              if (artType === "text") {}//$(this).prop('checked', true);
             }
             if ($(this).val() === "Image/Photograph") {
-              if (type === "i") $(this).prop('checked', true);
+              if (artType === "image") {}//$(this).prop('checked', true);
             }
             if ($(this).val() === "Video/Audiovisual Recording") {
-              if (type === "m") $(this).prop('checked', true);
+              if (artType === "movie") {}//$(this).prop('checked', true);
             }
           }
           if (name === "originalWork[0].value") copyToClipboard(this, urlLine);
@@ -103,8 +90,8 @@ chrome.storage.local.get(function (items) {
               name = name[1];
           }
           if (name === "country") {
-            $(this).val("JP");
-            $(this).next().find("button").text("日本");
+            //$(this).val("JP");
+            //$(this).next().find("button").text("日本");
           }
         });
         $("textarea").each(function () {
@@ -162,10 +149,7 @@ chrome.storage.local.get(function (items) {
           }
           //宣誓欄
         });
-        setTimeout(function () {
-          footerStart("#item");
-        }, 1800);
-      }, 1500);
+      }, 2000);
     });
   }
 });
