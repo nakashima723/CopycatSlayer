@@ -7,21 +7,6 @@
   if (divNum2 === 1) {
     $('#tabBox2').append('<div id=\"m-title\"><center><h1 style=\"margin-top:15px; margin-bottom:10px;\">ムラハチ for Google</h1></div><div id =\"m-main\" style =\'margin: 0 auto;  padding: 15px 40px; width: 750px; \'><dl id=\"m-hisMenu\" style =\'margin: 30px auto; width: 100%;\'></dl><div id=\"m-setting_div\"></div></dl></div></div></br></center></div>');
   }
-
-  chrome.storage.local.get(function (items) {
-    if (items.m_bar === "off") {
-      $('#m-title').append('<center></br><button id="slyr-show" style="padding:20px 50px; background-color:#cc0000; border:none; color:#FFF;">URL追加用バーの表示をONにする</button></center></div>');
-      $("#slyr-show").click(function () {
-        var bar_mode = new Object();
-        bar_mode['m_bar'] = "on";
-        chrome.storage.local.set(bar_mode, function (items) {
-          alert("URL追加用バーの表示をONにしました。\nバーを表示させたいページを更新すると反映されます。");
-          $('#slyr-show').hide();
-        });
-      });
-    }
-  });
-
   //パクツイスレイヤー
   var str_ex1 = "例：壁ドン対処法",
     str_ex2 = "例：私が製作し、以下のツイートで最初に発表したイラストです。",
@@ -51,6 +36,20 @@
     str_yamada = "例：山田",
     str_company = "例：自営業";
 
+
+  chrome.storage.local.get(function (items) {
+    if (items.m_bar === "off") {
+      $('#m-title').append('<center></br><button id="slyr-show" style="padding:20px 50px; background-color:#cc0000; border:none; color:#FFF;">URL追加用バーの表示をONにする</button></center></div>');
+      $("#slyr-show").click(function () {
+        var bar_mode = new Object();
+        bar_mode['m_bar'] = "on";
+        chrome.storage.local.set(bar_mode, function (items) {
+          alert("URL追加用バーの表示をONにしました。\nバーを表示させたいページを更新すると反映されます。");
+          $('#slyr-show').hide();
+        });
+      });
+    }
+  });
   //登録されている報告内容の数を判定
   var repCounter = function () {
     chrome.storage.local.get(function (items) {
@@ -146,7 +145,6 @@
       }
     });
   }
-
   var showReports = function () {
     chrome.storage.local.get(function (items) {
       for (let i = 0; i < items.repNum; i++) {
@@ -213,59 +211,57 @@
   $(function () {
     chrome.storage.local.get(function (items) {
       $('#setting_div').append("<h2>" + str_setting + "</h2>" + str_setting_ex + "<br/><br/><dl id=\"acMenu\" style =\'margin:0 auto; width: 100%;\'><dt><button id=\"setting\">" + str_edit + "</button><br /></dt><dd style =\'margin:0 30px auto; display:none; width:\"100%;\"'>本プログラムは報告対象となる著作物の正式な権利者の方、またはその代理人のみご利用いただけます。著作物の定義や、ご自身の権利の有無については各自でご確認ください。<br /><br /><strong>連絡先</strong><br />あなたの本名（フルネーム）:<br /><input id=\"fullname\" type=\"text\" value=\"例：山田太郎\" /><br />会社名・所属:<br /><input id=\"company\" type=\"text\" value=\"例：自営業\" /><br />肩書き：<br /><input id=\"job\" type=\"text\" /><br />メール アドレス : <input id=\"email\" type=\"text\" /><br />住所１（番地・建物名・部屋番号）：<br /><input id=\"address\" type=\"text\" /><br />住所２（市区町村名）：<br /><input id=\"city\" type=\"text\" /><br />住所３（都道府県名）：<br /><input id=\"state\" type=\"text\" /><br />郵便番号：<br /><input id=\"postal\" type=\"text\" /><br />居住国：<br /><input id=\"country\" type=\"text\" /><br />電話番号（任意）：<br /><input id=\"phone_number\" type=\"text\" /><br />FAX番号（任意）：<br /><input id=\"faxnumber\" type=\"text\" /><br />自分のTwitterアカウント名（任意）<br /><font size=\"-1\">※記入しておくと、自分のアカウントあての非公式RTを除外できます。<br>　半角@から入力してください。（例：@nakashima723）<br /></font><input id=\"account_name\" type=\"text\" value=\"例：@nakashima723\" /><br /><strong>法的な宣誓：</strong><br /><font size=\"2.8em\"><br /><input id=\"statement1\" type=\"checkbox\">故意に報告素材または活動が重大な侵害をしていると偽った場合、17 U.S.C. § 512(f) (米国著作権法) に基づき、私は訴訟費用および弁護士費用を含むあらゆる損害について責任を問われる可能性があることを理解しています。<br /><br /><input id=\"statement2\" type=\"checkbox\">私は申し立てた態様での素材の使用が、著作権者、その代理人、または法律によって許容されていないことを、良心に従い誠実に認識しています。<br /><br /><input id=\"statement3\" type=\"checkbox\">本プログラムは当該フォームへの入力を補助・簡便化するものであり、送信した報告の内容と報告結果について、プログラム製作者は一切の責任を負わないことを承諾します。<br /><br /></font>以下の文章を下の空欄に正確に入力してください。<br /><blockquote cite=\"https://support.twitter.com/forms/dmca\">この通知の情報は正確です。私は、著作権所有者の代理として行動する権限を持っていることが虚偽の場合は偽証罪に問われることを理解しています。</blockquote><textarea id=\"statement4\" rows=\"3\"></textarea><br /><input id=\"save_setting\" type=\"submit\" value=\"この入力内容を保存\" />　<input class=\"closure\" type=\"submit\" value=\"" + str_close + "\" /><br /></dd><h2>" + str_edit_report + "</h2>");
-      $(function () {
-        //登録されている報告内容の数を判定
-        // オプションデータの更新
-        $('#save_setting').click(function () {
-          var account_name = $('#account_name').val();
-          var fullname = $('#fullname').val();
-          var company = $('#company').val();
-          var job = $('#job').val();
-          var email = $('#email').val();
-          var address = $('#address').val();
-          var city = $('#city').val();
-          var state = $('#state').val();
-          var postal = $('#postal').val();
-          var country = $('#country').val();
-          var phone_number = $('#phone_number').val();
-          var faxnumber = $('#faxnumber').val();
-          var statement1 = $('#statement1').prop('checked');
-          var statement2 = $('#statement2').prop('checked');
-          var statement3 = $('#statement3').prop('checked');
-          var statement4 = $('#statement4').val();
-          //console.log(account_name);
-          if (fullname === "" || company === "" || job === "" || email === "" || address === "" || city === "" || state === "" || postal === "" || country === "" || statement1 !== true || statement2 !== true || statement3 !== true || statement4 !== 'この通知の情報は正確です。私は、著作権所有者の代理として行動する権限を持っていることが虚偽の場合は偽証罪に問われることを理解しています。') {
-            alert(str_al_save_new);
-          } else {
-            var obj = new Object();
-            obj['account_name'] = account_name;
-            obj['fullname'] = fullname;
-            obj['company'] = company;
-            obj['job'] = job;
-            obj['email'] = email;
-            obj['address'] = address;
-            obj['city'] = city;
-            obj['state'] = state;
-            obj['postal'] = postal;
-            obj['country'] = country;
-            obj['phone_number'] = phone_number;
-            obj['faxnumber'] = faxnumber;
-            obj['slyr_mode'] = "pakutwi";
-            chrome.storage.local.set(obj, function () {});
-            location.reload();
-            alert(str_saved);
-          }
-        });
-        $('#clear').click(function () {
-          chrome.storage.local.clear(function () {
-            location.reload();
-          });
-          alert(str_deleted);
-        });
-        // オプションデータの表示
-        showSetting();
-        showReports();
+      //登録されている報告内容の数を判定
+      // オプションデータの更新
+      $('#save_setting').click(function () {
+        var account_name = $('#account_name').val();
+        var fullname = $('#fullname').val();
+        var company = $('#company').val();
+        var job = $('#job').val();
+        var email = $('#email').val();
+        var address = $('#address').val();
+        var city = $('#city').val();
+        var state = $('#state').val();
+        var postal = $('#postal').val();
+        var country = $('#country').val();
+        var phone_number = $('#phone_number').val();
+        var faxnumber = $('#faxnumber').val();
+        var statement1 = $('#statement1').prop('checked');
+        var statement2 = $('#statement2').prop('checked');
+        var statement3 = $('#statement3').prop('checked');
+        var statement4 = $('#statement4').val();
+        //console.log(account_name);
+        if (fullname === "" || company === "" || job === "" || email === "" || address === "" || city === "" || state === "" || postal === "" || country === "" || statement1 !== true || statement2 !== true || statement3 !== true || statement4 !== 'この通知の情報は正確です。私は、著作権所有者の代理として行動する権限を持っていることが虚偽の場合は偽証罪に問われることを理解しています。') {
+          alert(str_al_save_new);
+        } else {
+          var obj = new Object();
+          obj['account_name'] = account_name;
+          obj['fullname'] = fullname;
+          obj['company'] = company;
+          obj['job'] = job;
+          obj['email'] = email;
+          obj['address'] = address;
+          obj['city'] = city;
+          obj['state'] = state;
+          obj['postal'] = postal;
+          obj['country'] = country;
+          obj['phone_number'] = phone_number;
+          obj['faxnumber'] = faxnumber;
+          obj['slyr_mode'] = "pakutwi";
+          chrome.storage.local.set(obj, function () {});
+          location.reload();
+          alert(str_saved);
+        }
       });
+      $('#clear').click(function () {
+        chrome.storage.local.clear(function () {
+          location.reload();
+        });
+        alert(str_deleted);
+      });
+      // オプションデータの表示
+      showSetting();
+      showReports();
       //報告履歴一覧を生成
       if (items.repNum > 0) {
         $('#acMenu h2').after("<font size=\"-1\">侵害の内容ごとに、タイトルや元作品のURLを設定してください。</br>「報告履歴一覧に表示しない」にチェックを入れると、オプションページの表示を軽量化できます。</br></br></font>");
@@ -357,7 +353,42 @@
             $('#urlNum' + i + '_' + j).append((j + 1) + ": ");
             $('#urlLine' + i + '_' + j).append(urlThis);
             $('#urlDateLine' + i + '_' + j).append(dateThis + "　");
-            eval("$(\'#urlDel" + i + "_" + j + "\').click(function(){ var urlHere = $(\'#urlLine" + i + "_" + j + "\').text(); var dateHere = $(\'#urlDateLine" + i + "_" + j + "\').text(); if ($(this).text() == \"削除\"){ $(this).css({\"color\":\"#F5F5F5\", \"background-color\":\"#222\"}); $(this).text(\'戻す\'); $(\'#urlNum" + i + "_" + j + ", #urlLine" + i + "_" + j + ", #urlDateLine" + i + "_" + j + "\').css({\"color\":\"#999\"});  for(k = 0; k < thisUrlArr" + i + ".length; k++){ if(thisUrlArr" + i + "[k] == urlHere){ thisUrlArr" + i + ".splice( k,1); thisUrlDateArr" + i + ".splice(k,1);}}  } else { $(this).text(\'削除\'); $(this).css({\"color\":\"\",\"background-color\":\"\"}); $(\'#urlNum" + i + '_' + j + ", #urlLine" + i + '_' + j + ", #urlDateLine" + i + '_' + j + "\').css(\"color\", \"\"); thisUrlArr" + i + ".push(urlHere); thisUrlDateArr" + i + ".push(dateHere); }});");
+            $('#urlDel' + i + '_' + j).click(function () {
+              var selector = this.id;
+              // 正規表現で数値を抽出
+              var matches = selector.match(/urlDel(\d+)_(\d+)/);
+              // iとjの部分を抽出
+              var i = parseInt(matches[1], 10);
+              var j = parseInt(matches[2], 10);
+              var urlHere = $('#urlLine' + i + '_' + j).text();
+              var dateHere = $('#urlDateLine' + i + '_' + j).text();
+
+              if ($(this).text() == "削除") {
+                $(this).css({
+                  "color": "#F5F5F5",
+                  "background-color": "#222"
+                });
+                $(this).text('戻す');
+                $('#urlNum' + i + '_' + j + ', #urlLine' + i + '_' + j + ', #urlDateLine' + i + '_' + j).css({
+                  "color": "#999"
+                });
+                for (k = 0; k < window["thisUrlArr" + i].length; k++) {
+                  if (window["thisUrlArr" + i][k] === urlHere) {
+                    window['thisUrlArr' + i].splice(k, 1);
+                    window['thisUrlDateArr' + i].splice(k, 1);
+                  }
+                }
+              } else {
+                $(this).text('削除');
+                $(this).css({
+                  "color": "",
+                  "background-color": ""
+                });
+                $('#urlNum' + i + '_' + j + ', #urlLine' + i + '_' + j + ', #urlDateLine' + i + '_' + j).css("color", "");
+                window['thisUrlArr' + i].push(urlHere);
+                window['thisUrlDateArr' + i].push(dateHere);
+              }
+            });
           }
           //アカウント名一覧を追加
           for (var j = 0; j < accUniNum; j++) {
@@ -390,7 +421,126 @@
             }
 
             //クリックした位置のアカウントを「凍結」扱いに
-            eval("$(\'#susAcc" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];　var accHere = accUniArr" + i + "[x];  if($(this).text() == \"未凍結\") { $(this).text(\"凍結済\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"凍結済\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"凍結済\"){$(this).text(\"未凍結\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"未凍結\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
+            $('#susAcc' + i + '_' + j).click((function (i, j) {
+              return function () {
+                var d = new Date();
+                var date = d.toLocaleString().slice(0, -3);
+                var id = $(this).attr("id");
+                var X = id.split("_");
+                var x = X[1];
+                var accHere = window['accUniArr' + i][x];
+
+                if ($(this).text() == "未凍結") {
+                  $(this).text("凍結済");
+                  $(this).css({
+                    "color": "#F5F5F5",
+                    "background-color": "#222"
+                  });
+
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = "#susFin" + i + "_" + k;
+                    var id_urlFinNum = "#urlFinNum" + i + "_" + k;
+                    var id_urlFinLine = "#urlFinLine" + i + "_" + k;
+                    var id_urlFinDateLine = "#urlFinDateLine" + i + "_" + k;
+                    var id_finNumLine = "#finNumLine" + i + "_" + k;
+
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("凍結済");
+                      $(id_fin).css({
+                        "color": "#F5F5F5",
+                        "background-color": "#222"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#999"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#999"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = "#sus" + i + "_" + k;
+                    var id_susLine = "#susLine" + i + "_" + k;
+
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("未凍結");
+                      $(id_sus).css({
+                        "color": "#fff",
+                        "background-color": "#222"
+                      });
+                    }
+                  }
+
+                  if (window['thisSusArr' + i].indexOf(accHere) == -1) {
+                    window['thisSusArr' + i].push(accHere);
+                    window['thisSusDateArr' + i].push(date);
+                  }
+
+                } else if ($(this).text() == "凍結済") {
+                  $(this).text("未凍結");
+                  $(this).css({
+                    "color": "#222",
+                    "background-color": "#fff"
+                  });
+
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = "#susFin" + i + "_" + k;
+                    var id_urlFinNum = "#urlFinNum" + i + "_" + k;
+                    var id_urlFinLine = "#urlFinLine" + i + "_" + k;
+                    var id_urlFinDateLine = "#urlFinDateLine" + i + "_" + k;
+                    var id_finNumLine = "#finNumLine" + i + "_" + k;
+
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("未凍結");
+                      $(id_fin).css({
+                        "color": "#222",
+                        "background-color": "#fff"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#cc0000"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#222"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#222"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#222"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = "#sus" + i + "_" + k;
+                    var id_susLine = "#susLine" + i + "_" + k;
+
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("未凍結");
+                      $(id_sus).css({
+                        "color": "#222",
+                        "background-color": "#fff"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['thisSusArr' + i].length; k++) {
+                    if (window['thisSusArr' + i][k] == accHere) {
+                      window['thisSusArr' + i].splice(k, 1);
+                      window['thisSusDateArr' + i].splice(k, 1);
+                    }
+                  }
+                }
+              };
+            })(i, j));
+
 
           }
 
@@ -424,9 +574,138 @@
             }
 
             //クリックした位置のアカウントを凍結扱いに
-            eval("$(\'#susFin" + i + "_" + j + "\').click(function(){var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1];　var finHere = thisFinArr" + i + "[x]; var a = finHere.split(\"/\"); var accHere = a[3];  if ($(this).text() == \"未凍結\"){ for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"凍結済\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"凍結済\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"凍結済\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"凍結済\"){ $(\'#urlFinNum" + i + "_" + j + ", #urlFinLine" + i + "_" + j + ", #urlFinDateLine" + i + "_" + j + ", #finNumLine" + i + "_" + j + "\').css(\"color\", \"#222\"); for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"未凍結\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"未凍結\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); }} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
-          }
+            $('#susFin' + i + '_' + j).click((function (i, j) {
+              return function () {
+                var d = new Date();
+                d = d.toLocaleString();
+                var date = d.slice(0, -3);
+                var id = $(this).attr("id");
+                var X = id.split("_");
+                var x = X[1];
+                var finHere = window['thisFinArr' + i][x];
+                var a = finHere.split("/");
+                var accHere = a[3];
 
+                if ($(this).text() == "未凍結") {
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = '#susFin' + i + '_' + k;
+                    var id_urlFinNum = '#urlFinNum' + i + '_' + k;
+                    var id_urlFinLine = '#urlFinLine' + i + '_' + k;
+                    var id_urlFinDateLine = '#urlFinDateLine' + i + '_' + k;
+                    var id_finNumLine = '#finNumLine' + i + '_' + k;
+
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("凍結済");
+                      $(id_fin).css({
+                        "color": "#F5F5F5",
+                        "background-color": "#222"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#999"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#999"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['accUniArr' + i].length; k++) {
+                    var id_acc = '#susAcc' + i + '_' + k;
+                    if (accHere == window['accUniArr' + i][k]) {
+                      $(id_acc).text("凍結済");
+                      $(id_acc).css({
+                        "color": "#F5F5F5",
+                        "background-color": "#222"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = '#sus' + i + '_' + k;
+                    var id_susLine = '#susLine' + i + '_' + k;
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("凍結済");
+                      $(id_sus).css({
+                        "color": "#fff",
+                        "background-color": "#222"
+                      });
+                    }
+                  }
+
+                  if (window['thisSusArr' + i].indexOf(accHere) == -1) {
+                    window['thisSusArr' + i].push(accHere);
+                    window['thisSusDateArr' + i].push(date);
+                  }
+                } else if ($(this).text() == "凍結済") {
+                  $('#urlFinNum' + i + '_' + j + ', #urlFinLine' + i + '_' + j + ', #urlFinDateLine' + i + '_' + j + ', #finNumLine' + i + '_' + j).css("color", "#222");
+
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = '#susFin' + i + '_' + k;
+                    var id_urlFinNum = '#urlFinNum' + i + '_' + k;
+                    var id_urlFinLine = '#urlFinLine' + i + '_' + k;
+                    var id_urlFinDateLine = '#urlFinDateLine' + i + '_' + k;
+                    var id_finNumLine = '#finNumLine' + i + '_' + k;
+
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("未凍結");
+                      $(id_fin).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#cc0000"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#222"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#222"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#222"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['accUniArr' + i].length; k++) {
+                    var id_acc = '#susAcc' + i + '_' + k;
+                    if (accHere == window['accUniArr' + i][k]) {
+                      $(id_acc).text("未凍結");
+                      $(id_acc).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = '#sus' + i + '_' + k;
+                    var id_susLine = '#susLine' + i + '_' + k;
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("未凍結");
+                      $(id_sus).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['thisSusArr' + i].length; k++) {
+                    if (window['thisSusArr' + i][k] == accHere) {
+                      window['thisSusArr' + i].splice(k, 1);
+                      window['thisSusDateArr' + i].splice(k, 1);
+                    }
+                  }
+                }
+              };
+            })(i, j));
+          }
           //凍結ずみアカウント名一覧を追加
           for (var j = 0; j < susNum; j++) {
             var susThis = window["thisSusArr" + i][j];
@@ -447,7 +726,146 @@
             $('#susNumLine' + i + "_" + j).append(susRepNum + "回");
 
             //クリックした位置のアカウントを凍結扱いに
-            eval("$(\'#sus" + i + "_" + j + "\').click(function(){ var d = new Date(); d = d.toLocaleString(); var date = d.slice(0,-3); var id = $(this).attr(\"id\"); var X=id.split(\"_\"); var x = X[1]; var id_susLine = \"#susLine\" + " + i + " + \"_\" + x;　var accHere = $(id_susLine).text(); console.log(\"アカウント: \" + accHere); if($(this).text() == \"未凍結\") { $(this).text(\"凍結済\"); $(this).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"凍結済\"); $(id_acc).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"凍結済\"); $(id_fin).css({\"color\":\"#F5F5F5\",\"background-color\":\"#222\"}); $(id_urlFinLine).css({\"color\":\"#999\"}); $(id_urlFinDateLine).css({\"color\":\"#999\"}); $(id_finNumLine).css({\"color\":\"#999\"}); $(id_urlFinNum).css({\"color\":\"#999\"});}} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#fff\",\"background-color\":\"#222\"});}} if(thisSusArr" + i + ".indexOf(accHere) == -1 ){ thisSusArr" + i + ".push(accHere); thisSusDateArr" + i + ".push(date);} } else if ($(this).text() == \"凍結済\"){$(this).text(\"未凍結\"); $(this).css({\"color\":\"#222\",\"background-color\":\"#fff\"}); for(k=0; k<accUniArr" + i + ".length; k++){ var id_acc = \"#susAcc\" + " + i + " + \"_\" + k; if(accHere == accUniArr" + i + "[k]){ $(id_acc).text(\"未凍結\"); $(id_acc).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisFinArr" + i + ".length; k++){ var id_fin = \"#susFin\" + " + i + " + \"_\" + k; var id_urlFinNum = \"#urlFinNum\" + " + i + " + \"_\" + k; var id_urlFinLine = \"#urlFinLine\" + " + i + " + \"_\" + k; var id_urlFinDateLine = \"#urlFinDateLine\" + " + i + " + \"_\" + k; var id_finNumLine = \"#finNumLine\" + " + i + " + \"_\" + k; if(accHere == thisAccArr" + i + "[k]){ $(id_fin).text(\"未凍結\"); $(id_fin).css({\"color\":\"#222\",\"background-color\":\"#FFF\"}); $(id_urlFinLine).css({\"color\":\"#cc0000\"}); $(id_urlFinDateLine).css({\"color\":\"#222\"}); $(id_finNumLine).css({\"color\":\"#222\"}); $(id_urlFinNum).css({\"color\":\"#222\"}); }} for(k=0; k<nowSusNum" + i + "; k++){ var id_sus = \"#sus\" + " + i + " + \"_\" + k; var id_susLine = \"#susLine\" + " + i + " + \"_\" + k; if(accHere == $(id_susLine).text()){ $(id_sus).text(\"未凍結\"); $(id_sus).css({\"color\":\"#222\",\"background-color\":\"#FFF\"});}} for(k=0; k<thisSusArr" + i + ".length; k++){ if(thisSusArr" + i + "[k] == accHere){ thisSusArr" + i + ".splice(k,1); thisSusDateArr" + i + ".splice(k,1); } } } }); ");
+            $('#sus' + i + '_' + j).click((function (i, j) {
+              return function () {
+                var d = new Date();
+                d = d.toLocaleString();
+                var date = d.slice(0, -3);
+                var id = $(this).attr("id");
+                var X = id.split("_");
+                var x = X[1];
+                var id_susLine = "#susLine" + i + "_" + x;
+                var accHere = $(id_susLine).text();
+
+                if ($(this).text() == "未凍結") {
+                  $(this).text("凍結済");
+                  $(this).css({
+                    "color": "#F5F5F5",
+                    "background-color": "#222"
+                  });
+
+                  for (var k = 0; k < window['accUniArr' + i].length; k++) {
+                    var id_acc = "#susAcc" + i + "_" + k;
+                    if (accHere == window['accUniArr' + i][k]) {
+                      $(id_acc).text("凍結済");
+                      $(id_acc).css({
+                        "color": "#F5F5F5",
+                        "background-color": "#222"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = "#susFin" + i + "_" + k;
+                    var id_urlFinNum = "#urlFinNum" + i + "_" + k;
+                    var id_urlFinLine = "#urlFinLine" + i + "_" + k;
+                    var id_urlFinDateLine = "#urlFinDateLine" + i + "_" + k;
+                    var id_finNumLine = "#finNumLine" + i + "_" + k;
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("凍結済");
+                      $(id_fin).css({
+                        "color": "#F5F5F5",
+                        "background-color": "#222"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#999"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#999"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#999"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = "#sus" + i + "_" + k;
+                    var id_susLine = "#susLine" + i + "_" + k;
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("凍結済");
+                      $(id_sus).css({
+                        "color": "#fff",
+                        "background-color": "#222"
+                      });
+                    }
+                  }
+
+                  if (window['thisSusArr' + i].indexOf(accHere) == -1) {
+                    window['thisSusArr' + i].push(accHere);
+                    window['thisSusDateArr' + i].push(date);
+                  }
+
+                } else if ($(this).text() == "凍結済") {
+                  $(this).text("未凍結");
+                  $(this).css({
+                    "color": "#222",
+                    "background-color": "#fff"
+                  });
+
+                  for (var k = 0; k < window['accUniArr' + i].length; k++) {
+                    var id_acc = "#susAcc" + i + "_" + k;
+                    if (accHere == window['accUniArr' + i][k]) {
+                      $(id_acc).text("未凍結");
+                      $(id_acc).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['thisFinArr' + i].length; k++) {
+                    var id_fin = "#susFin" + i + "_" + k;
+                    var id_urlFinNum = "#urlFinNum" + i + "_" + k;
+                    var id_urlFinLine = "#urlFinLine" + i + "_" + k;
+                    var id_urlFinDateLine = "#urlFinDateLine" + i + "_" + k;
+                    var id_finNumLine = "#finNumLine" + i + "_" + k;
+                    if (accHere == window['thisAccArr' + i][k]) {
+                      $(id_fin).text("未凍結");
+                      $(id_fin).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                      $(id_urlFinLine).css({
+                        "color": "#cc0000"
+                      });
+                      $(id_urlFinDateLine).css({
+                        "color": "#222"
+                      });
+                      $(id_finNumLine).css({
+                        "color": "#222"
+                      });
+                      $(id_urlFinNum).css({
+                        "color": "#222"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['nowSusNum' + i]; k++) {
+                    var id_sus = "#sus" + i + "_" + k;
+                    var id_susLine = "#susLine" + i + "_" + k;
+                    if (accHere == $(id_susLine).text()) {
+                      $(id_sus).text("未凍結");
+                      $(id_sus).css({
+                        "color": "#222",
+                        "background-color": "#FFF"
+                      });
+                    }
+                  }
+
+                  for (var k = 0; k < window['thisSusArr' + i].length; k++) {
+                    if (window['thisSusArr' + i][k] == accHere) {
+                      window['thisSusArr' + i].splice(k, 1);
+                      window['thisSusDateArr' + i].splice(k, 1);
+                    }
+                  }
+                }
+              };
+            })(i, j));
+
 
           }
           $('#urlBox' + i).append('<center><input id="save_urlArr' + i + '" type="submit" value="' + str_edit_save + '"/> <input class="closure" type="submit" value="' + str_close + '" /><br/><font size = "-2"><input id="clear_urlArr' + i + '" type="submit" value="' + str_url_clear + '" style="background-color:#999; color:#fff; "/><br/><br/></font></center>');
@@ -464,13 +882,43 @@
           $("#susTable" + i).mCustomScrollbar(csObj);
 
           //編集内容保存ボタンの機能
-          eval("$('#save_urlArr" + i + "').click(function(){ var del = {}; del[\'urlArr" + i + "\'] = thisUrlArr" + i + "; del[\'urlDateArr" + i + "\'] = thisUrlDateArr" + i + ";  alert(str_edit_saved); chrome.storage.local.set(del,function(){	location.reload();});});");
-          eval("$('#clear_urlArr" + i + "').click(function(){ var del = {}; del[\'urlArr" + i + "\'] = []; del[\'urlDateArr" + i + "\'] = [];  alert(\"この項目の未報告URLをすべて削除しました。\"); chrome.storage.local.set(del,function(){	location.reload();});});");
-          eval("$('#save_finArr" + i + ", #save_accArr" + i + ", #save_susArr" + i + "\').click(function(){ var del = {}; del[\'accSusArr" + i + "\'] = thisSusArr" + i + "; del[\'accSusDateArr" + i + "\'] = thisSusDateArr" + i + ";  alert(str_edit_saved); chrome.storage.local.set(del,function(){	location.reload();});});");
+          $('#save_urlArr' + i).click((function (i) {
+            return function () {
+              let del = {};
+              del['urlArr' + i] = window['thisUrlArr' + i];
+              del['urlDateArr' + i] = window['thisUrlDateArr' + i];
+              alert(str_edit_saved);
+              chrome.storage.local.set(del, function () {
+                location.reload();
+              });
+            };
+          })(i));
+          $('#clear_urlArr' + i).click((function (i) {
+            return function () {
+              let del = {};
+              del['urlArr' + i] = [];
+              del['urlDateArr' + i] = [];
+              alert("この項目の未報告URLをすべて削除しました。");
+              chrome.storage.local.set(del, function () {
+                location.reload();
+              });
+            };
+          })(i));
+
+          $('#save_finArr' + i + ', #save_accArr' + i + ', #save_susArr' + i).click((function (i) {
+            return function () {
+              let del = {};
+              del['accSusArr' + i] = window['thisSusArr' + i];
+              del['accSusDateArr' + i] = window['thisSusDateArr' + i];
+              alert(str_edit_saved);
+              chrome.storage.local.set(del, function () {
+                location.reload();
+              });
+            };
+          })(i));
 
         }
         //項目削除保存ボタンの機能	
-
 
         //データが両方とも空のとき、ボタンを非表示にする
         if (window["urlNum" + i] == 0 && window["urlFinNum" + i] == 0) {
@@ -1034,10 +1482,10 @@
             var textToCopy = ArrString;
             navigator.clipboard.writeText(textToCopy)
               .then(() => {
-                console.log(`Copied "${textToCopy}" to clipboard successfully.`);
+                console.log(`"${textToCopy}"をクリップボードにコピーしました。`);
               })
               .catch((error) => {
-                console.error(`Failed to copy "${textToCopy}" to clipboard: ${error}`);
+                console.error(` "${textToCopy}"のコピーに失敗しました。 ${error}`);
               });
             alert("URL一覧をクリップボードにコピーしました。");
           });
