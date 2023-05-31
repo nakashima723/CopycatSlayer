@@ -119,9 +119,8 @@
       if (items.m_name !== undefined) {
         $('#m-name').val(items.m_name);
         $('#m-family').val(items.m_family);
-        $('#m-email').val(items.m_email);
+        $('#email').val(items.m_email);
         $('#m-company').val(items.m_company);
-        $('#email').val(items.email);
         $('#m-statement1,#m-statement2,#m-statement3').prop('checked', true);
       }
       if (items.fullname !== undefined) {
