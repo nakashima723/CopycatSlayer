@@ -1,21 +1,18 @@
 ﻿{
   "name": "__MSG_extName__",
-  "version": "1.53",
-  "manifest_version": 2,
+  "version": "1.60",
+  "manifest_version": 3,
   "description": "__MSG_extDescription__", 
-  "default_locale": "ja",  "permissions": ["storage", "http://*/*", "https://*/*"],
+  "default_locale": "ja",  "permissions": ["storage"],"host_permissions": ["<all_urls>"],
   "icons": {
     "16" : "images/ccslyrt_16.png",
     "48" : "images/ccslyrt_48.png",
     "128" : "images/ccslyrt_128.png"},
  "options_page": "options.html",
- "web_accessible_resources": ["options.html"],
+"content_security_policy":{"extension_pages":"script-src 'self'; object-src 'self'" },
  "content_scripts": [{
-			"matches":["https://help.twitter.com/*/dmca/*","https://help.twitter.com/ja/forms/ipi/dmca","https://help.twitter.com/ja/forms/ipi/dmca/copyright-owner"],
+			"matches":["https://help.twitter.com/forms/dmca","https://help.twitter.com/*/dmca/*","https://help.twitter.com/*/dmca"],
 			"js": ["js/jquery.min.js","js/writer.js"]
-},{
-			"matches": ["https://www.google.co.jp/search?q=*"],
-			 "js": ["js/jquery.min.js","js/g_search.js"]
 },{
 			"matches": ["https://twitter.com/search?q=*"],
 			 "js": ["js/jquery.min.js","js/reporter.js"]
@@ -30,13 +27,9 @@
 			"matches": ["https://reportcontent.google.com/forms/dmca_search*"],
 			 "js": ["js/jquery.min.js","js/g_writer.js"]
 }],  
-  "browser_action": {
+  "action": {
     "default_icon": "images/ccslyrt_16.png",
     "default_title": "Copycat Slayer",
     "default_popup": "popup.html"
-  },
-  "background": {
-    "scripts": ["js/background.js"]
-  },
-"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
   }
+}
