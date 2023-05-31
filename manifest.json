@@ -18,7 +18,7 @@
 			 "js": ["js/jquery.min.js","js/reporter.js"]
 },{
 			"matches": ["*://*/*"],
-			"exclude_matches": ["https://*.google.co.jp/*", "https://ja.wikipedia.org/*","https://*.google.com/*","*://*.amazon.com/*","*://*.amazon.co.jp/*","*://*.2ch.net/*","*://*.pixiv.net/*"],
+			"exclude_matches": ["https://help.twitter.com/forms/dmca","https://help.twitter.com/*/dmca/*","https://help.twitter.com/*/dmca","https://*.google.co.jp/*", "https://ja.wikipedia.org/*","https://*.google.com/*","*://*.amazon.com/*","*://*.amazon.co.jp/*","*://*.2ch.net/*","*://*.pixiv.net/*"],
 			 "js": ["js/jquery.min.js","js/content.js"]
 },{
 			"matches": ["https://twitter.com/*/status/*"],

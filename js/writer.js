@@ -17,7 +17,6 @@ chrome.storage.local.get(function (items) {
   if (urlArr.length == 0) {
     alert(`「${mode+1}: ${items['report' + mode]}」について、報告対象となるURLがありません。\n\n無断転載スレイヤーを使用する場合は画面右上アイコンの各項目から侵害ツイートを検索して、リストに追加してください。`);
   }
-
   if (mode !== undefined && setting !== undefined && report !== undefined && mode !== "disabled" && urlArr.length !== 0) {
     $(function () {
       setTimeout(function () {
@@ -32,13 +31,21 @@ chrome.storage.local.get(function (items) {
         var origLine = items["tweet_image_original" + mode];
         var urlLine = items["tweet_url_original" + mode];
         var infLine = items["tweet_image_infringement" + mode];
-	  alert(`「${mode+1}: ${items['report' + mode]}」について、「${items['urlArr'+ mode].length}件」の未報告URLを入力します。\n\n空のテキスト入力欄をクリックすると、それぞれの欄に対応したデータが【クリップボードに入力】されます。そのままペースト（Ctrl+Vなど）の操作を行って、順に空欄を埋めてください。\n\n・今あるクリップボードの内容を消したくない場合は、入力を中止してください。\n・プルダウンメニュー（国の選択）やラジオボタン、宣誓のチェックボックスは手動で入力する必要があることに注意してください。`);
+        if (items.ver160_tw === undefined) {
+          alert("【ver.1.60】自動入力の方式が変更になりました。\nクリップボードとペースト機能を利用するため、完全に自動で空欄が埋まることはなくなります。\n\n詳細は、次に表示される通知をよく確認してください。")
+          var obj = {};
+          obj['ver160_tw'] = true;
+          chrome.storage.local.set(obj, function (items) {});
+        }
+        alert(`「${mode+1}: ${items['report' + mode]}」について、「${items['urlArr'+ mode].length}件」の未報告URLを入力します。\n\n空のテキスト入力欄をクリックすると、それぞれの欄に対応したデータが【クリップボードに入力】されます。そのままペースト（Ctrl+Vなど）の操作を行って、順に空欄を埋めてください。\n\n・今あるクリップボードの内容を消したくない場合は、入力を中止してください。\n・プルダウンメニュー（国の選択）やラジオボタン、宣誓のチェックボックスは手動で入力する必要があることに注意してください。`);
+
         function inputData(element, textToInput) {
           $(element).on('click', function () {
-             $(this).val('テスト');
+            $(this).val('テスト');
           });
-        }		  
-		function copyToClipboard(element, textToCopy) {
+        }
+
+        function copyToClipboard(element, textToCopy) {
           $(element).on('click', function () {
             navigator.clipboard.writeText(textToCopy)
               .then(() => {
@@ -72,13 +79,13 @@ chrome.storage.local.get(function (items) {
           }
           if (name === "type") {
             if ($(this).val() === "Text") {
-              if (artType === "text") {}//$(this).prop('checked', true);
+              if (artType === "text") {} //$(this).prop('checked', true);
             }
             if ($(this).val() === "Image/Photograph") {
-              if (artType === "image") {}//$(this).prop('checked', true);
+              if (artType === "image") {} //$(this).prop('checked', true);
             }
             if ($(this).val() === "Video/Audiovisual Recording") {
-              if (artType === "movie") {}//$(this).prop('checked', true);
+              if (artType === "movie") {} //$(this).prop('checked', true);
             }
           }
           if (name === "originalWork[0].value") copyToClipboard(this, urlLine);

@@ -119,7 +119,7 @@
       if (items.m_name !== undefined) {
         $('#m-name').val(items.m_name);
         $('#m-family').val(items.m_family);
-        $('#email').val(items.m_email);
+        $('#m-email').val(items.m_email);
         $('#m-company').val(items.m_company);
         $('#m-statement1,#m-statement2,#m-statement3').prop('checked', true);
       }
@@ -130,7 +130,7 @@
       $('#fullname').val(items.fullname);
       $('#company').val(items.company);
       $('#job').val(items.job);
-      $('#email').val(items.email);
+      $('#m-email').val(items.email);
       $('#address').val(items.address);
       $('#city').val(items.city);
       $('#state').val(items.state);
@@ -1434,7 +1434,7 @@
             var m_finRep = [];
 
             for (var l = 0; l < thisFinArr.length; l++) {
-              if (items.m_FinSiteArr[i][j] === thisSiteArr[i][l]) {
+              if (items['m_FinSiteArr' + i][l] === thisSiteArr[l]) {
                 m_finRep.push(finThis);
               }
             }
@@ -1721,7 +1721,12 @@
     });
 
     $('#m-main').append('<font size="-1"><br/><center><span>※侵害サイトの検索・報告は<strong>ウィンドウ右上のアイコン<img src=\"images/ccslyrt_16.png\" width=\"24\"></strong>から行えます。<br/><br/>※報告リストへのURL追加用ボタンは、「基本設定」と「報告内容」記入後に</br><strong>各ページの最上部</strong>に表示されます。<br/>まずはツールアイコンからGoogle検索を行ってみてください。<br/></br><font size=\"3\"><strong>著作権侵害にあたらない例を通報しないよう十分ご注意ください。</strong></font></br>たとえば、Twitter・Facebook・Pixivなど</br>SNSの公式ウィジェットを使用した作品の転載（埋め込み）は</br>利用規約によって認められており、合法な引用の要件を満たさなくても</br>著作権侵害とはなりません。</br></br>developed by <a href=\"https://twitter.com/nakashima723\">nakashima723</a> since 2015</font><br/><font size=\"-2\">不具合・ご要望などありましたら、上記アカウントまたは以下のアドレスまでご連絡ください。</font><br/><a href=\"mailto:yokoshima723@gmail.com\">yokoshima723@gmail.com</a></span></center></font>');
-
+    if (items.ver160_option === undefined) {
+      alert("【ver.1.60】自動入力の方式が変更になりました。\nクリップボードとペースト機能を利用するため、完全に自動で空欄が埋まることはなくなります。\n\n詳細は、実際に報告を行った場合に表示される通知をよく確認してください。")
+      var obj = {};
+      obj['ver160_option'] = true;
+      chrome.storage.local.set(obj, function (items) {});
+    }
   }); //chromestorageの終わり
 } //showSlyrの終わり
 showSlyr();
