@@ -11,19 +11,19 @@ var showOption = function () {
       var urlNum = items["urlArr" + i].length;
       var urlFinNum = items["urlFinArr" + i].length;
       var accSusNum = items["accSusArr" + i].length;
-      window["query"+i] = items["query" + i];
+      window["query" + i] = items["query" + i];
       var query_type;
-      window["artType"+i] = items["art_type" + i];
-      if (window["artType"+i] === "image"|| window["artType"+i] === undefined) {
+      window["artType" + i] = items["art_type" + i];
+      if (window["artType" + i] === "image" || window["artType" + i] === undefined) {
         query_type = " filter:images -filter:videos -twipple&src=typd";
-      } else if (window["artType"+i] === "movie") {
+      } else if (window["artType" + i] === "movie") {
         query_type = " filter:videos -filter:images -youtube -vine&src=typd";
-      } else if (window["artType"+i] === "writing") {
+      } else if (window["artType" + i] === "writing") {
         query_type = " -filter:videos -filter:images&src=typd";
       }
 
       var hide_pop = items["hide_pop" + i];
-      window["query"+i] = encodeURIComponent(window["query"+i]);
+      window["query" + i] = encodeURIComponent(window["query" + i]);
       if (hide_pop !== true) {
         var data = items["report" + i];
         var repTitle = i + 1 + ": " + data;
@@ -44,37 +44,41 @@ var showOption = function () {
           });
         }
 
-        $('#search' + i).click(function () {
-          var obj = {
-            'mode': i
-          };
-          chrome.storage.local.set(obj, function () {});
-          window.open("https://twitter.com/search?q=" + window["query"+i] + " -" + items.account_name + query_type + "&f=live");
-        });
+        (function (i) {
+          $('#search' + i).click(function () {
+            var obj = {
+              'mode': i
+            };
+            chrome.storage.local.set(obj, function () {});
+            window.open("https://twitter.com/search?q=" + window["query" + i] + " -" + items.account_name + query_type + "&f=live");
+          });
+        })(i);
 
-        $('#report' + i).click(function () {
-          var obj = {
-            'mode': i
-          };
-          chrome.storage.local.set(obj, function () {});
-          console.log(obj['mode'] = i);
-	var mode = items.mode;
-	var owner_type = items[`owner_type${mode}`];
-    var lang = "ja",
-      front = "https://help.twitter.com/",
-      back = "/forms/ipi/dmca",
-      mergedURL = front + lang + back;
-      if (owner_type === undefined || owner_type === "" || owner_type === "owner") {
-        var end = "/copyright-owner",
-          mergedURL = front + lang + back + end;
-        url = mergedURL;
-      } else {
-        var end = "/authorized-rep",
-          mergedURL = front + lang + back + end;
-        url = mergedURL;
-      }
-          window.open(url);
-        });
+        (function (i) {
+          $('#report' + i).click(function () {
+            var obj = {
+              'mode': i
+            };
+            chrome.storage.local.set(obj, function () {});
+            console.log(obj['mode'] = i);
+
+            var mode = items.mode;
+            var owner_type = items[`owner_type${mode}`];
+            var lang = "ja",
+              front = "https://help.twitter.com/",
+              back = "/forms/ipi/dmca",
+              mergedURL = front + lang + back;
+
+            var end;
+            if (owner_type === undefined || owner_type === "" || owner_type === "owner") {
+              end = "/copyright-owner";
+            } else {
+              end = "/authorized-rep";
+            }
+            mergedURL = front + lang + back + end;
+            window.open(mergedURL);
+          });
+        })(i);
 
         $("#acMenu dt").eq(i).on("click", function () {
           var list = {
