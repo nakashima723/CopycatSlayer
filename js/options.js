@@ -70,7 +70,7 @@
       var repNum = {
         "repNum": repArr.length
       };
-      chrome.storage.local.set(repNum, function (items) {});
+      chrome.storage.local.set(repNum, function (items) { });
 
       var m_target = "m_report",
         m_repArr = [];
@@ -84,7 +84,7 @@
       var m_repNum = {
         "m_repNum": m_repArr.length
       };
-      chrome.storage.local.set(m_repNum, function (items) {});
+      chrome.storage.local.set(m_repNum, function (items) { });
 
     });
   }
@@ -130,7 +130,7 @@
       $('#fullname').val(items.fullname);
       $('#company').val(items.company);
       $('#job').val(items.job);
-      $('#m-email').val(items.email);
+      $('#email').val(items.email);
       $('#address').val(items.address);
       $('#city').val(items.city);
       $('#state').val(items.state);
@@ -247,7 +247,7 @@
           obj['phone_number'] = phone_number;
           obj['faxnumber'] = faxnumber;
           obj['slyr_mode'] = "pakutwi";
-          chrome.storage.local.set(obj, function () {});
+          chrome.storage.local.set(obj, function () { });
           location.reload();
           alert(str_saved);
         }
@@ -280,7 +280,7 @@
           window["thisFinDateArr" + i].splice(0, dif);
           var obj = {};
           obj["urlFinDateArr" + i] = window["thisFinDateArr" + i];
-          chrome.storage.local.set(obj, function () {});
+          chrome.storage.local.set(obj, function () { });
         }
 
         // 重複のない一覧を生成
@@ -1085,7 +1085,7 @@
                 slyr_mode: "pakutwi"
               };
 
-              chrome.storage.local.set(rep, function (items) {});
+              chrome.storage.local.set(rep, function (items) { });
             }
 
             if (report !== "" && owner_name !== "" && tweet_image_infringement !== "" && tweet_url_original !== "" && query !== "") {
@@ -1146,7 +1146,7 @@
                 mode: num
               };
 
-              chrome.storage.local.set(obj, function (items) {});
+              chrome.storage.local.set(obj, function (items) { });
               repCounter();
               showSetting();
               showReports();
@@ -1209,7 +1209,7 @@
         rep['m_query' + i] = m_query;
         rep['slyr_mode'] = 'murahachi';
         rep['m_bar'] = 'on';
-        chrome.storage.local.set(rep, function (items) {});
+        chrome.storage.local.set(rep, function (items) { });
       }
       if (m_report !== "" && m_infringement !== "" && m_original !== "" && m_query !== "" && m_holder !== "" && m_holder !== str_holder) {
         alert(str_saved);
@@ -1503,7 +1503,7 @@
               });
 
               alert("この項目の未報告URLをすべて削除しました。");
-            } else {}
+            } else { }
           });
         } //表示がONになっているか判定の終わり			
       } //報告履歴一覧生成の終わり
@@ -1528,7 +1528,7 @@
         obj['m_company'] = m_company;
         obj['m_email'] = m_email;
         obj['slyr_mode'] = "murahachi";
-        chrome.storage.local.set(obj, function () {});
+        chrome.storage.local.set(obj, function () { });
         location.reload();
         alert(str_saved);
       }
@@ -1591,7 +1591,7 @@
           obj['m_mode'] = num;
           obj['slyr_mode'] = "murahachi";
           obj['m_bar'] = "on";
-          chrome.storage.local.set(obj, function (items) {});
+          chrome.storage.local.set(obj, function (items) { });
           repCounter();
           showSetting();
           showReports();
@@ -1725,7 +1725,7 @@
       alert("【ver.1.60】自動入力の方式が変更になりました。\nクリップボードとペースト機能を利用するため、完全に自動で空欄が埋まることはなくなります。\n\n詳細は、実際に報告を行った場合に表示される通知をよく確認してください。")
       var obj = {};
       obj['ver160_option'] = true;
-      chrome.storage.local.set(obj, function (items) {});
+      chrome.storage.local.set(obj, function (items) { });
     }
   }); //chromestorageの終わり
 } //showSlyrの終わり

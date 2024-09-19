@@ -1,6 +1,6 @@
 ﻿{
   "name": "__MSG_extName__",
-  "version": "1.60",
+  "version": "1.70",
   "manifest_version": 3,
   "description": "__MSG_extDescription__", 
   "default_locale": "ja",  "permissions": ["storage"],"host_permissions": ["<all_urls>"],
