@@ -19,7 +19,13 @@ chrome.storage.local.get(function (items) {
 
   function pick(selectors) {
     for (const s of selectors) {
-      const el = document.querySelector(s);
+      let el = document.querySelector(s);
+      if (!el) {
+        const forInput = s.replace(/^input/i, 'textarea');
+        el = document.querySelector(
+          `gdf-text-input ${s}, gdf-textarea ${forInput}`
+        );
+      }
       if (el) return el;
     }
     return null;
