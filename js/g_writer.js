@@ -133,6 +133,8 @@ chrome.storage.local.get(function (items) {
 
   async function fill() {
     const sig = pick([
+      '[data-test-id="form-container-component-signature"] input',
+      '[gdf-id="signature"] input',
       'input[aria-label="署名"]',
       'input[name="signature"]',
       '#signature'
@@ -141,6 +143,8 @@ chrome.storage.local.get(function (items) {
 
     manual(
       pick([
+        '[data-test-id="form-container-component-given-name"] input',
+        '[gdf-id="given-name"] input',
         'input[aria-label="名"]',
         'input[name="firstName"]',
         'input[name="first_name"]',
@@ -151,6 +155,8 @@ chrome.storage.local.get(function (items) {
     );
     manual(
       pick([
+        '[data-test-id="form-container-component-family-name"] input',
+        '[gdf-id="family-name"] input',
         'input[aria-label="姓"]',
         'input[name="lastName"]',
         'input[name="last_name"]',
@@ -161,6 +167,8 @@ chrome.storage.local.get(function (items) {
     );
     manual(
       pick([
+        '[data-test-id="form-container-component-company-name"] input',
+        '[gdf-id="company-name"] input',
         'input[aria-label="組織名"]',
         'input[aria-label="会社名"]',
         'input[name="company"]',
@@ -171,6 +179,8 @@ chrome.storage.local.get(function (items) {
     );
     manual(
       pick([
+        '[data-test-id="form-container-component-email-text"] input',
+        '[gdf-id="email-text"] input',
         'input[type="email"]',
         'input[name="email"]',
         '#email',
@@ -182,9 +192,24 @@ chrome.storage.local.get(function (items) {
     manual(sig, fullname);
 
     const ta = document.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
-    if (ta[0]) manual(ta[0], items['m_original' + mode]);
-    if (ta[1]) manual(ta[1], items['m_infringement' + mode]);
-    if (ta[2]) manual(ta[2], urls.join('\n'));
+    const desc =
+      pick([
+        '[gdf-id="description"] textarea',
+        '[gdf-id="description"] [contenteditable="true"][role="textbox"]'
+      ]) || ta[0];
+    const loc =
+      pick([
+        '[gdf-id^="location-of-material"] textarea',
+        '[gdf-id^="location-of-material"] [contenteditable="true"][role="textbox"]'
+      ]) || ta[1];
+    const urlsBox =
+      pick([
+        '[gdf-id="urls"] textarea',
+        '[gdf-id="urls"] [contenteditable="true"][role="textbox"]'
+      ]) || ta[2];
+    if (desc) manual(desc, items['m_original' + mode]);
+    if (loc) manual(loc, items['m_infringement' + mode]);
+    if (urlsBox) manual(urlsBox, urls.join('\n'));
 
     tickCheckboxes();
     await ensureRadioNo();
