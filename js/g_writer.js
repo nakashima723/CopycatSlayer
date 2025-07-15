@@ -152,7 +152,7 @@ chrome.storage.local.get(function (items) {
         'input[name="company"]',
         'input[name="organization"]',
         '#company'
-      ]) || pickByLabel(['組織名', 'Organization name']),
+      ]) || pickByLabel(['組織名', '会社名', 'Organization name']),
       items.m_company
     );
     manual(
