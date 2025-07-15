@@ -8,6 +8,10 @@ chrome.storage.local.get(function (items) {
 
   function manual(el, val) {
     if (!el) return;
+    if (el.matches('gdf-text-input, gdf-textarea')) {
+      el = el.querySelector('input, textarea, div[contenteditable="true"][role="textbox"]');
+      if (!el) return;
+    }
     if (el.tagName === 'DIV' && el.getAttribute('contenteditable') === 'true') {
       el.innerText = val;
       ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
@@ -26,7 +30,10 @@ chrome.storage.local.get(function (items) {
           `gdf-text-input ${s}, gdf-textarea ${forInput}`
         );
       }
-      if (el) return el;
+      if (el) {
+        const parent = el.closest('gdf-text-input, gdf-textarea');
+        return parent || el;
+      }
     }
     return null;
   }
@@ -39,8 +46,14 @@ chrome.storage.local.get(function (items) {
         const id = label.getAttribute('for');
         if (id) {
           const el = document.getElementById(id);
-          if (el) return el;
+          if (el) return el.closest('gdf-text-input, gdf-textarea') || el;
         }
+      }
+      const span = Array.from(document.querySelectorAll('gdf-text-input span.mdc-floating-label, gdf-textarea span.mdc-floating-label'))
+        .find(l => l.textContent.trim() === t);
+      if (span) {
+        const parent = span.closest('gdf-text-input, gdf-textarea');
+        if (parent) return parent;
       }
     }
     return null;
@@ -149,6 +162,7 @@ chrome.storage.local.get(function (items) {
     manual(
       pick([
         'input[aria-label="組織名"]',
+        'input[aria-label="会社名"]',
         'input[name="company"]',
         'input[name="organization"]',
         '#company'
@@ -156,7 +170,12 @@ chrome.storage.local.get(function (items) {
       items.m_company
     );
     manual(
-      pick(['input[type="email"]', 'input[name="email"]', '#email']) ||
+      pick([
+        'input[type="email"]',
+        'input[name="email"]',
+        '#email',
+        'input[aria-label="メールアドレス"]'
+      ]) ||
         pickByLabel(['メールアドレス', 'Email']),
       items.m_email
     );
