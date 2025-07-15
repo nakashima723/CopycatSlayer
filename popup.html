@@ -1,15 +1,26 @@
-<html lang="ja" ><script src="js/jquery.min.js"></script>
+<html>
+<meta charset="UTF-8" lang="ja" ><script src="js/jquery.min.js"></script>
 <script src="js/popup.js"></script>
 <link rel="stylesheet" href="css/style.css" type="text/css">
 <body>
 <div id = "main" style ='float: left;'>
 <div id ="pakutwi">
-<h3>�p�N�c�C�������E�񍐂���</h3>
+<h3>パクツイを検索・報告する</h3>
 <dl id="acMenu" style ='margin:0 auto; width: 100%;'></dl>
 </div>
 <div id = "murahachi" style ='float: left;'>
-<h3>Google��������URL���폜</h3>
+<h3>Google検索からURLを削除</h3>
 <dl id="m-acMenu" style ='margin:0 auto; width: 100%;'></dl>
 </div>
 </div>
+ <center>
+  <div style="margin-top:8px; font-size:15px;">
+    <input type="checkbox" id="barrage_mode_checkbox"><strong>集中砲火モード</strong>
+  </div></center>
+<div id="barrage_domain_block" style="display:none;margin-top:8px;">
+  <textarea id="popup_barrage_domains" rows="4" style="width:100%;" placeholder="対象サイトのドメインを、１行に１件ずつ入力してください。
+（例：example.com）"></textarea><br/>
+  <div style="text-align:center;margin-top:4px;"><button id="popup_save_barrage_domains">保存</button></div> 
+</div>
+
 </body></html>

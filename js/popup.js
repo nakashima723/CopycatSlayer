@@ -118,9 +118,16 @@ var showOption = function () {
           var mode = $(this).attr("id").replace("m-search", "")
           obj['m_mode'] = mode;
           chrome.storage.local.set(obj, function (items) {});
-          var m_query = items["m_query" + mode],
-            m_query = encodeURIComponent(m_query);
-          window.open('https://www.google.co.jp/search?q=' + m_query);
+          var baseQuery = items["m_query" + mode];
+          chrome.storage.local.get(['barrage_mode','barrage_domain_list'], function(res){
+            var q = baseQuery;
+            if(res.barrage_mode === 'on' && Array.isArray(res.barrage_domain_list) && res.barrage_domain_list.length){
+              var sitePart = res.barrage_domain_list.map(function(d){ return 'site:' + d; }).join(' OR ');
+              q += ' ' + sitePart;
+            }
+            var enc = encodeURIComponent(q);
+            window.open('https://www.google.co.jp/search?q=' + enc);
+          });
         });
         $('#m-report' + i).click(function () {
           var obj = {};
@@ -203,3 +210,62 @@ var showOption = function () {
 
 showOption();
 setHeight();
+
+// ==== 集中砲火モード チェックボックス ====
+$(function () {
+  chrome.storage.local.get(function (items) {
+    if (items.barrage_mode === "on") {
+      $("#barrage_mode_checkbox").prop("checked", true);
+    }
+  });
+  $("#barrage_mode_checkbox").on("change", function () {
+    const val = $(this).is(":checked") ? "on" : "off";
+    chrome.storage.local.set({ barrage_mode: val });
+  });
+});
+
+
+/* ---------- 集中砲火モード ドメイン入力 (popup) --------------- */
+$(function(){
+  const domainRe = /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+
+  function loadDomains(){
+    chrome.storage.local.get('barrage_domain_list', ({barrage_domain_list})=>{
+      $('#popup_barrage_domains').val(Array.isArray(barrage_domain_list)? barrage_domain_list.join('\n'): '');
+    });
+  }
+
+  function saveDomains(){
+    const raw = $('#popup_barrage_domains').val().replace(/\r\n?/g,'\n').trim();
+    if(raw===''){
+      chrome.storage.local.remove('barrage_domain_list', ()=>alert('URL一覧をクリアしました。'));
+      return;
+    }
+    const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+    for(const d of lines){ if(!domainRe.test(d)){ alert('ドメイン形式ではありません: '+d); return;} }
+    chrome.storage.local.set({barrage_domain_list: lines}, ()=>alert('入力内容を保存しました。'));
+  }
+
+  $('#popup_save_barrage_domains').on('click', saveDomains);
+  loadDomains();
+
+  // --- 表示制御 ---
+  function updateBlock(){
+    const chk = $('#barrage_mode_checkbox').is(':checked');
+    const showMurahachi = $('#murahachi').is(':visible');
+    $('#barrage_domain_block').toggle(chk && showMurahachi);
+    try{ if(typeof setHeight==='function'){ setHeight(); } }catch(e){}
+  }
+
+  // 初回 (murahachi may appear later...)
+  const waitTimer=setInterval(()=>{
+    if($('#murahachi').length){
+      updateBlock();
+      clearInterval(waitTimer);
+    }
+  },100);
+
+  $('#barrage_mode_checkbox').on('change', updateBlock);
+  $(document).on('click','#change-m,#change-p', function(){ setTimeout(updateBlock,100); });
+});
+/* ---- end popup block ---- */

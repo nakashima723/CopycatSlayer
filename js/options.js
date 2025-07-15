@@ -1728,6 +1728,44 @@
       chrome.storage.local.set(obj, function (items) { });
     }
   }); //chromestorageの終わり
+
+  /* === 集中砲火モード入力欄の挿入 === */
+  (function(){
+    const snippet = `
+      <h2>集中砲火モード</h2>
+      <textarea id="barrage_domains" rows="4" style="width:100%;" placeholder="対象サイトのドメインを、１行に１件ずつ入力してください。
+（例：example.com）"></textarea><br/>
+      <button id="save_barrage_domains">保存</button>`;
+    const $mset = $("#m-setting_div");
+    if ($mset.length && $("#barrage_domains").length === 0){
+      $mset.append(snippet);
+
+      // 現行値ロード
+      chrome.storage.local.get('barrage_domain_list', ({ barrage_domain_list }) => {
+        if(Array.isArray(barrage_domain_list)){
+          $('#barrage_domains').val(barrage_domain_list.join('\n'));
+        }
+      });
+
+      // 保存ボタン
+      $('#save_barrage_domains').on('click', function(){
+        const raw = $('#barrage_domains').val().replace(/\r\n?/g,'\n').trim();
+        if(raw === ''){
+          chrome.storage.local.remove('barrage_domain_list', ()=>alert('URL一覧をクリアしました。'));
+          return;
+        }
+        const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+        const domainRegex = /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
+        for(const d of lines){
+          if(!domainRegex.test(d)){
+            alert('ドメイン形式ではありません: ' + d);
+            return;
+          }
+        }
+        chrome.storage.local.set({ barrage_domain_list: lines }, ()=>alert('入力内容を保存しました。'));
+      });
+    }
+  })();
 } //showSlyrの終わり
 showSlyr();
 //
