@@ -25,6 +25,21 @@ chrome.storage.local.get(function (items) {
     return null;
   }
 
+  function pickByLabel(texts) {
+    for (const t of texts) {
+      const label = Array.from(document.querySelectorAll('label'))
+        .find(l => l.textContent.trim() === t);
+      if (label) {
+        const id = label.getAttribute('for');
+        if (id) {
+          const el = document.getElementById(id);
+          if (el) return el;
+        }
+      }
+    }
+    return null;
+  }
+
   function tickCheckboxes() {
     document.querySelectorAll('material-checkbox[role="checkbox"]').forEach(cb => {
       if (cb.getAttribute('aria-checked') !== 'true') { cb.click(); }
@@ -98,13 +113,47 @@ chrome.storage.local.get(function (items) {
   function scrollBottom() { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 400); }
 
   async function fill() {
-    const sig = pick(['input[aria-label="署名"]', 'input[name="signature"]', '#signature']);
+    const sig = pick([
+      'input[aria-label="署名"]',
+      'input[name="signature"]',
+      '#signature'
+    ]) || pickByLabel(['署名', 'Signature']);
     if (!sig) return false;
 
-    manual(pick(['input[aria-label="名"]', 'input[name="firstName"]', 'input[name="first_name"]', 'input[name="first-name"]', '#firstName']), items.m_name);
-    manual(pick(['input[aria-label="姓"]', 'input[name="lastName"]', 'input[name="last_name"]', 'input[name="last-name"]', '#lastName']), items.m_family);
-    manual(pick(['input[aria-label="組織名"]', 'input[name="company"]', 'input[name="organization"]', '#company']), items.m_company);
-    manual(pick(['input[type="email"]', 'input[name="email"]', '#email']), items.m_email);
+    manual(
+      pick([
+        'input[aria-label="名"]',
+        'input[name="firstName"]',
+        'input[name="first_name"]',
+        'input[name="first-name"]',
+        '#firstName'
+      ]) || pickByLabel(['名', 'First name']),
+      items.m_name
+    );
+    manual(
+      pick([
+        'input[aria-label="姓"]',
+        'input[name="lastName"]',
+        'input[name="last_name"]',
+        'input[name="last-name"]',
+        '#lastName'
+      ]) || pickByLabel(['姓', 'Last name']),
+      items.m_family
+    );
+    manual(
+      pick([
+        'input[aria-label="組織名"]',
+        'input[name="company"]',
+        'input[name="organization"]',
+        '#company'
+      ]) || pickByLabel(['組織名', 'Organization name']),
+      items.m_company
+    );
+    manual(
+      pick(['input[type="email"]', 'input[name="email"]', '#email']) ||
+        pickByLabel(['メールアドレス', 'Email']),
+      items.m_email
+    );
     manual(sig, fullname);
 
     const ta = document.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
