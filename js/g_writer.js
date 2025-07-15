@@ -19,7 +19,7 @@ chrome.storage.local.get(function (items) {
       ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
     } else {
       el.value = val;
-      ['input', 'change'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
+      ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true }))); 
     }
   }
 
