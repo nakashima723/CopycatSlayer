@@ -33,7 +33,7 @@ chrome.storage.local.get(function (items) {
         );
       }
       if (el) {
-        const parent = el.closest('gdf-text-input, gdf-textarea');
+        const parent = el.closest('gdf-text-input, gdf-textarea, material-input');
         return parent || el;
       }
     }
