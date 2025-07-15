@@ -8,8 +8,21 @@ chrome.storage.local.get(function (items) {
 
   function manual(el, val) {
     if (!el) return;
-    el.value = val;
-    ['input', 'change'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
+    if (el.tagName === 'DIV' && el.getAttribute('contenteditable') === 'true') {
+      el.innerText = val;
+      ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
+    } else {
+      el.value = val;
+      ['input', 'change'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
+    }
+  }
+
+  function pick(selectors) {
+    for (const s of selectors) {
+      const el = document.querySelector(s);
+      if (el) return el;
+    }
+    return null;
   }
 
   function tickCheckboxes() {
@@ -85,15 +98,16 @@ chrome.storage.local.get(function (items) {
   function scrollBottom() { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 400); }
 
   async function fill() {
-    const sig = document.querySelector('input[aria-label="署名"]'); if (!sig) return false;
+    const sig = pick(['input[aria-label="署名"]', 'input[name="signature"]', '#signature']);
+    if (!sig) return false;
 
-    manual(document.querySelector('input[aria-label="名"]'), items.m_name);
-    manual(document.querySelector('input[aria-label="姓"]'), items.m_family);
-    manual(document.querySelector('input[aria-label="組織名"]'), items.m_company);
-    manual(document.querySelector('input[type="email"]'), items.m_email);
+    manual(pick(['input[aria-label="名"]', 'input[name="firstName"]', 'input[name="first_name"]', 'input[name="first-name"]', '#firstName']), items.m_name);
+    manual(pick(['input[aria-label="姓"]', 'input[name="lastName"]', 'input[name="last_name"]', 'input[name="last-name"]', '#lastName']), items.m_family);
+    manual(pick(['input[aria-label="組織名"]', 'input[name="company"]', 'input[name="organization"]', '#company']), items.m_company);
+    manual(pick(['input[type="email"]', 'input[name="email"]', '#email']), items.m_email);
     manual(sig, fullname);
 
-    const ta = document.querySelectorAll('textarea');
+    const ta = document.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
     if (ta[0]) manual(ta[0], items['m_original' + mode]);
     if (ta[1]) manual(ta[1], items['m_infringement' + mode]);
     if (ta[2]) manual(ta[2], urls.join('\n'));
