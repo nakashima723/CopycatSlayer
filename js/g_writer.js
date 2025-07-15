@@ -6,6 +6,8 @@ chrome.storage.local.get(function (items) {
   if (!urls.length) { alert('未報告URLがありません'); return; }
   const fullname = (items.m_family || '') + ' ' + (items.m_name || '');
 
+  let doc = document;
+
   function manual(el, val) {
     if (!el) return;
     if (el.matches('gdf-text-input, gdf-textarea')) {
@@ -23,10 +25,10 @@ chrome.storage.local.get(function (items) {
 
   function pick(selectors) {
     for (const s of selectors) {
-      let el = document.querySelector(s);
+      let el = doc.querySelector(s);
       if (!el) {
         const forInput = s.replace(/^input/i, 'textarea');
-        el = document.querySelector(
+        el = doc.querySelector(
           `gdf-text-input ${s}, gdf-textarea ${forInput}`
         );
       }
@@ -40,16 +42,16 @@ chrome.storage.local.get(function (items) {
 
   function pickByLabel(texts) {
     for (const t of texts) {
-      const label = Array.from(document.querySelectorAll('label'))
+      const label = Array.from(doc.querySelectorAll('label'))
         .find(l => l.textContent.trim() === t);
       if (label) {
         const id = label.getAttribute('for');
         if (id) {
-          const el = document.getElementById(id);
+          const el = doc.getElementById(id);
           if (el) return el.closest('gdf-text-input, gdf-textarea') || el;
         }
       }
-      const span = Array.from(document.querySelectorAll('gdf-text-input span.mdc-floating-label, gdf-textarea span.mdc-floating-label'))
+      const span = Array.from(doc.querySelectorAll('gdf-text-input span.mdc-floating-label, gdf-textarea span.mdc-floating-label'))
         .find(l => l.textContent.trim() === t);
       if (span) {
         const parent = span.closest('gdf-text-input, gdf-textarea');
@@ -60,7 +62,7 @@ chrome.storage.local.get(function (items) {
   }
 
   function tickCheckboxes() {
-    document.querySelectorAll('material-checkbox[role="checkbox"]').forEach(cb => {
+    doc.querySelectorAll('material-checkbox[role="checkbox"]').forEach(cb => {
       if (cb.getAttribute('aria-checked') !== 'true') { cb.click(); }
     });
   }
@@ -81,7 +83,7 @@ chrome.storage.local.get(function (items) {
 
   // returns true if successfully selected
   function selectRadioNo() {
-    const mats = Array.from(document.querySelectorAll('material-radio[role="radio"]'));
+    const mats = Array.from(doc.querySelectorAll('material-radio[role="radio"]'));
     for (const r of mats) {
       const txt = (r.querySelector('.content') || {}).textContent || '';
       if (/いいえ|No/i.test(txt)) {
@@ -90,7 +92,7 @@ chrome.storage.local.get(function (items) {
       }
     }
     // fallback traditional radio
-    const inputs = Array.from(document.querySelectorAll('input[type="radio"]'));
+    const inputs = Array.from(doc.querySelectorAll('input[type="radio"]'));
     for (const inp of inputs) {
       const lbl = inp.nextElementSibling ? inp.nextElementSibling.textContent : '';
       if (inp.value === 'no' || /いいえ|No/i.test(lbl)) {
@@ -112,7 +114,7 @@ chrome.storage.local.get(function (items) {
   }
 
   function attachSubmit() {
-    const btn = document.querySelector('[data-test-id="submit-button"], [type="submit"]');
+    const btn = doc.querySelector('[data-test-id="submit-button"], [type="submit"]');
     if (!btn || btn.dataset.bound) return;
     btn.dataset.bound = 1;
     btn.addEventListener('click', () => chrome.storage.local.get(null, cur => {
@@ -129,7 +131,12 @@ chrome.storage.local.get(function (items) {
     }));
   }
 
-  function scrollBottom() { setTimeout(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }), 400); }
+  function scrollBottom() {
+    setTimeout(() => {
+      const win = doc.defaultView || window;
+      win.scrollTo({ top: doc.body.scrollHeight, behavior: 'smooth' });
+    }, 400);
+  }
 
   async function fill() {
     const sig = pick([
@@ -191,7 +198,7 @@ chrome.storage.local.get(function (items) {
     );
     manual(sig, fullname);
 
-    const ta = document.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
+    const ta = doc.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
     const desc =
       pick([
         '[gdf-id="description"] textarea',
@@ -222,11 +229,25 @@ chrome.storage.local.get(function (items) {
     fill().then(done => {
       if (done) return;
       const obs = new MutationObserver(() => fill().then(ok => { if (ok) obs.disconnect(); }));
-      obs.observe(document.body, { childList: true, subtree: true });
+      obs.observe(doc.body, { childList: true, subtree: true });
       setTimeout(() => obs.disconnect(), 15000);
     });
   }
 
-  document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', init) : init();
+  function start() { init(); }
+
+  const frame = document.querySelector('iframe[name="app"]');
+  if (frame && frame.contentDocument) {
+    doc = frame.contentDocument;
+    if (/complete|interactive/.test(doc.readyState)) {
+      start();
+    } else {
+      frame.addEventListener('load', start);
+    }
+  } else {
+    document.readyState === 'loading'
+      ? document.addEventListener('DOMContentLoaded', start)
+      : start();
+  }
   
 });
