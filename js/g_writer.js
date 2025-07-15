@@ -201,8 +201,10 @@ chrome.storage.local.get(function (items) {
     const ta = doc.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
     const desc =
       pick([
-        '[gdf-id="description"] textarea',
-        '[gdf-id="description"] [contenteditable="true"][role="textbox"]'
+        '[data-test-id^="form-container-component-description"] textarea',
+        '[data-test-id^="form-container-component-description"] [contenteditable="true"][role="textbox"]',
+        '[gdf-id^="description"] textarea',
+        '[gdf-id^="description"] [contenteditable="true"][role="textbox"]'
       ]) || ta[0];
     const loc =
       pick([
@@ -211,8 +213,10 @@ chrome.storage.local.get(function (items) {
       ]) || ta[1];
     const urlsBox =
       pick([
-        '[gdf-id="urls"] textarea',
-        '[gdf-id="urls"] [contenteditable="true"][role="textbox"]'
+        '[data-test-id^="form-container-component-urls"] textarea',
+        '[data-test-id^="form-container-component-urls"] [contenteditable="true"][role="textbox"]',
+        '[gdf-id^="urls"] textarea',
+        '[gdf-id^="urls"] [contenteditable="true"][role="textbox"]'
       ]) || ta[2];
     if (desc) manual(desc, items['m_original' + mode]);
     if (loc) manual(loc, items['m_infringement' + mode]);
