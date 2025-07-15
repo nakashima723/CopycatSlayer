@@ -17,6 +17,7 @@ Google や X (Twitter) 上の URL を DMCA 通報しやすくするためのツ�
 |`css/`|スタイルシート。`style.css` と jQuery CustomScrollbar の CSS が入る。|
 |`images/`|拡張アイコン類。|
 |`js/`|メインスクリプト群。詳細は後述。|
+|`sample/`|Google DMCA フォームの保存版 HTML を置く。|
 
 ## `js/` ディレクトリ
 
