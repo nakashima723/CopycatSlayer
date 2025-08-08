@@ -1,257 +1,499 @@
+/*
+ * g_writer.js (v21-date-after-scroll)
+ * - Chrome storage → payload (no dmcaProfile, no hardcoding)
+ * - Robust text fill (from v9): native setters, proper events, host propagation
+ * - Works inside iframe[name="app"]
+ * - Radios: choose "No / いいえ" when found (best-effort)
+ * - Checkboxes: tick all Material + native checkboxes (best-effort)
+ * - Auto-retry passes for late-rendered controls
+ * - Suppress focus-induced auto scrolling during autofill
+ * - Scroll to bottom exactly once, after the final pass (no animation)
+ * - FIX: URL textarea fill works again (regex, newline, iframe-aware fallback)
+ * - NEW: Set “署名日” to today exactly once, only after all other fills & final scroll
+ */
+(() => {
+  'use strict';
 
-// g_writer.js — Google DMCA フォーム自動入力 (radio final fix)
-chrome.storage.local.get(function (items) {
-  const mode = items.m_mode;
-  const urls = items['m_Arr' + mode] || [];
-  if (!urls.length) { alert('未報告URLがありません'); return; }
-  const fullname = (items.m_family || '') + ' ' + (items.m_name || '');
+  const AUTO_RUN = true;
+  const MAX_ATTEMPTS = 6;
+  const PASS_INTERVAL_MS = 500;
 
-  let doc = document;
+  // --- Helpers: quiet logging -----------------------------------------------
+  const log = (..._args) => {};
+  const warn = (..._args) => {};
+  const err  = (...args) => { try{ console.error('[g_writer]', new Date().toISOString().slice(11,19), ...args); }catch(_){} };
 
-  function manual(el, val) {
-    if (!el) return;
-    if (el.matches('gdf-text-input, gdf-textarea')) {
-      el = el.querySelector('input, textarea, div[contenteditable="true"][role="textbox"]');
-      if (!el) return;
+  // --- Frame/scroll helpers --------------------------------------------------
+  const getRootDoc = () => {
+    const frame = document.querySelector('iframe[name="app"]');
+    return (frame && frame.contentDocument) ? frame.contentDocument : document;
+  };
+  const getScrollTarget = () => {
+    const frame = document.querySelector('iframe[name="app"]');
+    if (frame && frame.contentDocument && frame.contentWindow) {
+      const doc = frame.contentDocument;
+      const win = frame.contentWindow;
+      const root = doc.scrollingElement || doc.documentElement || doc.body;
+      return { doc, win, root };
     }
-    if (el.tagName === 'DIV' && el.getAttribute('contenteditable') === 'true') {
-      el.innerText = val;
-      ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true })));
-    } else {
-      el.value = val;
-      ['input', 'change', 'blur'].forEach(ev => el.dispatchEvent(new Event(ev, { bubbles: true }))); 
+    const doc = document;
+    const win = window;
+    const root = doc.scrollingElement || doc.documentElement || doc.body;
+    return { doc, win, root };
+  };
+  function scrollToBottomFinal() {
+    try {
+      const { win, root } = getScrollTarget();
+      const prev = root.style.scrollBehavior;
+      root.style.scrollBehavior = 'auto'; // no animation, no jitter
+      root.scrollTop = root.scrollHeight;
+      try { win.scrollTo(0, root.scrollHeight); } catch {}
+      setTimeout(() => { root.style.scrollBehavior = prev || ''; }, 0);
+    } catch (e) {
+      err('scrollToBottomFinal failed', e);
     }
   }
 
-  function pick(selectors) {
-    for (const s of selectors) {
-      let el = doc.querySelector(s);
-      if (!el) {
-        const forInput = s.replace(/^input/i, 'textarea');
-        el = doc.querySelector(
-          `gdf-text-input ${s}, gdf-textarea ${forInput}`
-        );
-      }
-      if (el) {
-        const parent = el.closest('gdf-text-input, gdf-textarea, material-input');
-        return parent || el;
-      }
-    }
+  // Avoid browser auto-scroll on focus
+  const safeFocus = (el) => {
+    try { el.focus({ preventScroll: true }); }
+    catch { try { el.focus(); } catch {} }
+  };
+
+  // --- Realm/dispatch helpers ------------------------------------------------
+  const rAF2 = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const delay = ms => new Promise(r => setTimeout(r, ms));
+
+  const dispatch = (el, type, opts = {}) => {
+    try {
+      const ev = new Event(type, { bubbles: true, cancelable: true, composed: true, ...opts });
+      el.dispatchEvent(ev);
+    } catch (e) { warn('dispatch failed', type, e); }
+  };
+
+  const getRealmProto = (el) => {
+    const view = el?.ownerDocument?.defaultView || window;
+    if (el instanceof view.HTMLInputElement) return view.HTMLInputElement.prototype;
+    if (el instanceof view.HTMLTextAreaElement) return view.HTMLTextAreaElement.prototype;
     return null;
-  }
+  };
 
-  function pickByLabel(texts) {
-    for (const t of texts) {
-      const label = Array.from(doc.querySelectorAll('label'))
-        .find(l => l.textContent.trim() === t);
-      if (label) {
-        const id = label.getAttribute('for');
-        if (id) {
-          const el = doc.getElementById(id);
-          if (el) return el.closest('gdf-text-input, gdf-textarea') || el;
-        }
-      }
-      const span = Array.from(doc.querySelectorAll('gdf-text-input span.mdc-floating-label, gdf-textarea span.mdc-floating-label'))
-        .find(l => l.textContent.trim() === t);
-      if (span) {
-        const parent = span.closest('gdf-text-input, gdf-textarea');
-        if (parent) return parent;
-      }
+  const setNativeValue = (el, value) => {
+    try {
+      const proto = getRealmProto(el);
+      if (!proto) return (el.value = value);
+      const desc = Object.getOwnPropertyDescriptor(proto, 'value');
+      desc?.set?.call(el, value);
+    } catch (e) {
+      el.value = value;
+      warn('setNativeValue fallback used', e);
     }
-    return null;
-  }
+  };
 
-  function tickCheckboxes() {
-    doc.querySelectorAll('material-checkbox[role="checkbox"]').forEach(cb => {
-      if (cb.getAttribute('aria-checked') !== 'true') { cb.click(); }
+  const setNativeChecked = (el, checked) => {
+    try {
+      const view = el?.ownerDocument?.defaultView || window;
+      const proto = view.HTMLInputElement?.prototype;
+      const desc = proto ? Object.getOwnPropertyDescriptor(proto, 'checked') : null;
+      desc?.set?.call(el, !!checked);
+    } catch (e) {
+      el.checked = !!checked;
+      warn('setNativeChecked fallback used', e);
+    }
+  };
+
+  const valuesEqual = (el, value) => {
+    try {
+      const cur = (el.value ?? '').toString();
+      const want = (value ?? '').toString();
+      return cur === want;
+    } catch { return false; }
+  };
+
+  const commitText = async (el, value, host = null) => {
+    if (!el) return false;
+    try {
+      safeFocus(el);               // do not scroll on focus
+      setNativeValue(el, value);
+      dispatch(el, 'input');
+      await rAF2();
+      if (!host) host = el.closest('material-input, .mdc-text-field, .mdc-text-area, gdf-text-input, gdf-textarea');
+      if (host) {
+        try {
+          host.setAttribute('value', value);
+          dispatch(host, 'input');
+        } catch {}
+      }
+      dispatch(el, 'change');
+      try { el.blur(); } catch {}
+      if (host) dispatch(host, 'change');
+      await rAF2();
+      return true;
+    } catch (e) { err('commitText failed', e); return false; }
+  };
+
+  const commitCheck = async (el, checked = true) => {
+    if (!el) return false;
+    try {
+      safeFocus(el);
+      setNativeChecked(el, checked);
+      el.click();
+      await rAF2();
+      dispatch(el, 'change');
+      try { el.blur(); } catch {}
+      await rAF2();
+      return true;
+    } catch (e) { err('commitCheck failed', e); return false; }
+  };
+
+  // Material checkbox/radio (ARIA) helpers
+  const clickMaterialToggle = (el) => {
+    if (!el) return false;
+    const before = el.getAttribute('aria-checked');
+    el.click();
+    if (el.getAttribute('aria-checked') !== before) return true;
+    const icon = el.querySelector('.icon-container, .radioripple, .ripple');
+    if (icon) { icon.click(); if (el.getAttribute('aria-checked') !== before) return true; }
+    try { el.focus({ preventScroll: true }); } catch {}
+    ['keydown', 'keyup'].forEach(t => el.dispatchEvent(new KeyboardEvent(t, { key: ' ', code: 'Space', bubbles: true })));
+    return el.getAttribute('aria-checked') !== before;
+  };
+
+  // ----- Query helpers (root-aware) -----------------------------------------
+  const q = (sel, root = getRootDoc()) => Array.from(root.querySelectorAll(sel));
+
+  const byAriaLabel = (rx, tag = null, root = getRootDoc()) => {
+    const sels = [
+      'input[aria-label]',
+      'textarea[aria-label]',
+      'input[placeholder]',
+      'textarea[placeholder]'
+    ];
+    const nodes = sels.flatMap(s => q(s, root)).filter(el => (tag ? el.tagName === tag.toUpperCase() : true));
+    return nodes.filter(el => {
+      const label = (el.getAttribute('aria-label') || el.getAttribute('placeholder') || '').trim();
+      return rx.test(label);
     });
-  }
+  };
 
-  function clickRadioElem(elem) {
-    if (!elem) return;
-    elem.click();
-    if (elem.getAttribute('aria-checked') === 'true') return true;
-    const icon = elem.querySelector('.icon-container');
-    if (icon) { icon.click(); if (elem.getAttribute('aria-checked') === 'true') return true; }
-    elem.focus();
-    ['keydown', 'keyup'].forEach(e => {
-      const ev = new KeyboardEvent(e, { key: ' ', code: 'Space', bubbles: true });
-      elem.dispatchEvent(ev);
+  const byNearbyLabel = (rx, root = getRootDoc()) => {
+    const labels = q('label, [aria-label], .mdc-floating-label, p.asterisk, .container-label', root);
+    const hits = [];
+    labels.forEach(lab => {
+      const text = (lab.textContent || lab.getAttribute('aria-label') || '').trim();
+      if (!rx.test(text)) return;
+      const forId = lab.getAttribute('for');
+      if (forId) {
+        const el = root.getElementById(forId);
+        if (el) hits.push(el);
+      }
+      const host = lab.closest('material-input, .mdc-text-field, .mdc-text-area, .form-field, .mdc-form-field, gdf-text-input, gdf-textarea');
+      if (host) {
+        const el = host.querySelector('input, textarea, div[contenteditable="true"][role="textbox"]');
+        if (el) hits.push(el);
+      }
     });
-    return elem.getAttribute('aria-checked') === 'true';
-  }
+    return hits;
+  };
 
-  // returns true if successfully selected
-  function selectRadioNo() {
-    const mats = Array.from(doc.querySelectorAll('material-radio[role="radio"]'));
+  const getEmailCandidates = (root = getRootDoc()) => {
+    const sels = [
+      'input[type="email"]',
+      'input[name*="mail" i]',
+      'input[id*="mail" i]',
+      'input[name*="email" i]',
+      'input[id*="email" i]',
+      'input[autocomplete="email"]'
+    ];
+    const nodes = Array.from(new Set(sels.flatMap(s => q(s, root))));
+    const more = byAriaLabel(/メール|email/i, 'input', root);
+    return Array.from(new Set(nodes.concat(more)));
+  };
+
+  const preferEmpty = (arr) => arr.sort((a, b) => (a?.value ? 1 : 0) - (b?.value ? 1 : 0));
+
+  // ----- Chrome storage → payload -------------------------------------------
+  const readStorage = () => new Promise(res => {
+    try { chrome.storage.local.get(null, res); }
+    catch (e) { err('chrome.storage.local.get failed', e); res({}); }
+  });
+
+  const buildPayloadFromItems = (items) => {
+    const mode = items?.m_mode;
+    const urls = items?.['m_Arr' + mode] || [];
+    const first = items?.m_name || '';
+    const last  = items?.m_family || '';
+    return {
+      firstName: first,
+      lastName: last,
+      company: items?.m_company || '',
+      signature: `${(last || '').trim()} ${(first || '').trim()}`.trim(),
+      description: items?.['m_original' + mode] || '',
+      urls: urls,
+      infringingExample: items?.['m_infringement' + mode] || '',
+      email: items?.m_email || ''
+    };
+  };
+
+  // ----- Domain actions ------------------------------------------------------
+  const ensureRadioNo = async (root = getRootDoc()) => {
+    // Material radios
+    const mats = q('material-radio[role="radio"]', root);
     for (const r of mats) {
-      const txt = (r.querySelector('.content') || {}).textContent || '';
+      const txt = ((r.querySelector('.content') || {}).textContent || '').trim();
       if (/いいえ|No/i.test(txt)) {
         if (r.getAttribute('aria-checked') === 'true') return true;
-        if (clickRadioElem(r)) return true;
+        if (clickMaterialToggle(r)) return true;
       }
     }
-    // fallback traditional radio
-    const inputs = Array.from(doc.querySelectorAll('input[type="radio"]'));
+    // Native radios
+    const inputs = q('input[type="radio"]', root);
     for (const inp of inputs) {
-      const lbl = inp.nextElementSibling ? inp.nextElementSibling.textContent : '';
-      if (inp.value === 'no' || /いいえ|No/i.test(lbl)) {
+      const lbl = inp.nextElementSibling ? (inp.nextElementSibling.textContent || '') : '';
+      if ((inp.value || '').toLowerCase() === 'no' || /いいえ|No/i.test(lbl)) {
         if (inp.checked) return true;
-        inp.click();
-        inp.checked = true;
-        ['input', 'change'].forEach(ev => inp.dispatchEvent(new Event(ev, { bubbles: true })));
-        return inp.checked;
+        await commitCheck(inp, true);
+        if (inp.checked) return true;
       }
     }
     return false;
-  }
+  };
 
-  async function ensureRadioNo() {
-    for (let i = 0; i < 40; i++) {           // 最大8秒
-      if (selectRadioNo()) return;
-      await new Promise(r => setTimeout(r, 200));
+  const tickAllCheckboxes = async (root = getRootDoc()) => {
+    // Material
+    q('material-checkbox[role="checkbox"]', root).forEach(el => {
+      if (el.getAttribute('aria-checked') !== 'true') clickMaterialToggle(el);
+    });
+    // Native
+    const natives = q('input[type="checkbox"]', root);
+    for (const box of natives) {
+      if (!box.checked) await commitCheck(box, true);
     }
-  }
+  };
 
-  function attachSubmit() {
-    const btn = doc.querySelector('[data-test-id="submit-button"], [type="submit"]');
+  const attachSubmit = (root = getRootDoc()) => {
+    const btn = root.querySelector('[data-test-id="submit-button"], button[type="submit"], material-button[debugid="submit"]');
     if (!btn || btn.dataset.bound) return;
     btn.dataset.bound = 1;
-    btn.addEventListener('click', () => chrome.storage.local.get(null, cur => {
-      const m = cur.m_mode;
-      const arr = cur['m_Arr' + m] || [];
-      if (!arr.length) return;
-      const now = new Date().toLocaleString();
-      chrome.storage.local.set({
-        ['m_Arr' + m]: [],
-        ['m_DateArr' + m]: [],
-        ['m_FinArr' + m]: (cur['m_FinArr' + m] || []).concat(arr),
-        ['m_FinDateArr' + m]: (cur['m_FinDateArr' + m] || []).concat(arr.map(() => now))
-      });
-    }));
-  }
-
-  function scrollBottom() {
-    setTimeout(() => {
-      const win = doc.defaultView || window;
-      win.scrollTo({ top: doc.body.scrollHeight, behavior: 'smooth' });
-    }, 400);
-  }
-
-  async function fill() {
-    const sig = pick([
-      '[data-test-id="form-container-component-signature"] input',
-      '[gdf-id="signature"] input',
-      'input[aria-label="署名"]',
-      'input[name="signature"]',
-      '#signature'
-    ]) || pickByLabel(['署名', 'Signature']);
-    if (!sig) return false;
-
-    manual(
-      pick([
-        '[data-test-id="form-container-component-given-name"] input',
-        '[gdf-id="given-name"] input',
-        'input[aria-label="名"]',
-        'input[name="firstName"]',
-        'input[name="first_name"]',
-        'input[name="first-name"]',
-        '#firstName'
-      ]) || pickByLabel(['名', 'First name']),
-      items.m_name
-    );
-    manual(
-      pick([
-        '[data-test-id="form-container-component-family-name"] input',
-        '[gdf-id="family-name"] input',
-        'input[aria-label="姓"]',
-        'input[name="lastName"]',
-        'input[name="last_name"]',
-        'input[name="last-name"]',
-        '#lastName'
-      ]) || pickByLabel(['姓', 'Last name']),
-      items.m_family
-    );
-    manual(
-      pick([
-        '[data-test-id="form-container-component-company-name"] input',
-        '[gdf-id="company-name"] input',
-        'input[aria-label="組織名"]',
-        'input[aria-label="会社名"]',
-        'input[name="company"]',
-        'input[name="organization"]',
-        '#company'
-      ]) || pickByLabel(['組織名', '会社名', 'Organization name']),
-      items.m_company
-    );
-    manual(
-      pick([
-        '[data-test-id="form-container-component-email-text"] input',
-        '[gdf-id="email-text"] input',
-        'input[type="email"]',
-        'input[name="email"]',
-        '#email',
-        'input[aria-label="メールアドレス"]'
-      ]) ||
-        pickByLabel(['メールアドレス', 'Email']),
-      items.m_email
-    );
-    manual(sig, fullname);
-
-    const ta = doc.querySelectorAll('textarea, [contenteditable="true"][role="textbox"]');
-    const desc =
-      pick([
-        '[data-test-id^="form-container-component-description"] textarea',
-        '[data-test-id^="form-container-component-description"] [contenteditable="true"][role="textbox"]',
-        '[gdf-id^="description"] textarea',
-        '[gdf-id^="description"] [contenteditable="true"][role="textbox"]'
-      ]) || ta[0];
-    const loc =
-      pick([
-        '[gdf-id^="location-of-material"] textarea',
-        '[gdf-id^="location-of-material"] [contenteditable="true"][role="textbox"]'
-      ]) || ta[1];
-    const urlsBox =
-      pick([
-        '[data-test-id^="form-container-component-urls"] textarea',
-        '[data-test-id^="form-container-component-urls"] [contenteditable="true"][role="textbox"]',
-        '[gdf-id^="urls"] textarea',
-        '[gdf-id^="urls"] [contenteditable="true"][role="textbox"]'
-      ]) || ta[2];
-    if (desc) manual(desc, items['m_original' + mode]);
-    if (loc) manual(loc, items['m_infringement' + mode]);
-    if (urlsBox) manual(urlsBox, urls.join('\n'));
-
-    tickCheckboxes();
-    await ensureRadioNo();
-    attachSubmit();
-    scrollBottom();
-    return true;
-  }
-
-  function init() {
-    fill().then(done => {
-      if (done) return;
-      const obs = new MutationObserver(() => fill().then(ok => { if (ok) obs.disconnect(); }));
-      obs.observe(doc.body, { childList: true, subtree: true });
-      setTimeout(() => obs.disconnect(), 15000);
+    btn.addEventListener('click', () => {
+      try {
+        chrome.storage.local.get(null, cur => {
+          const m = cur.m_mode;
+          const arr = cur['m_Arr' + m] || [];
+          if (!arr.length) return;
+          const nowStr = new Date().toLocaleString();
+          chrome.storage.local.set({
+            ['m_Arr' + m]: [],
+            ['m_DateArr' + m]: [],
+            ['m_FinArr' + m]: (cur['m_FinArr' + m] || []).concat(arr),
+            ['m_FinDateArr' + m]: (cur['m_FinDateArr' + m] || []).concat(arr.map(() => nowStr))
+          });
+        });
+      } catch {}
     });
-  }
+  };
 
-  function start() { init(); }
-
-  const frame = document.querySelector('iframe[name="app"]');
-  if (frame && frame.contentDocument) {
-    doc = frame.contentDocument;
-    if (/complete|interactive/.test(doc.readyState)) {
-      start();
-    } else {
-      frame.addEventListener('load', start);
+  // ----- URL textarea robust finder (iframe-aware) --------------------------
+  function findUrlsTextarea(root = getRootDoc()) {
+    // Prefer container by data-test-id/gdf-id
+    let container = root.querySelector('[data-test-id="form-container-component-urls"],[gdf-id="urls"]');
+    let ta = container && (container.querySelector('textarea.mdc-text-field__input') ||
+                           container.querySelector('textarea[aria-label]') ||
+                           container.querySelector('textarea'));
+    if (ta) return ta;
+    // Fallback by aria-label containing URL (JP or en)
+    ta = root.querySelector('textarea[aria-label*="URL" i], textarea[aria-label*="url" i]');
+    if (ta) return ta;
+    // Fallback by nearby label text
+    const labels = Array.from(root.querySelectorAll('.mdc-floating-label,.label-text,.container-label,.mdc-text-field-helper-text'));
+    for (let i = 0; i < labels.length; i++) {
+      const t = (labels[i].textContent || '').trim();
+      if (/URL/.test(t) || /ここに\s*URL\s*を入力/.test(t)) {
+        const host = labels[i].closest('.mdc-text-field,material-input,material-textarea') || labels[i].parentElement;
+        if (host) {
+          ta = host.querySelector('textarea');
+          if (ta) return ta;
+        }
+      }
     }
-  } else {
-    document.readyState === 'loading'
-      ? document.addEventListener('DOMContentLoaded', start)
-      : start();
+    // Last resort: the first visible textarea inside that section
+    ta = root.querySelector('gdf-textarea textarea, material-input[textarea] textarea');
+    return ta || null;
   }
-  
-});
+
+  // ----- Signature date (run once after everything) -------------------------
+  let DATE_DONE = false;
+  async function setSignatureDateToToday(root = getRootDoc()) {
+    if (DATE_DONE) return false;
+    try {
+      // Find the “署名日:*” datepicker's button
+      const pickers = Array.from(root.querySelectorAll('material-datepicker'));
+      let btn = null;
+      for (const p of pickers) {
+        const b = p.querySelector('.button[aria-haspopup="dialog"], [role="button"][aria-haspopup="dialog"]');
+        const label = (b?.getAttribute('aria-label') || b?.textContent || '').trim();
+        if (b && /署名日/.test(label)) { btn = b; break; }
+        // Nearby label heuristic
+        if (!btn) {
+          const lbl = p.querySelector('.label-text, .label, .label-container');
+          const t = (lbl?.textContent || '').trim();
+          if (b && /署名日/.test(t)) { btn = b; break; }
+        }
+      }
+      if (!btn) {
+        // Fallback: any dropdown-button mentioning 署名日
+        btn = Array.from(root.querySelectorAll('[role="button"][aria-haspopup="dialog"]'))
+          .find(el => /署名日/.test((el.getAttribute('aria-label') || el.textContent || '').trim()));
+      }
+      if (!btn) return false;
+
+      // Open popup
+      try { btn.focus({ preventScroll: true }); } catch {}
+      btn.click();
+      await rAF2();
+
+      // Find the popup (owned by the same doc)
+      const pop = root.querySelector('material-popup[__is_owner="true"], material-popup.gm-select');
+      if (!pop) { DATE_DONE = true; return false; }
+
+      // Try to click today's cell
+      let cell =
+        pop.querySelector('[aria-current="date"]') ||
+        pop.querySelector('[aria-label*="今日"]') ||
+        pop.querySelector('[aria-label*="Today" i]');
+
+      if (!cell) {
+        const day = String(new Date().getDate());
+        const candidates = Array.from(pop.querySelectorAll('button, [role="gridcell"], td'))
+          .filter(n => /^\d{1,2}$/.test((n.textContent || '').trim()) && (n.getAttribute('aria-disabled') !== 'true'));
+        cell = candidates.find(n => (n.textContent || '').trim() === day) || null;
+        if (cell && cell.querySelector) {
+          const b2 = cell.querySelector('button,[role="button"]');
+          if (b2) cell = b2;
+        }
+      }
+
+      if (cell) {
+        try { cell.focus({ preventScroll: true }); } catch {}
+        cell.click();
+        await rAF2();
+      }
+
+      // Close popup if still open
+      if (btn.getAttribute('aria-expanded') === 'true') {
+        btn.click();
+        await rAF2();
+      }
+
+      DATE_DONE = true;
+      return true;
+    } catch (e) {
+      err('setSignatureDateToToday failed', e);
+      DATE_DONE = true; // avoid loops
+      return false;
+    }
+  }
+
+  // ----- Public API ----------------------------------------------------------
+  const gWriter = {
+    version: 'v21',
+
+    async fillAll(payload, root = getRootDoc()) {
+      log('fillAll start', payload ? 'with-storage' : 'no-payload');
+
+      const tasks = [];
+      const pickOne = (cands) => preferEmpty(cands)[0];
+
+      // 名 / 姓 / 会社名 / 署名
+      const first = pickOne(byAriaLabel(/^(名)$/, 'input', root).concat(byNearbyLabel(/^(名)$/, root)));
+      if (first && payload?.firstName && !valuesEqual(first, payload.firstName)) tasks.push(commitText(first, payload.firstName));
+
+      const last = pickOne(byAriaLabel(/^(姓)$/, 'input', root).concat(byNearbyLabel(/^(姓)$/, root)));
+      if (last && payload?.lastName && !valuesEqual(last, payload.lastName)) tasks.push(commitText(last, payload.lastName));
+
+      const company = pickOne(byAriaLabel(/^会社名|組織名$/, 'input', root).concat(byNearbyLabel(/^会社名|組織名$/, root)));
+      if (company && payload?.company && !valuesEqual(company, payload.company)) tasks.push(commitText(company, payload.company));
+
+      const signature = pickOne(byAriaLabel(/^署名$/, 'input', root).concat(byNearbyLabel(/^署名$/, root)));
+
+      // 説明 / URL / 例
+      const desc = pickOne(byAriaLabel(/^ここに説明を入力$/, 'textarea', root).concat(byNearbyLabel(/^ここに説明を入力$/, root)));
+      if (desc && payload?.description && !valuesEqual(desc, payload.description)) tasks.push(commitText(desc, payload.description));
+
+      // Correct regex (\s) and newline join, plus robust finder
+      const urlsStr = (payload?.urls || []).join('\n');
+      let urlsBox = pickOne(byAriaLabel(/ここに\s*URL\s*を入力/, 'textarea', root).concat(byNearbyLabel(/ここに\s*URL\s*を入力/, root)));
+      if (!urlsBox) urlsBox = findUrlsTextarea(root);
+      if (urlsBox && urlsStr && !valuesEqual(urlsBox, urlsStr)) tasks.push(commitText(urlsBox, urlsStr));
+
+      const example = pickOne(byAriaLabel(/^ここに例を入力$/, 'textarea', root).concat(byNearbyLabel(/^ここに例を入力$/, root)));
+      if (example && payload?.infringingExample && !valuesEqual(example, payload.infringingExample)) tasks.push(commitText(example, payload.infringingExample));
+
+      // メール
+      const emailEl = pickOne(getEmailCandidates(root));
+      if (emailEl && payload?.email && !valuesEqual(emailEl, payload.email)) tasks.push(commitText(emailEl, payload.email));
+
+      await Promise.allSettled(tasks);
+
+      // Checks & Radios
+      await tickAllCheckboxes(root);
+      await ensureRadioNo(root);
+
+      // Fill signature last to bias view near bottom (focus suppressed)
+      if (signature && payload?.signature && !valuesEqual(signature, payload.signature)) {
+        try { await commitText(signature, payload.signature); } catch {}
+      }
+
+      attachSubmit(root);
+
+      log('fillAll done');
+      return true;
+    }
+  };
+
+  // Expose for manual use
+  window.gWriter = gWriter;
+
+  // ----- Boot ---------------------------------------------------------------
+  const boot = async () => {
+    // Wait DOM (outer)
+    if (document.readyState === 'loading') await new Promise(r => document.addEventListener('DOMContentLoaded', r, { once: true }));
+
+    // Wait inner iframe if present
+    const root = getRootDoc();
+    if (root !== document && root.readyState === 'loading') {
+      await new Promise(r => root.addEventListener('DOMContentLoaded', r, { once: true }));
+    }
+
+    // Read chrome.storage once up front
+    const items = await readStorage();
+    const payload = buildPayloadFromItems(items);
+    const hasAny =
+      payload.firstName || payload.lastName || payload.company || payload.signature ||
+      payload.description || (payload.urls && payload.urls.length) || payload.infringingExample || payload.email;
+
+    const tryPass = async (_pass) => {
+      try { await gWriter.fillAll(hasAny ? payload : null, getRootDoc()); }
+      catch (e) { err('autofill error', e); }
+    };
+
+    // Try now + a few retries (handles SPA re-render)
+    await tryPass(1);
+    for (let i = 2; i <= MAX_ATTEMPTS; i++) {
+      await delay(PASS_INTERVAL_MS);
+      await tryPass(i);
+    }
+
+    // Finally, scroll once to the bottom (no animation)
+    scrollToBottomFinal();
+
+    // After scroll settles, set the date once (best-effort)
+    await delay(250);
+    await setSignatureDateToToday(getRootDoc());
+  };
+
+  if (AUTO_RUN) {
+    setTimeout(boot, 0);
+    ['popstate', 'hashchange'].forEach(ev => window.addEventListener(ev, () => setTimeout(boot, 50)));
+  }
+})();
